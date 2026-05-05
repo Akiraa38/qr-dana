@@ -1,1 +1,447 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akira</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #0a0f1e 0%, #0a1a2f 100%);
+  min-height: 100vh;
+  padding: 30px 20px;
+}
+
+.container {
+  max-width: 550px;
+  margin: 0 auto;
+  background: linear-gradient(145deg, #0d1525, #0b1220);
+  border-radius: 48px;
+  padding: 35px 25px 40px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 180, 255, 0.15);
+  transition: all 0.3s ease;
+  animation: borderPulse 3s ease-in-out infinite;
+}
+
+@keyframes borderPulse {
+  0%, 100% { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 180, 255, 0.2); }
+  50% { box-shadow: 0 25px 50px -8px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(0, 200, 255, 0.5); }
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #00aaff;
+  box-shadow: 0 0 25px rgba(0, 170, 255, 0.4);
+  animation: glow 2.5s ease-in-out infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(0, 170, 255, 0.4); border-color: #00aaff; }
+  50% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.8); border-color: #4dc3ff; }
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #00aaff, #4dc3ff, #00ccff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientMove 3s ease infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes gradientMove {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.warning {
+  font-size: 13px;
+  color: #ffaa44;
+  background: rgba(255, 170, 68, 0.1);
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 50px;
+  margin-top: 5px;
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; text-shadow: 0 0 3px #ffaa44; }
+}
+
+/* Social Media Icons */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin: 20px 0 25px;
+}
+
+.social-icon {
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(145deg, #101a2c, #0c1425);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #00aaff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 150, 255, 0.3);
+  animation: iconFloat 3s ease infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+.social-icon:hover {
+  transform: translateY(-8px) scale(1.1);
+  border-color: #00aaff;
+  box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
+  color: #4dc3ff;
+}
+
+.social-icon:nth-child(1) { animation-delay: 0s; }
+.social-icon:nth-child(2) { animation-delay: 0.1s; }
+.social-icon:nth-child(3) { animation-delay: 0.2s; }
+
+/* Card Link - Sekarang jadi LINK LANGSUNG */
+.link-card {
+  background: linear-gradient(135deg, #101a2c, #0c1425);
+  border-radius: 24px;
+  margin-bottom: 16px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  border: 1px solid rgba(0, 150, 255, 0.3);
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  animation: fadeSlideUp 0.4s ease backwards;
+  cursor: pointer;
+}
+
+.link-card:hover {
+  transform: translateY(-3px) scale(1.01);
+  border-color: #00aaff;
+  box-shadow: 0 12px 25px -10px rgba(0, 170, 255, 0.3);
+  background: linear-gradient(135deg, #131e34, #0e1628);
+}
+
+.link-card:nth-child(4) { animation-delay: 0.05s; }
+.link-card:nth-child(5) { animation-delay: 0.1s; }
+.link-card:nth-child(6) { animation-delay: 0.15s; }
+.link-card:nth-child(7) { animation-delay: 0.2s; }
+.link-card:nth-child(8) { animation-delay: 0.25s; }
+.link-card:nth-child(9) { animation-delay: 0.3s; }
+.link-card:nth-child(10) { animation-delay: 0.35s; }
+.link-card:nth-child(11) { animation-delay: 0.4s; }
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+.card-left img {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid rgba(0, 170, 255, 0.4);
+  transition: all 0.3s ease;
+}
+
+.link-card:hover .card-left img {
+  transform: scale(1.05);
+  border-color: #00aaff;
+  box-shadow: 0 0 12px rgba(0, 170, 255, 0.3);
+}
+
+.card-info {
+  flex: 1;
+}
+
+.card-info h3 {
+  font-size: 14px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #00aaff, #4dc3ff, #33bbff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: textWave 4s linear infinite;
+  margin-bottom: 4px;
+}
+
+@keyframes textWave {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.card-info p {
+  font-size: 11px;
+  color: #7a8eae;
+  font-weight: 500;
+}
+
+/* Menu Dot */
+.menu-dot {
+  font-size: 22px;
+  color: #00aaff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 40px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.menu-dot:hover {
+  transform: rotate(90deg);
+  color: #4dc3ff;
+}
+
+/* Badge NEW */
+.badge-new {
+  background: linear-gradient(135deg, #00aaff, #0099ff);
+  padding: 2px 8px;
+  border-radius: 30px;
+  font-size: 9px;
+  font-weight: 700;
+  color: white;
+  margin-left: 8px;
+  display: inline-block;
+  vertical-align: middle;
+  animation: blink 1.5s ease infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 150, 255, 0.2);
+  font-size: 12px;
+  color: #5a6e8a;
+  font-weight: 500;
+}
+
+/* Popup Toast */
+.popup-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0f1a2e;
+  color: #00aaff;
+  padding: 10px 20px;
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid #00aaff;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .container {
+    padding: 25px 18px 30px;
+  }
+  .card-info h3 {
+    font-size: 12px;
+  }
+  .card-left img {
+    width: 45px;
+    height: 45px;
+  }
+  .badge-new {
+    font-size: 8px;
+    padding: 2px 6px;
+  }
+  .social-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="header">
+    <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1777963316607_file_3056.jpg" alt="logo" class="logo">
+    <h1>IQBAL JMK</h1>
+    <div class="warning">⚠️ waspada admin sangat jomok</div>
+  </div>
+
+  <!-- Social Media Icons -->
+  <div class="social-icons">
+    <a href="https://www.tiktok.com/@azz_kurumi" target="_blank" class="social-icon">
+      <i class="fab fa-tiktok"></i>
+    </a>
+    <a href="https://youtube.com/@" target="_blank" class="social-icon">
+      <i class="fab fa-youtube"></i>
+    </a>
+    <a href="https://t.me/Akiraxxc" target="_blank" class="social-icon">
+      <i class="fab fa-telegram-plane"></i>
+    </a>
+  </div>
+
+  <!-- LINK 1 - SALURAN INFO STOCK (LANGSUNG BUKA WA) -->
+  <a href="https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW?mode=gi_t" target="_blank" class="link-card">
+    <div class="card-left">
+      <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1777963316607_file_3056.jpg" alt="icon">
+      <div class="card-info">
+        <h3>SALURAN INFO STOCK / TESTI IQBAL</h3>
+        <p>Klik untuk bergabung</p>
+      </div>
+    </div>
+    <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'Saluran Info Stock')">⋮</div>
+  </a>
+
+  <!-- LINK 2 - JB EPEP / ML IQBAL NEW -->
+  <a href="https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW" target="_blank" class="link-card">
+    <div class="card-left">
+      <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1777963316607_file_3056.jpg" alt="icon">
+      <div class="card-info">
+        <h3>JB EPEP / ML IQBAL NEW <span class="badge-new">NEW</span></h3>
+        <p>masuk bang asik asik loh</p>
+      </div>
+    </div>
+    <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'JB EPEP ML IQBAL')">⋮</div>
+  </a>
+
+  <!-- LINK 3 -->
+  <a href="https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW" target="_blank" class="link-card">
+    <div class="card-left">
+      <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1777963316607_file_3056.jpg" alt="icon">
+      <div class="card-info">
+        <h3>JB EPEP / ML IQBAL</h3>
+        <p>masuk bang asik asik loh</p>
+      </div>
+    </div>
+    <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'JB Epep ML Pangzy')">⋮</div>
+  </a>
+
+  <!-- LINK 4 -->
+  <a href="https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW" target="_blank" class="link-card">
+    <div class="card-left">
+      <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1777963316607_file_3056.jpg" alt="icon">
+      <div class="card-info">
+        <h3>JB EPEP / ML IQBAL</h3>
+        <p>masuk bang asik asik loh</p>
+      </div>
+    </div>
+    <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'JB Epep ML Pangzzy')">⋮</div>
+  </a>
+
+  <!-- LINK 5 -->
+  <a href="https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW" target="_blank" class="link-card">
+    <div class="card-left">
+      <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1777963316607_file_3056.jpg" alt="icon">
+      <div class="card-info">
+        <h3>JB EPEP / ML IQBAL</h3>
+        <p>masuk bang asik asik loh</p>
+      </div>
+    </div>
+    <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'JB Epep ML Pangzy 3')">⋮</div>
+  </a>
+
+  <!-- LINK 6 -->
+  <a href="https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW" target="_blank" class="link-card">
+    <div class="card-left">
+      <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1777963316607_file_3056.jpg" alt="icon">
+      <div class="card-info">
+        <h3>JB EPEP / ML IQBAL 🎉</h3>
+        <p>masuk bang asik asik loh</p>
+      </div>
+    </div>
+    <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'JB Epep ML IQBAL New 4')">⋮</div>
+  </a>
+
+  <!-- LINK 7 -->
+  <a href="https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW" target="_blank" class="link-card">
+    <div class="card-left">
+      <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1777963316607_file_3056.jpg" alt="icon">
+      <div class="card-info">
+        <h3>JB EPEP / ML IQBAL 🍴</h3>
+        <p>masuk bang asik asik loh</p>
+      </div>
+    </div>
+    <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'JB Epep ML IQBAL New 3')">⋮</div>
+  </a>
+
+  <div class="footer">
+    Insyaallah Amanah
+  </div>
+</div>
+
+<!-- Toast Popup -->
+<div id="toast" class="popup-toast"></div>
+
+<script>
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.style.opacity = '1';
+  setTimeout(() => {
+    toast.style.opacity = '0';
+  }, 2000);
+}
+
+function showMenuOption(event, name) {
+  event.stopPropagation();
+  showToast(`📋 Opsi untuk ${name}`);
+}
+</script>
+
+</body>
+  </html>
