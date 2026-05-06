@@ -3,7 +3,7 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
- <title>WEB BLS MBT</title>
+ <title>ƁLS MƁT • Pusat Jual Beli & Komunitas Terpercaya</title>
  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
  <style>
@@ -37,9 +37,10 @@
  width: 100%;
  height: 100%;
  object-fit: cover;
+ object-position: 30% center; 
  filter: blur(2px);
- transform: scale(1.05);
- }
+ transform: scale(1);
+}
 
  .bg-overlay {
  position: fixed;
@@ -47,11 +48,10 @@
  left: 0;
  width: 100%;
  height: 100%;
- background: rgba(0, 0, 0,);
+ background: rgba(0, 0, 0, 0.3);
  z-index: -1;
  }
 
- /* Fallback jika video/foto tidak ada - background hitam pekat */
  .bg-fallback {
  position: fixed;
  top: 0;
@@ -62,7 +62,344 @@
  z-index: -3;
  }
 
- /* ========= SPLASH SCREEN (ANIME FALLING LETTERS) ========= */
+ /* ========= SIDEBAR / SWIPE MENU - KANAN ========= */
+ .sidebar {
+ position: fixed;
+ top: 0;
+ right: -300px;
+ width: 300px;
+ height: 100%;
+ background: linear-gradient(180deg, #0f1a2c, #0a1020);
+ backdrop-filter: blur(20px);
+ z-index: 1002;
+ transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+ box-shadow: -2px 0 30px rgba(0, 0, 0, 0.5);
+ border-left: 1px solid rgba(0, 170, 255, 0.3);
+ overflow-y: auto;
+ }
+
+ .sidebar.open {
+ right: 0;
+ }
+
+ /* Overlay gelap saat sidebar terbuka */
+ .sidebar-overlay {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background: rgba(0, 0, 0, 0.6);
+ z-index: 1001;
+ opacity: 0;
+ visibility: hidden;
+ transition: all 0.3s ease;
+ }
+
+ .sidebar-overlay.active {
+ opacity: 1;
+ visibility: visible;
+ }
+
+ /* Header Sidebar */
+ .sidebar-header {
+ padding: 25px 20px;
+ text-align: center;
+ border-bottom: 1px solid rgba(0, 170, 255, 0.3);
+ margin-bottom: 15px;
+
+ /* TAMBAHAN */
+ background: url('https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778065977191_file_3207.jpg') center/cover no-repeat;
+ position: relative;
+}
+
+ .sidebar-header img {
+ width: 70px;
+ height: 70px;
+ border-radius: 50%;
+ border: 2px solid #00aaff;
+ margin-bottom: 10px;
+ }
+
+ .sidebar-header h3 {
+ color: #00aaff;
+ font-size: 18px;
+ font-weight: 700;
+ }
+
+ .sidebar-header p {
+ color: #7a8eae;
+ font-size: 11px;
+ }
+
+ /* Menu Item Sidebar - Customer Service saja */
+ .sidebar-menu {
+ padding: 0 15px;
+ }
+
+ .menu-item {
+ display: flex;
+ align-items: center;
+ gap: 15px;
+ padding: 14px 15px;
+ margin-bottom: 8px;
+ background: linear-gradient(135deg, rgba(0, 150, 255, 0.1), rgba(0, 100, 200, 0.05));
+ border-radius: 16px;
+ cursor: pointer;
+ transition: all 0.3s ease;
+ border: 1px solid rgba(0, 150, 255, 0.3);
+ }
+
+ .menu-item:hover {
+ background: rgba(0, 150, 255, 0.2);
+ border-color: #00aaff;
+ transform: translateX(-5px);
+ }
+
+ .menu-item i {
+ font-size: 28px;
+ color: #00aaff;
+ width: 45px;
+ text-align: center;
+ }
+
+ .menu-item .menu-text {
+ flex: 1;
+ }
+
+ .menu-item .menu-text h4 {
+ font-size: 16px;
+ font-weight: 700;
+ color: #fff;
+ margin-bottom: 5px;
+ }
+
+ .menu-item .menu-text p {
+ font-size: 11px;
+ color: #7a8eae;
+ }
+
+ .menu-badge {
+ background: #00aaff;
+ color: #fff;
+ font-size: 9px;
+ padding: 2px 8px;
+ border-radius: 20px;
+ font-weight: 600;
+ }
+
+ /* Tombol buka sidebar (di kanan) */
+ .menu-toggle {
+ position: fixed;
+ top: 20px;
+ right: 20px;
+ width: 50px;
+ height: 50px;
+ background: linear-gradient(145deg, #101a2c, #0c1425);
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ cursor: pointer;
+ z-index: 1003;
+ border: 1px solid rgba(0, 150, 255, 0.4);
+ transition: all 0.3s ease;
+ box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+ }
+
+ .menu-toggle:hover {
+ transform: scale(1.05);
+ border-color: #00aaff;
+ box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
+ }
+
+ .menu-toggle i {
+ font-size: 24px;
+ color: #00aaff;
+ }
+
+ /* ========= HALAMAN CUSTOMER SERVICE (POPUP) ========= */
+ .cs-page {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background: linear-gradient(135deg, rgba(10,15,30,0.95), rgba(5,10,20,0.98));
+ backdrop-filter: blur(15px);
+ z-index: 2000;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ opacity: 0;
+ visibility: hidden;
+ transition: all 0.3s ease;
+ }
+
+ .cs-page.active {
+ opacity: 1;
+ visibility: visible;
+ }
+
+ .cs-container {
+ width: 90%;
+ max-width: 400px;
+ background: linear-gradient(145deg, #101a2c, #0c1425);
+ border-radius: 32px;
+ padding: 30px 25px;
+ border: 1px solid rgba(0, 170, 255, 0.4);
+ box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+ transform: scale(0.9);
+ transition: transform 0.3s ease;
+ }
+
+ .cs-page.active .cs-container {
+ transform: scale(1);
+ }
+
+ .cs-header {
+ text-align: center;
+ margin-bottom: 25px;
+ }
+
+ .cs-header i {
+ font-size: 50px;
+ color: #00aaff;
+ margin-bottom: 10px;
+ }
+
+ .cs-header h2 {
+ font-size: 24px;
+ font-weight: 700;
+ background: linear-gradient(135deg, #00aaff, #4dc3ff);
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ }
+
+ .cs-header p {
+ font-size: 12px;
+ color: #7a8eae;
+ margin-top: 5px;
+ }
+
+ .cs-contact {
+ margin-bottom: 20px;
+ }
+
+ .contact-card {
+ background: rgba(0, 150, 255, 0.08);
+ border-radius: 20px;
+ padding: 15px;
+ margin-bottom: 12px;
+ display: flex;
+ align-items: center;
+ gap: 15px;
+ border: 1px solid rgba(0, 150, 255, 0.2);
+ transition: all 0.3s ease;
+ cursor: pointer;
+ }
+
+ .contact-card:hover {
+ background: rgba(0, 150, 255, 0.15);
+ border-color: #00aaff;
+ transform: translateX(5px);
+ }
+
+ .contact-card i {
+ font-size: 28px;
+ color: #00aaff;
+ width: 45px;
+ text-align: center;
+ }
+
+ .contact-info {
+ flex: 1;
+ }
+
+ .contact-info h4 {
+ font-size: 14px;
+ font-weight: 600;
+ color: #fff;
+ margin-bottom: 3px;
+ }
+
+ .contact-info p {
+ font-size: 13px;
+ color: #00aaff;
+ font-weight: 500;
+ word-break: break-all;
+ }
+
+ .contact-info small {
+ font-size: 10px;
+ color: #7a8eae;
+ }
+
+ .cs-footer {
+ text-align: center;
+ margin-top: 20px;
+ }
+
+ .close-cs {
+ background: linear-gradient(145deg, #1a2a3a, #0f1a2c);
+ border: 1px solid rgba(0, 170, 255, 0.3);
+ padding: 12px 25px;
+ border-radius: 40px;
+ color: #00aaff;
+ font-weight: 600;
+ cursor: pointer;
+ transition: all 0.3s ease;
+ display: inline-flex;
+ align-items: center;
+ gap: 10px;
+ }
+
+ .close-cs:hover {
+ background: #00aaff;
+ color: #0a0c15;
+ border-color: #00aaff;
+ }
+
+ /* ========= MUSIC CONTROL BUTTON ========= */
+ .music-control {
+ position: fixed;
+ bottom: 20px;
+ right: 20px;
+ width: 50px;
+ height: 50px;
+ background: linear-gradient(145deg, #101a2c, #0c1425);
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ cursor: pointer;
+ z-index: 1001;
+ border: 1px solid rgba(0, 150, 255, 0.4);
+ transition: all 0.3s ease;
+ box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+ }
+
+ .music-control:hover {
+ transform: scale(1.1);
+ border-color: #00aaff;
+ box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
+ }
+
+ .music-control i {
+ font-size: 24px;
+ color: #00aaff;
+ }
+
+ .music-control.playing i {
+ animation: spinMusic 2s linear infinite;
+ }
+
+ @keyframes spinMusic {
+ from { transform: rotate(0deg); }
+ to { transform: rotate(360deg); }
+ }
+
+ /* ========= SPLASH SCREEN ========= */
  .splash-screen {
  position: fixed;
  top: 0;
@@ -83,16 +420,6 @@
  .splash-hidden {
  opacity: 0;
  visibility: hidden;
- }
-
- .falling-container {
- position: relative;
- width: 100%;
- height: 100%;
- display: flex;
- justify-content: center;
- align-items: center;
- perspective: 800px;
  }
 
  .letter-canvas {
@@ -119,28 +446,17 @@
  letter-spacing: 5px;
  }
 
- @keyframes fallGlow {
+@keyframes fallGlow {
  0% {
  transform: translateY(-450px) rotate(-30deg);
  opacity: 0;
- filter: blur(12px);
- }
- 40% {
- opacity: 0.9;
- filter: blur(2px);
- }
- 80% {
- transform: translateY(8px) rotate(2deg);
  }
  100% {
  transform: translateY(0) rotate(0deg);
  opacity: 1;
- filter: blur(0);
- text-shadow: 0 0 25px #0af, 0 0 8px #fff;
  }
- }
+}
 
- /* subtitle loading setelah huruf */
  .enter-hint {
  margin-top: 45px;
  font-size: 0.9rem;
@@ -160,26 +476,21 @@
  50% { opacity: 1; box-shadow: 0 0 20px rgba(0,200,255,0.4);}
  }
 
-
- /* ========= MAIN WEBSITE (DARK MODERN CARD) ========= */
+ /* ========= MAIN WEBSITE ========= */
  .main-content {
  min-height: 100vh;
- background: linear-gradient(135deg, rgba(10,15,30,0.75), rgba(10,26,47,0.85));
- backdrop-filter: blur(4px);
- padding: 30px 20px;
+ background: rgba(0, 0, 0, 0.4); /* warna hitam transparan tipis */
+ backdrop-filter: blur(0px); /* hapus blur juga biar video keliatan */
+ padding: 80px 20px 30px;
  opacity: 0;
  transition: opacity 1s ease;
  position: relative;
  z-index: 1;
- }
-
+}
  .main-visible {
  opacity: 1;
  }
 
-
-
- /* Header */
  .header {
  text-align: center;
  margin-bottom: 30px;
@@ -233,7 +544,6 @@
  50% { opacity: 1; text-shadow: 0 0 3px #ffaa44; }
  }
 
- /* Social Media Icons */
  .social-icons {
  display: flex;
  justify-content: center;
@@ -269,7 +579,6 @@
  color: #4dc3ff;
  }
 
- /* Link Card - langsung akses WA / grup */
  .link-card {
  background: linear-gradient(135deg, rgba(16,26,44,0.9), rgba(12,20,37,0.9));
  border-radius: 24px;
@@ -294,8 +603,6 @@
 
  .link-card:nth-child(1) { animation-delay: 0.05s; }
  .link-card:nth-child(2) { animation-delay: 0.1s; }
- .link-card:nth-child(3) { animation-delay: 0.15s; }
- .link-card:nth-child(4) { animation-delay: 0.2s; }
 
  @keyframes fadeSlideUp {
  from {
@@ -322,12 +629,6 @@
  object-fit: cover;
  border: 1px solid rgba(0, 170, 255, 0.4);
  transition: all 0.3s ease;
- }
-
- .link-card:hover .card-left img {
- transform: scale(1.05);
- border-color: #00aaff;
- box-shadow: 0 0 12px rgba(0, 170, 255, 0.3);
  }
 
  .card-info h3 {
@@ -362,29 +663,6 @@
  font-weight: bold;
  }
 
- .menu-dot:hover {
- transform: rotate(90deg);
- color: #4dc3ff;
- }
-
- .badge-new {
- background: linear-gradient(135deg, #00aaff, #0099ff);
- padding: 2px 8px;
- border-radius: 30px;
- font-size: 9px;
- font-weight: 700;
- color: white;
- margin-left: 8px;
- display: inline-block;
- vertical-align: middle;
- animation: blink 1.5s ease infinite;
- }
-
- @keyframes blink {
- 0%, 100% { opacity: 1; }
- 50% { opacity: 0.6; }
- }
-
  .footer {
  text-align: center;
  margin-top: 30px;
@@ -393,27 +671,6 @@
  font-size: 12px;
  color: #5a6e8a;
  font-weight: 500;
- }
-
- .popup-toast {
- position: fixed;
- bottom: 30px;
- left: 50%;
- transform: translateX(-50%);
- background: #0f1a2e;
- color: #00aaff;
- padding: 10px 20px;
- border-radius: 40px;
- font-size: 13px;
- font-weight: 500;
- border: 1px solid #00aaff;
- box-shadow: 0 5px 20px rgba(0,0,0,0.4);
- z-index: 1000;
- opacity: 0;
- transition: opacity 0.3s ease;
- pointer-events: none;
- white-space: nowrap;
- font-family: monospace;
  }
 
  @media (max-width: 480px) {
@@ -435,31 +692,124 @@
  .fall-letter {
  font-size: 2.5rem;
  }
+ .music-control, .menu-toggle {
+ width: 42px;
+ height: 42px;
+ }
+ .sidebar {
+ width: 280px;
+ }
  }
  </style>
 </head>
 <body>
 
-<!-- BACKGROUND VIDEO / FOTO + BLUR -->
+<!-- BACKGROUND -->
 <div class="bg-fallback"></div>
 <div class="bg-container">
- <!-- Menggunakan video dari internet sebagai background (bisa diganti dengan foto/video lain) -->
  <video autoplay muted loop playsinline class="bg-media" id="bgVideo">
  <source src="https://b.top4top.io/m_365487b6x0.mp4" type="video/mp4">
- <!-- Fallback jika video gagal, coba gunakan foto -->
  </video>
  <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070" alt="background" class="bg-media" id="bgImage" style="display: none;">
 </div>
 <div class="bg-overlay"></div>
 
-<!-- SPLASH SCREEN ANIME: HURUF JATUH MEMBENTUK "BLS MBT" -->
+<!-- TOMBOL BUKA SIDEBAR (DI KANAN) -->
+<div class="menu-toggle" id="menuToggle">
+ <i class="fas fa-headset"></i>
+</div>
+
+<!-- SIDEBAR (1 BUTTON CUSTOMER SERVICE SAJA) -->
+<div class="sidebar" id="sidebar">
+ <div class="sidebar-header">
+ <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="logo">
+ <h3>Ɓls Mɓt</h3>
+ <h3>Trusted & Amanah</h3>
+ </div>
+ 
+ <div class="sidebar-menu">
+ <!-- Customer Service - 1 button saja -->
+ <div class="menu-item" id="openCsPageBtn">
+ <i class="fas fa-headset"></i>
+ <div class="menu-text">
+ <h4>Customer Service</h4>
+ <p>Chat & Bantuan 24/7</p>
+ </div>
+ <div class="menu-badge">Online</div>
+ </div>
+ </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- HALAMAN CUSTOMER SERVICE (POPUP) -->
+<div class="cs-page" id="csPage">
+ <div class="cs-container">
+ <div class="cs-header">
+ <i class="fas fa-headset"></i>
+ <h2>Customer Service</h2>
+ <p>Kami siap membantu Anda 24/7</p>
+ </div>
+ 
+ <div class="cs-contact">
+ <!-- WhatsApp -->
+ <div class="contact-card" onclick="window.open('https://wa.me/6285693659506', '_blank')">
+ <i class="fab fa-whatsapp"></i>
+ <div class="contact-info">
+ <h4>WhatsApp</h4>
+ <p>+62 856-9365-9506</p>
+ <small>Klik untuk chat langsung</small>
+ </div>
+ <i class="fas fa-chevron-right" style="color:#00aaff;"></i>
+ </div>
+ 
+ <!-- Telegram -->
+ <div class="contact-card" onclick="window.open('https://t.me/Akiraxxc', '_blank')">
+ <i class="fab fa-telegram-plane"></i>
+ <div class="contact-info">
+ <h4>Telegram</h4>
+ <p>@Akiraxxc</p>
+ <small>Klik untuk chat</small>
+ </div>
+ <i class="fas fa-chevron-right" style="color:#00aaff;"></i>
+ </div>
+ 
+ <!-- Email -->
+ <div class="contact-card" onclick="window.location.href='mailto:akiraxshy@gmail.com'">
+ <i class="fas fa-envelope"></i>
+ <div class="contact-info">
+ <h4>Email</h4>
+ <p>akiraxshy@gmail.com</p>
+ <small>Klik untuk kirim email</small>
+ </div>
+ <i class="fas fa-chevron-right" style="color:#00aaff;"></i>
+ </div>
+ </div>
+ 
+ <div class="cs-footer">
+ <div class="close-cs" id="closeCsBtn">
+ <i class="fas fa-times"></i> Tutup
+ </div>
+ </div>
+ </div>
+</div>
+
+<!-- MUSIC CONTROL -->
+<div id="musicControl" class="music-control playing">
+ <i class="fas fa-compact-disc"></i>
+</div>
+
+<audio id="bgMusic" loop>
+ <source src="https://a.top4top.io/m_3778lobdk0.mp4" type="audio/mpeg">
+</audio>
+
+<!-- SPLASH SCREEN -->
 <div id="splashScreen" class="splash-screen">
  <div class="letter-canvas" id="letterCanvas"></div>
  <div class="enter-hint">✦ KETUK UNTUK MASUK ✦</div>
 </div>
 
-
-<!-- MAIN WEBSITE UTAMA (HALAMAN SETELAH ANIMASI) -->
+<!-- MAIN WEBSITE -->
 <div id="mainContent" class="main-content">
  <div class="container">
  <div class="header">
@@ -468,7 +818,6 @@
  <div class="warning">⚠️ waspada clone link palsu dll, be smart a buyer</div>
  </div>
 
- <!-- Social Media Icons -->
  <div class="social-icons">
  <a href="https://www.tiktok.com/@jb.bls.mbt" target="_blank" class="social-icon">
  <i class="fab fa-tiktok"></i>
@@ -481,7 +830,6 @@
  </a>
  </div>
 
- <!-- LINK 1 - SALURAN INFO STOCK / TESTI (tambahkan link jika ada, contoh dummy valid) -->
  <a href="https://whatsapp.com/channel/0029Vb7oSTn1Hsq1r0nuVj2i" target="_blank" class="link-card">
  <div class="card-left">
  <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="icon">
@@ -493,7 +841,6 @@
  <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'Saluran Info Stock')">⋮</div>
  </a>
 
- <!-- LINK 2 - JB EPEP / ML IQBAL (GRUP WA RESMI) -->
  <a href="https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW" target="_blank" class="link-card">
  <div class="card-left">
  <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="icon">
@@ -504,7 +851,6 @@
  </div>
  <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'JB EPEP ML IQBAL')">⋮</div>
  </a>
- </a>
 
  <div class="footer">
  🔥 Insyaallah Amanah | © BLS MBT 2026
@@ -512,44 +858,157 @@
  </div>
 </div>
 
-<div id="toast" class="popup-toast"></div>
-
 <script>
- // ============== HANDLING BACKGROUND VIDEO/FOTO ==============
+ // ============== SIDEBAR SWIPE DARI KANAN ==============
+ const sidebar = document.getElementById('sidebar');
+ const overlay = document.getElementById('sidebarOverlay');
+ const menuToggle = document.getElementById('menuToggle');
+ const openCsPageBtn = document.getElementById('openCsPageBtn');
+ const csPage = document.getElementById('csPage');
+ const closeCsBtn = document.getElementById('closeCsBtn');
+ 
+ let touchStartX = 0;
+ let touchEndX = 0;
+ 
+ function openSidebar() {
+ sidebar.classList.add('open');
+ overlay.classList.add('active');
+ }
+ 
+ function closeSidebar() {
+ sidebar.classList.remove('open');
+ overlay.classList.remove('active');
+ }
+ 
+ // Tombol headset di kanan
+ if(menuToggle) {
+ menuToggle.addEventListener('click', openSidebar);
+ }
+ 
+ // Overlay klik = tutup sidebar
+ if(overlay) {
+ overlay.addEventListener('click', closeSidebar);
+ }
+ 
+ // Buka halaman CS dari sidebar
+ if(openCsPageBtn) {
+ openCsPageBtn.addEventListener('click', () => {
+ closeSidebar(); // tutup sidebar dulu
+ setTimeout(() => {
+ csPage.classList.add('active');
+ }, 200);
+ });
+ }
+ 
+ // Tutup halaman CS
+ if(closeCsBtn) {
+ closeCsBtn.addEventListener('click', () => {
+ csPage.classList.remove('active');
+ });
+ }
+ 
+ // Klik overlay CS (area luar) juga tutup
+ if(csPage) {
+ csPage.addEventListener('click', (e) => {
+ if(e.target === csPage) {
+ csPage.classList.remove('active');
+ }
+ });
+ }
+ 
+ // Deteksi swipe dari tepi kanan (tarik layar ke kiri) = buka sidebar
+ document.addEventListener('touchstart', function(e) {
+ const screenWidth = window.innerWidth;
+ touchStartX = e.changedTouches[0].screenX;
+ // Jika mulai dari tepi kanan (dalam 40px dari kanan)
+ if(touchStartX > screenWidth - 40) {
+ touchStartX = 'rightEdge';
+ }
+ });
+ 
+ document.addEventListener('touchend', function(e) {
+ touchEndX = e.changedTouches[0].screenX;
+ // Jika swipe dari tepi kanan dan geser ke kiri > 50px
+ if(touchStartX === 'rightEdge' && (touchStartX - touchEndX) > 50) {
+ openSidebar();
+ }
+ // Jika sidebar terbuka dan swipe ke kanan dari tepi kiri, tutup
+ if(sidebar.classList.contains('open') && (touchEndX - touchStartX) > 70) {
+ closeSidebar();
+ }
+ });
+ 
+ // ============== MUSIC BACKGROUND ==============
+ const bgMusic = document.getElementById('bgMusic');
+ const musicControl = document.getElementById('musicControl');
+ let isMusicPlaying = true;
+ 
+ function playMusic() {
+ bgMusic.play().then(() => {
+ isMusicPlaying = true;
+ musicControl.classList.add('playing');
+ }).catch(err => {
+ isMusicPlaying = false;
+ musicControl.classList.remove('playing');
+ });
+ }
+ 
+ function pauseMusic() {
+ bgMusic.pause();
+ isMusicPlaying = false;
+ musicControl.classList.remove('playing');
+ }
+ 
+ if(musicControl) {
+ musicControl.addEventListener('click', (e) => {
+ e.stopPropagation();
+ if(isMusicPlaying) {
+ pauseMusic();
+ } else {
+ playMusic();
+ }
+ });
+ }
+ 
+ function tryAutoPlayOnInteraction() {
+ if(!isMusicPlaying) {
+ playMusic();
+ }
+ document.removeEventListener('click', tryAutoPlayOnInteraction);
+ document.removeEventListener('touchstart', tryAutoPlayOnInteraction);
+ }
+ 
+ document.addEventListener('click', tryAutoPlayOnInteraction);
+ document.addEventListener('touchstart', tryAutoPlayOnInteraction);
+ 
+ if(bgMusic) {
+ bgMusic.volume = 0.3;
+ }
+ 
+ // ============== HANDLING BACKGROUND VIDEO ==============
  const bgVideo = document.getElementById('bgVideo');
  const bgImage = document.getElementById('bgImage');
- const bgFallback = document.querySelector('.bg-fallback');
  
- // Jika video gagal dimuat, gunakan foto
  if(bgVideo) {
  bgVideo.addEventListener('error', function() {
  bgVideo.style.display = 'none';
  if(bgImage) {
  bgImage.style.display = 'block';
- // Cek jika foto juga gagal, fallback akan tetap hitam
  bgImage.addEventListener('error', function() {
  bgImage.style.display = 'none';
- // Background hitam sudah ada dari .bg-fallback
  });
  }
  });
+ }
  
- // Video dimulai dengan baik
- bgVideo.addEventListener('canplay', function() {
- console.log('Background video loaded');
- });
- }
-
- // ============================== ANIMASI HURUF JATUH ==============================
- // Membentuk kata "BLS MBT" dengan gaya jatuh satu per satu
- const targetText = "BLS MBT";
- const lettersArray = targetText.split(''); // ['B','L','S',' ','M','B','T']
+ // ============== SPLASH SCREEN ANIMASI ==============
+ const targetText = "BLS✦MBT";
+ const lettersArray = targetText.split('');
  const container = document.getElementById('letterCanvas');
  
  function createFallingLetters() {
  if(!container) return;
  container.innerHTML = '';
- // untuk spasi kita tetap kasih span dengan lebar tertentu
  lettersArray.forEach((char, idx) => {
  const span = document.createElement('span');
  span.className = 'fall-letter';
@@ -562,7 +1021,6 @@
  } else {
  span.textContent = char;
  }
- // delay unik
  const delay = idx * 0.12;
  span.style.animationDelay = `${delay}s`;
  span.style.animationDuration = '0.65s';
@@ -572,21 +1030,9 @@
  
  createFallingLetters();
  
- // tambahan efek partikel atau kilau (opsional)
  let splashScreen = document.getElementById('splashScreen');
  let mainContent = document.getElementById('mainContent');
- let hintElement = document.getElementById('enterHint');
  
- // fungsi untuk menghapus splash setelah semua huruf selesai + waktu minimal
- let allLettersDone = false;
- // timer durasi animasi huruf paling akhir = 0.12*(jumlah huruf-1) + durasi 0.65s
- const maxDelay = (lettersArray.length - 1) * 0.12 + 0.7; // sekitar 1.5 detik
- setTimeout(() => {
- allLettersDone = true;
- if(hintElement) hintElement.innerHTML = '✨ TAP UNTUK MASUK ✨';
- }, maxDelay * 1000);
- 
- // Fungsi transisi ke halaman utama
  function transitionToMain() {
  if(!splashScreen || !mainContent) return;
  splashScreen.classList.add('splash-hidden');
@@ -596,193 +1042,45 @@
  }, 1200);
  }
  
- // bisa klik / tap dimana saja pada splash untuk mempercepat masuk (opsional interaksi)
  if(splashScreen) {
- splashScreen.addEventListener('click', (e) => {
- if(splashScreen.style.display === 'none') return;
- // paksa transisi
+ splashScreen.addEventListener('click', () => {
  if(!mainContent.classList.contains('main-visible')) {
  transitionToMain();
  }
  });
  }
  
- // auto transisi setelah 3.2 detik jika tidak ada klik
  setTimeout(() => {
  if(splashScreen && splashScreen.style.display !== 'none' && !mainContent.classList.contains('main-visible')) {
  transitionToMain();
  }
  }, 3300);
  
- // ============== FUNGSI LAIN (TOAST, MENU OPTIONS, DLL) ==============
- function showToast(message) {
- const toast = document.getElementById('toast');
- if(!toast) return;
- toast.textContent = message;
- toast.style.opacity = '1';
+ // ============== FUNGSI TOAST ==============
+ function showMenuOption(event, name) {
+ event.stopPropagation();
+ const toast = document.createElement('div');
+ toast.textContent = `⚡ Opsi untuk ${name} (akan segera hadir)`;
+ toast.style.position = 'fixed';
+ toast.style.bottom = '30px';
+ toast.style.left = '50%';
+ toast.style.transform = 'translateX(-50%)';
+ toast.style.background = '#0f1a2e';
+ toast.style.color = '#00aaff';
+ toast.style.padding = '10px 20px';
+ toast.style.borderRadius = '40px';
+ toast.style.fontSize = '13px';
+ toast.style.border = '1px solid #00aaff';
+ toast.style.zIndex = '3000';
+ toast.style.fontFamily = 'monospace';
+ document.body.appendChild(toast);
  setTimeout(() => {
- toast.style.opacity = '0';
+ toast.remove();
  }, 2000);
  }
  
- function showMenuOption(event, name) {
- event.stopPropagation();
- showToast(`⚡ Opsi untuk ${name} (akan segera hadir)`);
- }
- 
- // Menambahkan interactive effect particles sederhana pada halaman utama setelah muncul
- // bonus efek hover modern
- const allCards = document.querySelectorAll('.link-card');
- allCards.forEach(card => {
- card.addEventListener('mouseenter', () => {
- // efek tambahan soundless
- card.style.transition = 'all 0.2s';
- });
- });
- 
- // preload image utama biar smooth
- const imgPreload = new Image();
- imgPreload.src = "https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1777963316607_file_3056.jpg";
- 
- // integrasi kode dinamis : if, else, for, switch, while untuk memenuhi "banyak line code"
- (function additionalFeatureComplex() {
- // 1. Variabel status grup
- let groupActive = true;
- let memberTotal = 247;
- const maxGroup = 512;
- 
- // 2. if else untuk info grup
- if(groupActive && memberTotal < maxGroup) {
- console.log("[BLS MBT] Grup aktif dan masih tersedia slot.");
- } else if(!groupActive) {
- console.warn("[BLS] Grup sedang tidak aktif.");
- } else {
- console.log("[BLS] Grup mencapai batas.");
- }
- 
- // 3. switch untuk tema status
- let themeStatus = "dark";
- switch(themeStatus) {
- case "dark":
- document.body.style.backgroundColor = "#0a0c15";
- break;
- case "light":
- document.body.style.backgroundColor = "#f0f2f5";
- break;
- default:
- document.body.style.backgroundColor = "#0a0f1e";
- }
- 
- // 4. loop for untuk animasi dummy
- for(let i=1; i<=5; i++) {
- // hanya logging internal
- if(i === 3) console.log(`✨ Efek BLS MBT aktif - level ${i}`);
- }
- 
- // 5. while untuk memastikan grafik
- let retryCount = 0;
- let linkChecked = false;
- while(!linkChecked && retryCount < 3) {
- retryCount++;
- if(retryCount === 2) linkChecked = true;
- console.log(`🔁 Pengecekan link grup: attempt ${retryCount}`);
- }
- 
- // 6. do while - persiapan analytics
- let analyticsCount = 0;
- do {
- analyticsCount++;
- if(analyticsCount === 1) console.log("📊 Analytics store BLS MBT siap");
- } while(analyticsCount < 2);
- 
- // 7. Array dan map methods panjang
- const storeLinks = [
- {name: "Grup JB Utama", url: "https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW"},
- {name: "Channel Info", url: "https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW"},
- {name: "Grup Cadangan", url: "https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW"}
- ];
- storeLinks.forEach((link, idx) => {
- console.log(`[Link ${idx+1}] ${link.name} tersedia`);
- });
- 
- // 8. filter mapping saluran
- const activeChannels = storeLinks.filter(item => item.url.includes("whatsapp"));
- if(activeChannels.length > 0) console.log(`✅ Terdapat ${activeChannels.length} saluran WhatsApp resmi`);
- 
- // 9. object class sederhana untuk user store
- class BLSStore {
- constructor(owner, year) {
- this.owner = owner;
- this.year = year;
- }
- getInfo() {
- return `BLS MBT dikelola oleh ${this.owner} sejak ${this.year}`;
- }
- }
- const myStore = new BLSStore("Ikyy & Team", 2025);
- console.log(myStore.getInfo());
- 
- // 10. event listener tambahan untuk efek audio visual (optional)
- const containerDiv = document.querySelector('.container');
- if(containerDiv) {
- containerDiv.addEventListener('dblclick', function() {
- showToast("💙 Terima kasih sudah berkunjung ke BLS MBT!");
- });
- }
- 
- // 11. intersepsi waktu (real-time greetings)
- const hourNow = new Date().getHours();
- let greeting = "";
- if(hourNow >= 5 && hourNow < 12) greeting = "Selamat Pagi, sobat BLS!";
- else if(hourNow >= 12 && hourNow < 18) greeting = "Selamat Siang, stay safe!";
- else if(hourNow >= 18 && hourNow < 24) greeting = "Selamat Malam, siap chatting?";
- else greeting = "The dark vibes are strong";
- console.log(greeting);
- 
- // 12. menampilkan tooltip custom untuk menu dot
- const menuDots = document.querySelectorAll('.menu-dot');
- menuDots.forEach(dot => {
- dot.setAttribute('title', 'Opsi lainnya');
- });
- 
- // 13. membuat efek typing sederhana di console
- let lineCodes = 0;
- const MAX_CODE = 2350;
- for(let i = 0; i <= 300; i++) { lineCodes++; }
- console.log(`%c🚀 BLS MBT | total baris kode (estimasi): ${lineCodes + 2048}+ lines • dark • anime entrance`, "color:#0af; font-size:13px");
- 
- // 14. tambahan validasi link WA
- const waLinks = document.querySelectorAll('a[href*="chat.whatsapp.com"]');
- if(waLinks.length >= 2) {
- console.log("✅ Semua grup WhatsApp sudah siap diakses.");
- } else {
- console.warn("⚠️ Periksa tautan grup.");
- }
- 
- // 15. efek salju atau debu digital (opsional) - menambah gaya kode panjang tapi ringan
- const style = document.createElement('style');
- style.textContent = `
- .link-card:active {
- transform: scale(0.98);
- transition: 0.05s;
- }
- .social-icon {
- transition: all 0.25s cubic-bezier(0.2, 1.2, 0.8, 1);
- }
- .container {
- transition: transform 0.2s;
- }
- `;
- document.head.appendChild(style);
- })();
- 
- // memastikan main content awalnya tidak terlihat sampai splash di close, tetapi kita sudah atur visible after
- window.addEventListener('load', () => {
- // Jika ada yang belum ke-load, pastikan splash tetap eksis, main belum terlihat karena class main-visible
- if(!mainContent.classList.contains('main-visible')) {
- // pengecekan ekstra: tetap menunggu animasi huruf selesai
- }
- });
+ window.showMenuOption = showMenuOption;
+ window.closeSidebar = closeSidebar;
 </script>
 </body>
 </html>
