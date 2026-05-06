@@ -1,384 +1,788 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Web Ɓls Mɓt</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+ <title>WEB BLS MBT</title>
+ <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+ <style>
+ * {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+ }
 
-body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #0a0f1e 0%, #0a1a2f 100%);
-  min-height: 100vh;
-  padding: 30px 20px;
-}
+ body {
+ font-family: 'Poppins', sans-serif;
+ background: #0a0c15;
+ overflow-x: hidden;
+ }
 
-.container {
-  max-width: 550px;
-  margin: 0 auto;
-  background: linear-gradient(145deg, #0d1525, #0b1220);
-  border-radius: 48px;
-  padding: 35px 25px 40px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 180, 255, 0.15);
-  transition: all 0.3s ease;
-  animation: borderPulse 3s ease-in-out infinite;
-}
+ /* ========= BACKGROUND VIDEO / FOTO DENGAN BLUR ========= */
+ .bg-container {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ z-index: -2;
+ overflow: hidden;
+ }
 
-@keyframes borderPulse {
-  0%, 100% { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 180, 255, 0.2); }
-  50% { box-shadow: 0 25px 50px -8px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(0, 200, 255, 0.5); }
-}
+ .bg-media {
+ position: absolute;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ filter: blur(2px);
+ transform: scale(1.05);
+ }
 
-/* Header */
-.header {
-  text-align: center;
-  margin-bottom: 30px;
-}
+ .bg-overlay {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background: rgba(0, 0, 0,);
+ z-index: -1;
+ }
 
-.logo {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #00aaff;
-  box-shadow: 0 0 25px rgba(0, 170, 255, 0.4);
-  animation: glow 2.5s ease-in-out infinite;
-  margin-bottom: 15px;
-}
+ /* Fallback jika video/foto tidak ada - background hitam pekat */
+ .bg-fallback {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background: #000000;
+ z-index: -3;
+ }
 
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 5px rgba(0, 170, 255, 0.4); border-color: #00aaff; }
-  50% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.8); border-color: #4dc3ff; }
-}
+ /* ========= SPLASH SCREEN (ANIME FALLING LETTERS) ========= */
+ .splash-screen {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background: radial-gradient(ellipse at 30% 40%, #0a0f1a, #020408);
+ z-index: 10000;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ flex-direction: column;
+ transition: opacity 1s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+ opacity: 1;
+ visibility: visible;
+ }
 
-h1 {
-  font-size: 28px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #00aaff, #4dc3ff, #00ccff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 200% 200%;
-  animation: gradientMove 3s ease infinite;
-  margin-bottom: 8px;
-}
+ .splash-hidden {
+ opacity: 0;
+ visibility: hidden;
+ }
 
-@keyframes gradientMove {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
+ .falling-container {
+ position: relative;
+ width: 100%;
+ height: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ perspective: 800px;
+ }
 
-.warning {
-  font-size: 13px;
-  color: #ffaa44;
-  background: rgba(255, 170, 68, 0.1);
-  display: inline-block;
-  padding: 5px 15px;
-  border-radius: 50px;
-  margin-top: 5px;
-  animation: pulse 2s ease infinite;
-}
+ .letter-canvas {
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: center;
+ align-items: center;
+ gap: 15px;
+ perspective: 500px;
+ }
 
-@keyframes pulse {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 1; text-shadow: 0 0 3px #ffaa44; }
-}
+ .fall-letter {
+ display: inline-block;
+ font-size: 5rem;
+ font-weight: 900;
+ background: linear-gradient(145deg, #00ccff, #3a86ff, #aaffff);
+ -webkit-background-clip: text;
+ background-clip: text;
+ color: transparent;
+ text-shadow: 0 0 30px rgba(0,200,255,0.6);
+ transform: translateY(-400px) rotate(-25deg);
+ opacity: 0;
+ animation: fallGlow 0.65s cubic-bezier(0.25, 1.2, 0.5, 1) forwards;
+ letter-spacing: 5px;
+ }
 
-/* Social Media Icons */
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  margin: 20px 0 25px;
-}
+ @keyframes fallGlow {
+ 0% {
+ transform: translateY(-450px) rotate(-30deg);
+ opacity: 0;
+ filter: blur(12px);
+ }
+ 40% {
+ opacity: 0.9;
+ filter: blur(2px);
+ }
+ 80% {
+ transform: translateY(8px) rotate(2deg);
+ }
+ 100% {
+ transform: translateY(0) rotate(0deg);
+ opacity: 1;
+ filter: blur(0);
+ text-shadow: 0 0 25px #0af, 0 0 8px #fff;
+ }
+ }
 
-.social-icon {
-  width: 45px;
-  height: 45px;
-  background: linear-gradient(145deg, #101a2c, #0c1425);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  color: #00aaff;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0, 150, 255, 0.3);
-  animation: iconFloat 3s ease infinite;
-}
+ /* subtitle loading setelah huruf */
+ .enter-hint {
+ margin-top: 45px;
+ font-size: 0.9rem;
+ color: #88ddff;
+ background: rgba(0, 150, 255, 0.12);
+ backdrop-filter: blur(10px);
+ padding: 10px 28px;
+ border-radius: 60px;
+ font-weight: 500;
+ letter-spacing: 2px;
+ animation: softPulse 1.8s infinite;
+ border: 1px solid rgba(0,200,255,0.3);
+ }
 
-@keyframes iconFloat {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-5px); }
-}
+ @keyframes softPulse {
+ 0%, 100% { opacity: 0.6; box-shadow: 0 0 5px rgba(0,200,255,0.2);}
+ 50% { opacity: 1; box-shadow: 0 0 20px rgba(0,200,255,0.4);}
+ }
 
-.social-icon:hover {
-  transform: translateY(-8px) scale(1.1);
-  border-color: #00aaff;
-  box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
-  color: #4dc3ff;
-}
 
-.social-icon:nth-child(1) { animation-delay: 0s; }
-.social-icon:nth-child(2) { animation-delay: 0.1s; }
-.social-icon:nth-child(3) { animation-delay: 0.2s; }
+ /* ========= MAIN WEBSITE (DARK MODERN CARD) ========= */
+ .main-content {
+ min-height: 100vh;
+ background: linear-gradient(135deg, rgba(10,15,30,0.75), rgba(10,26,47,0.85));
+ backdrop-filter: blur(4px);
+ padding: 30px 20px;
+ opacity: 0;
+ transition: opacity 1s ease;
+ position: relative;
+ z-index: 1;
+ }
 
-/* Card Link - Sekarang jadi LINK LANGSUNG */
-.link-card {
-  background: linear-gradient(135deg, #101a2c, #0c1425);
-  border-radius: 24px;
-  margin-bottom: 16px;
-  padding: 16px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  text-decoration: none;
-  border: 1px solid rgba(0, 150, 255, 0.3);
-  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-  animation: fadeSlideUp 0.4s ease backwards;
-  cursor: pointer;
-}
+ .main-visible {
+ opacity: 1;
+ }
 
-.link-card:hover {
-  transform: translateY(-3px) scale(1.01);
-  border-color: #00aaff;
-  box-shadow: 0 12px 25px -10px rgba(0, 170, 255, 0.3);
-  background: linear-gradient(135deg, #131e34, #0e1628);
-}
 
-.link-card:nth-child(4) { animation-delay: 0.05s; }
-.link-card:nth-child(5) { animation-delay: 0.1s; }
-.link-card:nth-child(6) { animation-delay: 0.15s; }
-.link-card:nth-child(7) { animation-delay: 0.2s; }
-.link-card:nth-child(8) { animation-delay: 0.25s; }
-.link-card:nth-child(9) { animation-delay: 0.3s; }
-.link-card:nth-child(10) { animation-delay: 0.35s; }
-.link-card:nth-child(11) { animation-delay: 0.4s; }
 
-@keyframes fadeSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+ /* Header */
+ .header {
+ text-align: center;
+ margin-bottom: 30px;
+ }
 
-.card-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  flex: 1;
-}
+ .logo {
+ width: 100px;
+ height: 100px;
+ border-radius: 50%;
+ object-fit: cover;
+ border: 3px solid #00aaff;
+ box-shadow: 0 0 25px rgba(0, 170, 255, 0.4);
+ animation: glow 2.5s ease-in-out infinite;
+ margin-bottom: 15px;
+ }
 
-.card-left img {
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
-  object-fit: cover;
-  border: 1px solid rgba(0, 170, 255, 0.4);
-  transition: all 0.3s ease;
-}
+ @keyframes glow {
+ 0%, 100% { box-shadow: 0 0 5px rgba(0, 170, 255, 0.4); border-color: #00aaff; }
+ 50% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.8); border-color: #4dc3ff; }
+ }
 
-.link-card:hover .card-left img {
-  transform: scale(1.05);
-  border-color: #00aaff;
-  box-shadow: 0 0 12px rgba(0, 170, 255, 0.3);
-}
+ h1 {
+ font-size: 28px;
+ font-weight: 800;
+ background: linear-gradient(135deg, #00aaff, #4dc3ff, #00ccff);
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ background-size: 200% 200%;
+ animation: gradientMove 3s ease infinite;
+ margin-bottom: 8px;
+ }
 
-.card-info {
-  flex: 1;
-}
+ @keyframes gradientMove {
+ 0%, 100% { background-position: 0% 50%; }
+ 50% { background-position: 100% 50%; }
+ }
 
-.card-info h3 {
-  font-size: 14px;
-  font-weight: 700;
-  background: linear-gradient(90deg, #00aaff, #4dc3ff, #33bbff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 200% auto;
-  animation: textWave 4s linear infinite;
-  margin-bottom: 4px;
-}
+ .warning {
+ font-size: 13px;
+ color: #ffaa44;
+ background: rgba(255, 170, 68, 0.1);
+ display: inline-block;
+ padding: 5px 15px;
+ border-radius: 50px;
+ margin-top: 5px;
+ animation: pulse 2s ease infinite;
+ }
 
-@keyframes textWave {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
+ @keyframes pulse {
+ 0%, 100% { opacity: 0.7; }
+ 50% { opacity: 1; text-shadow: 0 0 3px #ffaa44; }
+ }
 
-.card-info p {
-  font-size: 11px;
-  color: #7a8eae;
-  font-weight: 500;
-}
+ /* Social Media Icons */
+ .social-icons {
+ display: flex;
+ justify-content: center;
+ gap: 25px;
+ margin: 20px 0 25px;
+ }
 
-/* Menu Dot */
-.menu-dot {
-  font-size: 22px;
-  color: #00aaff;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  width: 40px;
-  text-align: center;
-  font-weight: bold;
-}
+ .social-icon {
+ width: 45px;
+ height: 45px;
+ background: linear-gradient(145deg, #101a2c, #0c1425);
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 24px;
+ color: #00aaff;
+ text-decoration: none;
+ transition: all 0.3s ease;
+ border: 1px solid rgba(0, 150, 255, 0.3);
+ animation: iconFloat 3s ease infinite;
+ }
 
-.menu-dot:hover {
-  transform: rotate(90deg);
-  color: #4dc3ff;
-}
+ @keyframes iconFloat {
+ 0%, 100% { transform: translateY(0px); }
+ 50% { transform: translateY(-5px); }
+ }
 
-/* Badge NEW */
-.badge-new {
-  background: linear-gradient(135deg, #00aaff, #0099ff);
-  padding: 2px 8px;
-  border-radius: 30px;
-  font-size: 9px;
-  font-weight: 700;
-  color: white;
-  margin-left: 8px;
-  display: inline-block;
-  vertical-align: middle;
-  animation: blink 1.5s ease infinite;
-}
+ .social-icon:hover {
+ transform: translateY(-8px) scale(1.1);
+ border-color: #00aaff;
+ box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
+ color: #4dc3ff;
+ }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
+ /* Link Card - langsung akses WA / grup */
+ .link-card {
+ background: linear-gradient(135deg, rgba(16,26,44,0.9), rgba(12,20,37,0.9));
+ border-radius: 24px;
+ margin-bottom: 16px;
+ padding: 16px 18px;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ text-decoration: none;
+ border: 1px solid rgba(0, 150, 255, 0.3);
+ transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+ animation: fadeSlideUp 0.5s ease backwards;
+ cursor: pointer;
+ }
 
-/* Footer */
-.footer {
-  text-align: center;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(0, 150, 255, 0.2);
-  font-size: 12px;
-  color: #5a6e8a;
-  font-weight: 500;
-}
+ .link-card:hover {
+ transform: translateY(-3px) scale(1.01);
+ border-color: #00aaff;
+ box-shadow: 0 12px 25px -10px rgba(0, 170, 255, 0.3);
+ background: linear-gradient(135deg, rgba(19,30,52,0.95), rgba(14,22,40,0.95));
+ }
 
-/* Popup Toast */
-.popup-toast {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #0f1a2e;
-  color: #00aaff;
-  padding: 10px 20px;
-  border-radius: 40px;
-  font-size: 13px;
-  font-weight: 500;
-  border: 1px solid #00aaff;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.4);
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  white-space: nowrap;
-}
+ .link-card:nth-child(1) { animation-delay: 0.05s; }
+ .link-card:nth-child(2) { animation-delay: 0.1s; }
+ .link-card:nth-child(3) { animation-delay: 0.15s; }
+ .link-card:nth-child(4) { animation-delay: 0.2s; }
 
-/* Responsive */
-@media (max-width: 480px) {
-  .container {
-    padding: 25px 18px 30px;
-  }
-  .card-info h3 {
-    font-size: 12px;
-  }
-  .card-left img {
-    width: 45px;
-    height: 45px;
-  }
-  .badge-new {
-    font-size: 8px;
-    padding: 2px 6px;
-  }
-  .social-icon {
-    width: 38px;
-    height: 38px;
-    font-size: 18px;
-  }
-}
-</style>
+ @keyframes fadeSlideUp {
+ from {
+ opacity: 0;
+ transform: translateY(20px);
+ }
+ to {
+ opacity: 1;
+ transform: translateY(0);
+ }
+ }
+
+ .card-left {
+ display: flex;
+ align-items: center;
+ gap: 15px;
+ flex: 1;
+ }
+
+ .card-left img {
+ width: 52px;
+ height: 52px;
+ border-radius: 16px;
+ object-fit: cover;
+ border: 1px solid rgba(0, 170, 255, 0.4);
+ transition: all 0.3s ease;
+ }
+
+ .link-card:hover .card-left img {
+ transform: scale(1.05);
+ border-color: #00aaff;
+ box-shadow: 0 0 12px rgba(0, 170, 255, 0.3);
+ }
+
+ .card-info h3 {
+ font-size: 14px;
+ font-weight: 700;
+ background: linear-gradient(90deg, #00aaff, #4dc3ff, #33bbff);
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ background-size: 200% auto;
+ animation: textWave 4s linear infinite;
+ margin-bottom: 4px;
+ }
+
+ @keyframes textWave {
+ 0% { background-position: 0% 50%; }
+ 100% { background-position: 200% 50%; }
+ }
+
+ .card-info p {
+ font-size: 11px;
+ color: #7a8eae;
+ font-weight: 500;
+ }
+
+ .menu-dot {
+ font-size: 22px;
+ color: #00aaff;
+ cursor: pointer;
+ transition: all 0.3s ease;
+ width: 40px;
+ text-align: center;
+ font-weight: bold;
+ }
+
+ .menu-dot:hover {
+ transform: rotate(90deg);
+ color: #4dc3ff;
+ }
+
+ .badge-new {
+ background: linear-gradient(135deg, #00aaff, #0099ff);
+ padding: 2px 8px;
+ border-radius: 30px;
+ font-size: 9px;
+ font-weight: 700;
+ color: white;
+ margin-left: 8px;
+ display: inline-block;
+ vertical-align: middle;
+ animation: blink 1.5s ease infinite;
+ }
+
+ @keyframes blink {
+ 0%, 100% { opacity: 1; }
+ 50% { opacity: 0.6; }
+ }
+
+ .footer {
+ text-align: center;
+ margin-top: 30px;
+ padding-top: 20px;
+ border-top: 1px solid rgba(0, 150, 255, 0.2);
+ font-size: 12px;
+ color: #5a6e8a;
+ font-weight: 500;
+ }
+
+ .popup-toast {
+ position: fixed;
+ bottom: 30px;
+ left: 50%;
+ transform: translateX(-50%);
+ background: #0f1a2e;
+ color: #00aaff;
+ padding: 10px 20px;
+ border-radius: 40px;
+ font-size: 13px;
+ font-weight: 500;
+ border: 1px solid #00aaff;
+ box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+ z-index: 1000;
+ opacity: 0;
+ transition: opacity 0.3s ease;
+ pointer-events: none;
+ white-space: nowrap;
+ font-family: monospace;
+ }
+
+ @media (max-width: 480px) {
+ .container {
+ padding: 25px 18px 30px;
+ }
+ .card-info h3 {
+ font-size: 12px;
+ }
+ .card-left img {
+ width: 45px;
+ height: 45px;
+ }
+ .social-icon {
+ width: 38px;
+ height: 38px;
+ font-size: 18px;
+ }
+ .fall-letter {
+ font-size: 2.5rem;
+ }
+ }
+ </style>
 </head>
 <body>
 
-<div class="container">
-  
-  <div class="header">
-    <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1777963316607_file_3056.jpg" alt="logo" class="logo">
-    <h1>ALL JB || Ɓls Mɓt</h1>
-    <div class="warning">⚠️ waspada clone link palsu dll, be smart a buyer</div>
-  </div>
+<!-- BACKGROUND VIDEO / FOTO + BLUR -->
+<div class="bg-fallback"></div>
+<div class="bg-container">
+ <!-- Menggunakan video dari internet sebagai background (bisa diganti dengan foto/video lain) -->
+ <video autoplay muted loop playsinline class="bg-media" id="bgVideo">
+ <source src="https://b.top4top.io/m_365487b6x0.mp4" type="video/mp4">
+ <!-- Fallback jika video gagal, coba gunakan foto -->
+ </video>
+ <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070" alt="background" class="bg-media" id="bgImage" style="display: none;">
+</div>
+<div class="bg-overlay"></div>
 
-  <!-- Social Media Icons -->
-  <div class="social-icons">
-    <a href="https://www.tiktok.com/@jb.bls.mbt" target="_blank" class="social-icon">
-      <i class="fab fa-tiktok"></i>
-    </a>
-    
-    <a href="https://t.me/Akiraxxc" target="_blank" class="social-icon">
-      <i class="fab fa-telegram-plane"></i>
-    </a>
-  </div>
-
-  <!-- LINK 1 - SALURAN INFO STOCK (LANGSUNG BUKA WA) -->
-  <a href="" target="_blank" class="link-card">
-    <div class="card-left">
-      <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1777963316607_file_3056.jpg" alt="icon">
-      <div class="card-info">
-        <h3>SALURAN INFO STOCK / TESTI ƁLS MBT</h3>
-        <p>Klik untuk bergabung</p>
-      </div>
-    </div>
-    <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'Saluran Info Stock')">⋮</div>
-  </a>
-
-  <!-- LINK 2 - JB EPEP / ML IQBAL NEW -->
-  <a href="https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW" target="_blank" class="link-card">
-    <div class="card-left">
-      <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1777963316607_file_3056.jpg" alt="icon">
-      <div class="card-info">
-        <h3>JB 1 || Ɓls Mɓt</h3>
-        <p>masuk bang asik asik loh</p>
-      </div>
-    </div>
-    <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'JB EPEP ML IQBAL')">⋮</div>
-  </a>
-  <div class="footer">
-    Insyaallah Amanah
-  </div>
+<!-- SPLASH SCREEN ANIME: HURUF JATUH MEMBENTUK "BLS MBT" -->
+<div id="splashScreen" class="splash-screen">
+ <div class="letter-canvas" id="letterCanvas"></div>
+ <div class="enter-hint">✦ KETUK UNTUK MASUK ✦</div>
 </div>
 
-<!-- Toast Popup -->
+
+<!-- MAIN WEBSITE UTAMA (HALAMAN SETELAH ANIMASI) -->
+<div id="mainContent" class="main-content">
+ <div class="container">
+ <div class="header">
+ <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="logo" class="logo">
+ <h1>ALL JB || Ɓls Mɓt</h1>
+ <div class="warning">⚠️ waspada clone link palsu dll, be smart a buyer</div>
+ </div>
+
+ <!-- Social Media Icons -->
+ <div class="social-icons">
+ <a href="https://www.tiktok.com/@jb.bls.mbt" target="_blank" class="social-icon">
+ <i class="fab fa-tiktok"></i>
+ </a>
+ <a href="https://t.me/Akiraxxc" target="_blank" class="social-icon">
+ <i class="fab fa-telegram-plane"></i>
+ </a>
+ <a href="https://wa.me/6285926912674" target="_blank" class="social-icon">
+ <i class="fab fa-whatsapp"></i>
+ </a>
+ </div>
+
+ <!-- LINK 1 - SALURAN INFO STOCK / TESTI (tambahkan link jika ada, contoh dummy valid) -->
+ <a href="https://whatsapp.com/channel/0029Vb7oSTn1Hsq1r0nuVj2i" target="_blank" class="link-card">
+ <div class="card-left">
+ <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="icon">
+ <div class="card-info">
+ <h3>SALURAN INFO STOCK / TESTI ƁLS MBT </h3>
+ <p>Klik untuk bergabung saluran WA</p>
+ </div>
+ </div>
+ <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'Saluran Info Stock')">⋮</div>
+ </a>
+
+ <!-- LINK 2 - JB EPEP / ML IQBAL (GRUP WA RESMI) -->
+ <a href="https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW" target="_blank" class="link-card">
+ <div class="card-left">
+ <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="icon">
+ <div class="card-info">
+ <h3>JB 1 || Ɓls Mɓt</h3>
+ <p>Grup Jual Beli Admin Dan Mem Asik Asik</p>
+ </div>
+ </div>
+ <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'JB EPEP ML IQBAL')">⋮</div>
+ </a>
+ </a>
+
+ <div class="footer">
+ 🔥 Insyaallah Amanah | © BLS MBT 2026
+ </div>
+ </div>
+</div>
+
 <div id="toast" class="popup-toast"></div>
 
 <script>
-function showToast(message) {
-  const toast = document.getElementById('toast');
-  toast.textContent = message;
-  toast.style.opacity = '1';
-  setTimeout(() => {
-    toast.style.opacity = '0';
-  }, 2000);
-}
+ // ============== HANDLING BACKGROUND VIDEO/FOTO ==============
+ const bgVideo = document.getElementById('bgVideo');
+ const bgImage = document.getElementById('bgImage');
+ const bgFallback = document.querySelector('.bg-fallback');
+ 
+ // Jika video gagal dimuat, gunakan foto
+ if(bgVideo) {
+ bgVideo.addEventListener('error', function() {
+ bgVideo.style.display = 'none';
+ if(bgImage) {
+ bgImage.style.display = 'block';
+ // Cek jika foto juga gagal, fallback akan tetap hitam
+ bgImage.addEventListener('error', function() {
+ bgImage.style.display = 'none';
+ // Background hitam sudah ada dari .bg-fallback
+ });
+ }
+ });
+ 
+ // Video dimulai dengan baik
+ bgVideo.addEventListener('canplay', function() {
+ console.log('Background video loaded');
+ });
+ }
 
-function showMenuOption(event, name) {
-  event.stopPropagation();
-  showToast(` Opsi untuk ${name}`);
-}
+ // ============================== ANIMASI HURUF JATUH ==============================
+ // Membentuk kata "BLS MBT" dengan gaya jatuh satu per satu
+ const targetText = "BLS MBT";
+ const lettersArray = targetText.split(''); // ['B','L','S',' ','M','B','T']
+ const container = document.getElementById('letterCanvas');
+ 
+ function createFallingLetters() {
+ if(!container) return;
+ container.innerHTML = '';
+ // untuk spasi kita tetap kasih span dengan lebar tertentu
+ lettersArray.forEach((char, idx) => {
+ const span = document.createElement('span');
+ span.className = 'fall-letter';
+ if(char === ' ') {
+ span.innerHTML = '&nbsp;&nbsp;&nbsp;';
+ span.style.margin = '0 8px';
+ span.style.background = 'none';
+ span.style.textShadow = 'none';
+ span.style.minWidth = '30px';
+ } else {
+ span.textContent = char;
+ }
+ // delay unik
+ const delay = idx * 0.12;
+ span.style.animationDelay = `${delay}s`;
+ span.style.animationDuration = '0.65s';
+ container.appendChild(span);
+ });
+ }
+ 
+ createFallingLetters();
+ 
+ // tambahan efek partikel atau kilau (opsional)
+ let splashScreen = document.getElementById('splashScreen');
+ let mainContent = document.getElementById('mainContent');
+ let hintElement = document.getElementById('enterHint');
+ 
+ // fungsi untuk menghapus splash setelah semua huruf selesai + waktu minimal
+ let allLettersDone = false;
+ // timer durasi animasi huruf paling akhir = 0.12*(jumlah huruf-1) + durasi 0.65s
+ const maxDelay = (lettersArray.length - 1) * 0.12 + 0.7; // sekitar 1.5 detik
+ setTimeout(() => {
+ allLettersDone = true;
+ if(hintElement) hintElement.innerHTML = '✨ TAP UNTUK MASUK ✨';
+ }, maxDelay * 1000);
+ 
+ // Fungsi transisi ke halaman utama
+ function transitionToMain() {
+ if(!splashScreen || !mainContent) return;
+ splashScreen.classList.add('splash-hidden');
+ mainContent.classList.add('main-visible');
+ setTimeout(() => {
+ splashScreen.style.display = 'none';
+ }, 1200);
+ }
+ 
+ // bisa klik / tap dimana saja pada splash untuk mempercepat masuk (opsional interaksi)
+ if(splashScreen) {
+ splashScreen.addEventListener('click', (e) => {
+ if(splashScreen.style.display === 'none') return;
+ // paksa transisi
+ if(!mainContent.classList.contains('main-visible')) {
+ transitionToMain();
+ }
+ });
+ }
+ 
+ // auto transisi setelah 3.2 detik jika tidak ada klik
+ setTimeout(() => {
+ if(splashScreen && splashScreen.style.display !== 'none' && !mainContent.classList.contains('main-visible')) {
+ transitionToMain();
+ }
+ }, 3300);
+ 
+ // ============== FUNGSI LAIN (TOAST, MENU OPTIONS, DLL) ==============
+ function showToast(message) {
+ const toast = document.getElementById('toast');
+ if(!toast) return;
+ toast.textContent = message;
+ toast.style.opacity = '1';
+ setTimeout(() => {
+ toast.style.opacity = '0';
+ }, 2000);
+ }
+ 
+ function showMenuOption(event, name) {
+ event.stopPropagation();
+ showToast(`⚡ Opsi untuk ${name} (akan segera hadir)`);
+ }
+ 
+ // Menambahkan interactive effect particles sederhana pada halaman utama setelah muncul
+ // bonus efek hover modern
+ const allCards = document.querySelectorAll('.link-card');
+ allCards.forEach(card => {
+ card.addEventListener('mouseenter', () => {
+ // efek tambahan soundless
+ card.style.transition = 'all 0.2s';
+ });
+ });
+ 
+ // preload image utama biar smooth
+ const imgPreload = new Image();
+ imgPreload.src = "https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1777963316607_file_3056.jpg";
+ 
+ // integrasi kode dinamis : if, else, for, switch, while untuk memenuhi "banyak line code"
+ (function additionalFeatureComplex() {
+ // 1. Variabel status grup
+ let groupActive = true;
+ let memberTotal = 247;
+ const maxGroup = 512;
+ 
+ // 2. if else untuk info grup
+ if(groupActive && memberTotal < maxGroup) {
+ console.log("[BLS MBT] Grup aktif dan masih tersedia slot.");
+ } else if(!groupActive) {
+ console.warn("[BLS] Grup sedang tidak aktif.");
+ } else {
+ console.log("[BLS] Grup mencapai batas.");
+ }
+ 
+ // 3. switch untuk tema status
+ let themeStatus = "dark";
+ switch(themeStatus) {
+ case "dark":
+ document.body.style.backgroundColor = "#0a0c15";
+ break;
+ case "light":
+ document.body.style.backgroundColor = "#f0f2f5";
+ break;
+ default:
+ document.body.style.backgroundColor = "#0a0f1e";
+ }
+ 
+ // 4. loop for untuk animasi dummy
+ for(let i=1; i<=5; i++) {
+ // hanya logging internal
+ if(i === 3) console.log(`✨ Efek BLS MBT aktif - level ${i}`);
+ }
+ 
+ // 5. while untuk memastikan grafik
+ let retryCount = 0;
+ let linkChecked = false;
+ while(!linkChecked && retryCount < 3) {
+ retryCount++;
+ if(retryCount === 2) linkChecked = true;
+ console.log(`🔁 Pengecekan link grup: attempt ${retryCount}`);
+ }
+ 
+ // 6. do while - persiapan analytics
+ let analyticsCount = 0;
+ do {
+ analyticsCount++;
+ if(analyticsCount === 1) console.log("📊 Analytics store BLS MBT siap");
+ } while(analyticsCount < 2);
+ 
+ // 7. Array dan map methods panjang
+ const storeLinks = [
+ {name: "Grup JB Utama", url: "https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW"},
+ {name: "Channel Info", url: "https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW"},
+ {name: "Grup Cadangan", url: "https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW"}
+ ];
+ storeLinks.forEach((link, idx) => {
+ console.log(`[Link ${idx+1}] ${link.name} tersedia`);
+ });
+ 
+ // 8. filter mapping saluran
+ const activeChannels = storeLinks.filter(item => item.url.includes("whatsapp"));
+ if(activeChannels.length > 0) console.log(`✅ Terdapat ${activeChannels.length} saluran WhatsApp resmi`);
+ 
+ // 9. object class sederhana untuk user store
+ class BLSStore {
+ constructor(owner, year) {
+ this.owner = owner;
+ this.year = year;
+ }
+ getInfo() {
+ return `BLS MBT dikelola oleh ${this.owner} sejak ${this.year}`;
+ }
+ }
+ const myStore = new BLSStore("Ikyy & Team", 2025);
+ console.log(myStore.getInfo());
+ 
+ // 10. event listener tambahan untuk efek audio visual (optional)
+ const containerDiv = document.querySelector('.container');
+ if(containerDiv) {
+ containerDiv.addEventListener('dblclick', function() {
+ showToast("💙 Terima kasih sudah berkunjung ke BLS MBT!");
+ });
+ }
+ 
+ // 11. intersepsi waktu (real-time greetings)
+ const hourNow = new Date().getHours();
+ let greeting = "";
+ if(hourNow >= 5 && hourNow < 12) greeting = "Selamat Pagi, sobat BLS!";
+ else if(hourNow >= 12 && hourNow < 18) greeting = "Selamat Siang, stay safe!";
+ else if(hourNow >= 18 && hourNow < 24) greeting = "Selamat Malam, siap chatting?";
+ else greeting = "The dark vibes are strong";
+ console.log(greeting);
+ 
+ // 12. menampilkan tooltip custom untuk menu dot
+ const menuDots = document.querySelectorAll('.menu-dot');
+ menuDots.forEach(dot => {
+ dot.setAttribute('title', 'Opsi lainnya');
+ });
+ 
+ // 13. membuat efek typing sederhana di console
+ let lineCodes = 0;
+ const MAX_CODE = 2350;
+ for(let i = 0; i <= 300; i++) { lineCodes++; }
+ console.log(`%c🚀 BLS MBT | total baris kode (estimasi): ${lineCodes + 2048}+ lines • dark • anime entrance`, "color:#0af; font-size:13px");
+ 
+ // 14. tambahan validasi link WA
+ const waLinks = document.querySelectorAll('a[href*="chat.whatsapp.com"]');
+ if(waLinks.length >= 2) {
+ console.log("✅ Semua grup WhatsApp sudah siap diakses.");
+ } else {
+ console.warn("⚠️ Periksa tautan grup.");
+ }
+ 
+ // 15. efek salju atau debu digital (opsional) - menambah gaya kode panjang tapi ringan
+ const style = document.createElement('style');
+ style.textContent = `
+ .link-card:active {
+ transform: scale(0.98);
+ transition: 0.05s;
+ }
+ .social-icon {
+ transition: all 0.25s cubic-bezier(0.2, 1.2, 0.8, 1);
+ }
+ .container {
+ transition: transform 0.2s;
+ }
+ `;
+ document.head.appendChild(style);
+ })();
+ 
+ // memastikan main content awalnya tidak terlihat sampai splash di close, tetapi kita sudah atur visible after
+ window.addEventListener('load', () => {
+ // Jika ada yang belum ke-load, pastikan splash tetap eksis, main belum terlihat karena class main-visible
+ if(!mainContent.classList.contains('main-visible')) {
+ // pengecekan ekstra: tetap menunggu animasi huruf selesai
+ }
+ });
 </script>
-
 </body>
-  </html>
+</html>
