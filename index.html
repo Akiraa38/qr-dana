@@ -1,1086 +1,1352 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
- <title>ƁLS MƁT • Pusat Jual Beli & Komunitas Terpercaya</title>
- <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
- <style>
- * {
- margin: 0;
- padding: 0;
- box-sizing: border-box;
- }
-
- body {
- font-family: 'Poppins', sans-serif;
- background: #0a0c15;
- overflow-x: hidden;
- }
-
- /* ========= BACKGROUND VIDEO / FOTO DENGAN BLUR ========= */
- .bg-container {
- position: fixed;
- top: 0;
- left: 0;
- width: 100%;
- height: 100%;
- z-index: -2;
- overflow: hidden;
- }
-
- .bg-media {
- position: absolute;
- top: 0;
- left: 0;
- width: 100%;
- height: 100%;
- object-fit: cover;
- object-position: 30% center; 
- filter: blur(2px);
- transform: scale(1);
-}
-
- .bg-overlay {
- position: fixed;
- top: 0;
- left: 0;
- width: 100%;
- height: 100%;
- background: rgba(0, 0, 0, 0.3);
- z-index: -1;
- }
-
- .bg-fallback {
- position: fixed;
- top: 0;
- left: 0;
- width: 100%;
- height: 100%;
- background: #000000;
- z-index: -3;
- }
-
- /* ========= SIDEBAR / SWIPE MENU - KANAN ========= */
- .sidebar {
- position: fixed;
- top: 0;
- right: -300px;
- width: 300px;
- height: 100%;
- background: linear-gradient(180deg, #0f1a2c, #0a1020);
- backdrop-filter: blur(20px);
- z-index: 1002;
- transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
- box-shadow: -2px 0 30px rgba(0, 0, 0, 0.5);
- border-left: 1px solid rgba(0, 170, 255, 0.3);
- overflow-y: auto;
- }
-
- .sidebar.open {
- right: 0;
- }
-
- /* Overlay gelap saat sidebar terbuka */
- .sidebar-overlay {
- position: fixed;
- top: 0;
- left: 0;
- width: 100%;
- height: 100%;
- background: rgba(0, 0, 0, 0.6);
- z-index: 1001;
- opacity: 0;
- visibility: hidden;
- transition: all 0.3s ease;
- }
-
- .sidebar-overlay.active {
- opacity: 1;
- visibility: visible;
- }
-
- /* Header Sidebar */
- .sidebar-header {
- padding: 25px 20px;
- text-align: center;
- border-bottom: 1px solid rgba(0, 170, 255, 0.3);
- margin-bottom: 15px;
-
- /* TAMBAHAN */
- background: url('https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778065977191_file_3207.jpg') center/cover no-repeat;
- position: relative;
-}
-
- .sidebar-header img {
- width: 70px;
- height: 70px;
- border-radius: 50%;
- border: 2px solid #00aaff;
- margin-bottom: 10px;
- }
-
- .sidebar-header h3 {
- color: #00aaff;
- font-size: 18px;
- font-weight: 700;
- }
-
- .sidebar-header p {
- color: #7a8eae;
- font-size: 11px;
- }
-
- /* Menu Item Sidebar - Customer Service saja */
- .sidebar-menu {
- padding: 0 15px;
- }
-
- .menu-item {
- display: flex;
- align-items: center;
- gap: 15px;
- padding: 14px 15px;
- margin-bottom: 8px;
- background: linear-gradient(135deg, rgba(0, 150, 255, 0.1), rgba(0, 100, 200, 0.05));
- border-radius: 16px;
- cursor: pointer;
- transition: all 0.3s ease;
- border: 1px solid rgba(0, 150, 255, 0.3);
- }
-
- .menu-item:hover {
- background: rgba(0, 150, 255, 0.2);
- border-color: #00aaff;
- transform: translateX(-5px);
- }
-
- .menu-item i {
- font-size: 28px;
- color: #00aaff;
- width: 45px;
- text-align: center;
- }
-
- .menu-item .menu-text {
- flex: 1;
- }
-
- .menu-item .menu-text h4 {
- font-size: 16px;
- font-weight: 700;
- color: #fff;
- margin-bottom: 5px;
- }
-
- .menu-item .menu-text p {
- font-size: 11px;
- color: #7a8eae;
- }
-
- .menu-badge {
- background: #00aaff;
- color: #fff;
- font-size: 9px;
- padding: 2px 8px;
- border-radius: 20px;
- font-weight: 600;
- }
-
- /* Tombol buka sidebar (di kanan) */
- .menu-toggle {
- position: fixed;
- top: 20px;
- right: 20px;
- width: 50px;
- height: 50px;
- background: linear-gradient(145deg, #101a2c, #0c1425);
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- cursor: pointer;
- z-index: 1003;
- border: 1px solid rgba(0, 150, 255, 0.4);
- transition: all 0.3s ease;
- box-shadow: 0 4px 15px rgba(0,0,0,0.3);
- }
-
- .menu-toggle:hover {
- transform: scale(1.05);
- border-color: #00aaff;
- box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
- }
-
- .menu-toggle i {
- font-size: 24px;
- color: #00aaff;
- }
-
- /* ========= HALAMAN CUSTOMER SERVICE (POPUP) ========= */
- .cs-page {
- position: fixed;
- top: 0;
- left: 0;
- width: 100%;
- height: 100%;
- background: linear-gradient(135deg, rgba(10,15,30,0.95), rgba(5,10,20,0.98));
- backdrop-filter: blur(15px);
- z-index: 2000;
- display: flex;
- align-items: center;
- justify-content: center;
- opacity: 0;
- visibility: hidden;
- transition: all 0.3s ease;
- }
-
- .cs-page.active {
- opacity: 1;
- visibility: visible;
- }
-
- .cs-container {
- width: 90%;
- max-width: 400px;
- background: linear-gradient(145deg, #101a2c, #0c1425);
- border-radius: 32px;
- padding: 30px 25px;
- border: 1px solid rgba(0, 170, 255, 0.4);
- box-shadow: 0 20px 40px rgba(0,0,0,0.5);
- transform: scale(0.9);
- transition: transform 0.3s ease;
- }
-
- .cs-page.active .cs-container {
- transform: scale(1);
- }
-
- .cs-header {
- text-align: center;
- margin-bottom: 25px;
- }
-
- .cs-header i {
- font-size: 50px;
- color: #00aaff;
- margin-bottom: 10px;
- }
-
- .cs-header h2 {
- font-size: 24px;
- font-weight: 700;
- background: linear-gradient(135deg, #00aaff, #4dc3ff);
- -webkit-background-clip: text;
- -webkit-text-fill-color: transparent;
- }
-
- .cs-header p {
- font-size: 12px;
- color: #7a8eae;
- margin-top: 5px;
- }
-
- .cs-contact {
- margin-bottom: 20px;
- }
-
- .contact-card {
- background: rgba(0, 150, 255, 0.08);
- border-radius: 20px;
- padding: 15px;
- margin-bottom: 12px;
- display: flex;
- align-items: center;
- gap: 15px;
- border: 1px solid rgba(0, 150, 255, 0.2);
- transition: all 0.3s ease;
- cursor: pointer;
- }
-
- .contact-card:hover {
- background: rgba(0, 150, 255, 0.15);
- border-color: #00aaff;
- transform: translateX(5px);
- }
-
- .contact-card i {
- font-size: 28px;
- color: #00aaff;
- width: 45px;
- text-align: center;
- }
-
- .contact-info {
- flex: 1;
- }
-
- .contact-info h4 {
- font-size: 14px;
- font-weight: 600;
- color: #fff;
- margin-bottom: 3px;
- }
-
- .contact-info p {
- font-size: 13px;
- color: #00aaff;
- font-weight: 500;
- word-break: break-all;
- }
-
- .contact-info small {
- font-size: 10px;
- color: #7a8eae;
- }
-
- .cs-footer {
- text-align: center;
- margin-top: 20px;
- }
-
- .close-cs {
- background: linear-gradient(145deg, #1a2a3a, #0f1a2c);
- border: 1px solid rgba(0, 170, 255, 0.3);
- padding: 12px 25px;
- border-radius: 40px;
- color: #00aaff;
- font-weight: 600;
- cursor: pointer;
- transition: all 0.3s ease;
- display: inline-flex;
- align-items: center;
- gap: 10px;
- }
-
- .close-cs:hover {
- background: #00aaff;
- color: #0a0c15;
- border-color: #00aaff;
- }
-
- /* ========= MUSIC CONTROL BUTTON ========= */
- .music-control {
- position: fixed;
- bottom: 20px;
- right: 20px;
- width: 50px;
- height: 50px;
- background: linear-gradient(145deg, #101a2c, #0c1425);
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- cursor: pointer;
- z-index: 1001;
- border: 1px solid rgba(0, 150, 255, 0.4);
- transition: all 0.3s ease;
- box-shadow: 0 4px 15px rgba(0,0,0,0.3);
- }
-
- .music-control:hover {
- transform: scale(1.1);
- border-color: #00aaff;
- box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
- }
-
- .music-control i {
- font-size: 24px;
- color: #00aaff;
- }
-
- .music-control.playing i {
- animation: spinMusic 2s linear infinite;
- }
-
- @keyframes spinMusic {
- from { transform: rotate(0deg); }
- to { transform: rotate(360deg); }
- }
-
- /* ========= SPLASH SCREEN ========= */
- .splash-screen {
- position: fixed;
- top: 0;
- left: 0;
- width: 100%;
- height: 100%;
- background: radial-gradient(ellipse at 30% 40%, #0a0f1a, #020408);
- z-index: 10000;
- display: flex;
- justify-content: center;
- align-items: center;
- flex-direction: column;
- transition: opacity 1s cubic-bezier(0.2, 0.9, 0.4, 1.1);
- opacity: 1;
- visibility: visible;
- }
-
- .splash-hidden {
- opacity: 0;
- visibility: hidden;
- }
-
- .letter-canvas {
- display: flex;
- flex-wrap: wrap;
- justify-content: center;
- align-items: center;
- gap: 15px;
- perspective: 500px;
- }
-
- .fall-letter {
- display: inline-block;
- font-size: 5rem;
- font-weight: 900;
- background: linear-gradient(145deg, #00ccff, #3a86ff, #aaffff);
- -webkit-background-clip: text;
- background-clip: text;
- color: transparent;
- text-shadow: 0 0 30px rgba(0,200,255,0.6);
- transform: translateY(-400px) rotate(-25deg);
- opacity: 0;
- animation: fallGlow 0.65s cubic-bezier(0.25, 1.2, 0.5, 1) forwards;
- letter-spacing: 5px;
- }
-
-@keyframes fallGlow {
- 0% {
- transform: translateY(-450px) rotate(-30deg);
- opacity: 0;
- }
- 100% {
- transform: translateY(0) rotate(0deg);
- opacity: 1;
- }
-}
-
- .enter-hint {
- margin-top: 45px;
- font-size: 0.9rem;
- color: #88ddff;
- background: rgba(0, 150, 255, 0.12);
- backdrop-filter: blur(10px);
- padding: 10px 28px;
- border-radius: 60px;
- font-weight: 500;
- letter-spacing: 2px;
- animation: softPulse 1.8s infinite;
- border: 1px solid rgba(0,200,255,0.3);
- }
-
- @keyframes softPulse {
- 0%, 100% { opacity: 0.6; box-shadow: 0 0 5px rgba(0,200,255,0.2);}
- 50% { opacity: 1; box-shadow: 0 0 20px rgba(0,200,255,0.4);}
- }
-
- /* ========= MAIN WEBSITE ========= */
- .main-content {
- min-height: 100vh;
- background: rgba(0, 0, 0, 0.4); /* warna hitam transparan tipis */
- backdrop-filter: blur(0px); /* hapus blur juga biar video keliatan */
- padding: 80px 20px 30px;
- opacity: 0;
- transition: opacity 1s ease;
- position: relative;
- z-index: 1;
-}
- .main-visible {
- opacity: 1;
- }
-
- .header {
- text-align: center;
- margin-bottom: 30px;
- }
-
- .logo {
- width: 100px;
- height: 100px;
- border-radius: 50%;
- object-fit: cover;
- border: 3px solid #00aaff;
- box-shadow: 0 0 25px rgba(0, 170, 255, 0.4);
- animation: glow 2.5s ease-in-out infinite;
- margin-bottom: 15px;
- }
-
- @keyframes glow {
- 0%, 100% { box-shadow: 0 0 5px rgba(0, 170, 255, 0.4); border-color: #00aaff; }
- 50% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.8); border-color: #4dc3ff; }
- }
-
- h1 {
- font-size: 28px;
- font-weight: 800;
- background: linear-gradient(135deg, #00aaff, #4dc3ff, #00ccff);
- -webkit-background-clip: text;
- -webkit-text-fill-color: transparent;
- background-size: 200% 200%;
- animation: gradientMove 3s ease infinite;
- margin-bottom: 8px;
- }
-
- @keyframes gradientMove {
- 0%, 100% { background-position: 0% 50%; }
- 50% { background-position: 100% 50%; }
- }
-
- .warning {
- font-size: 13px;
- color: #ffaa44;
- background: rgba(255, 170, 68, 0.1);
- display: inline-block;
- padding: 5px 15px;
- border-radius: 50px;
- margin-top: 5px;
- animation: pulse 2s ease infinite;
- }
-
- @keyframes pulse {
- 0%, 100% { opacity: 0.7; }
- 50% { opacity: 1; text-shadow: 0 0 3px #ffaa44; }
- }
-
- .social-icons {
- display: flex;
- justify-content: center;
- gap: 25px;
- margin: 20px 0 25px;
- }
-
- .social-icon {
- width: 45px;
- height: 45px;
- background: linear-gradient(145deg, #101a2c, #0c1425);
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- font-size: 24px;
- color: #00aaff;
- text-decoration: none;
- transition: all 0.3s ease;
- border: 1px solid rgba(0, 150, 255, 0.3);
- animation: iconFloat 3s ease infinite;
- }
-
- @keyframes iconFloat {
- 0%, 100% { transform: translateY(0px); }
- 50% { transform: translateY(-5px); }
- }
-
- .social-icon:hover {
- transform: translateY(-8px) scale(1.1);
- border-color: #00aaff;
- box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
- color: #4dc3ff;
- }
-
- .link-card {
- background: linear-gradient(135deg, rgba(16,26,44,0.9), rgba(12,20,37,0.9));
- border-radius: 24px;
- margin-bottom: 16px;
- padding: 16px 18px;
- display: flex;
- align-items: center;
- justify-content: space-between;
- text-decoration: none;
- border: 1px solid rgba(0, 150, 255, 0.3);
- transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
- animation: fadeSlideUp 0.5s ease backwards;
- cursor: pointer;
- }
-
- .link-card:hover {
- transform: translateY(-3px) scale(1.01);
- border-color: #00aaff;
- box-shadow: 0 12px 25px -10px rgba(0, 170, 255, 0.3);
- background: linear-gradient(135deg, rgba(19,30,52,0.95), rgba(14,22,40,0.95));
- }
-
- .link-card:nth-child(1) { animation-delay: 0.05s; }
- .link-card:nth-child(2) { animation-delay: 0.1s; }
-
- @keyframes fadeSlideUp {
- from {
- opacity: 0;
- transform: translateY(20px);
- }
- to {
- opacity: 1;
- transform: translateY(0);
- }
- }
-
- .card-left {
- display: flex;
- align-items: center;
- gap: 15px;
- flex: 1;
- }
-
- .card-left img {
- width: 52px;
- height: 52px;
- border-radius: 16px;
- object-fit: cover;
- border: 1px solid rgba(0, 170, 255, 0.4);
- transition: all 0.3s ease;
- }
-
- .card-info h3 {
- font-size: 14px;
- font-weight: 700;
- background: linear-gradient(90deg, #00aaff, #4dc3ff, #33bbff);
- -webkit-background-clip: text;
- -webkit-text-fill-color: transparent;
- background-size: 200% auto;
- animation: textWave 4s linear infinite;
- margin-bottom: 4px;
- }
-
- @keyframes textWave {
- 0% { background-position: 0% 50%; }
- 100% { background-position: 200% 50%; }
- }
-
- .card-info p {
- font-size: 11px;
- color: #7a8eae;
- font-weight: 500;
- }
-
- .menu-dot {
- font-size: 22px;
- color: #00aaff;
- cursor: pointer;
- transition: all 0.3s ease;
- width: 40px;
- text-align: center;
- font-weight: bold;
- }
-
- .footer {
- text-align: center;
- margin-top: 30px;
- padding-top: 20px;
- border-top: 1px solid rgba(0, 150, 255, 0.2);
- font-size: 12px;
- color: #5a6e8a;
- font-weight: 500;
- }
-
- @media (max-width: 480px) {
- .container {
- padding: 25px 18px 30px;
- }
- .card-info h3 {
- font-size: 12px;
- }
- .card-left img {
- width: 45px;
- height: 45px;
- }
- .social-icon {
- width: 38px;
- height: 38px;
- font-size: 18px;
- }
- .fall-letter {
- font-size: 2.5rem;
- }
- .music-control, .menu-toggle {
- width: 42px;
- height: 42px;
- }
- .sidebar {
- width: 280px;
- }
- }
- </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ƁLS MƁT • Pusat Jual Beli & Komunitas Terpercaya</title>
+    
+    <!-- ========= PREVIEW GAMBAR UNTUK WA/TELEGRAM/TIKTOK/DLL ========= -->
+    <meta property="og:title" content="ƁLS MƁT - Pusat Jual Beli & Komunitas Terpercaya">
+    <meta property="og:description" content="Jual beli akun MLBB, Free Fire, top up diamond dll">
+    <meta property="og:image" content="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="400">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blsmbt.my.id">
+    
+    <!-- Untuk Twitter/X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ƁLS MƁT - Pusat Jual Beli & Komunitas">
+    <meta name="twitter:description" content="Jual beli akun MLBB, Free Fire, top up diamond dll">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg">
+    
+    <!-- Backup untuk WhatsApp/Telegram -->
+    <link rel="image_src" href="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg">
+    <!-- ============================================================= -->
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0c15;
+            overflow-x: hidden;
+        }
+
+        /* ========= BACKGROUND VIDEO / FOTO DENGAN BLUR ========= */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .bg-media {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 30% center;  
+            filter: blur(2px);
+            transform: scale(1);
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+
+        .bg-fallback {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            z-index: -3;
+        }
+
+        /* ========= SIDEBAR / SWIPE MENU - KANAN ========= */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background: linear-gradient(180deg, #0f1a2c, #0a1020);
+            backdrop-filter: blur(20px);
+            z-index: 1002;
+            transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: -2px 0 30px rgba(0, 0, 0, 0.5);
+            border-left: 1px solid rgba(0, 170, 255, 0.3);
+            overflow-y: auto;
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 170, 255, 0.3);
+            margin-bottom: 15px;
+            background: url('https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778065977191_file_3207.jpg') center/cover no-repeat;
+            position: relative;
+        }
+
+        .sidebar-header img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 2px solid #00aaff;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header h3 {
+            color: #00aaff;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .sidebar-header p {
+            color: #7a8eae;
+            font-size: 11px;
+        }
+
+        .sidebar-menu {
+            padding: 0 15px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 15px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, rgba(0, 150, 255, 0.1), rgba(0, 100, 200, 0.05));
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 150, 255, 0.3);
+        }
+
+        .menu-item:hover {
+            background: rgba(0, 150, 255, 0.2);
+            border-color: #00aaff;
+            transform: translateX(-5px);
+        }
+
+        .menu-item i {
+            font-size: 28px;
+            color: #00aaff;
+            width: 45px;
+            text-align: center;
+        }
+
+        .menu-item .menu-text {
+            flex: 1;
+        }
+
+        .menu-item .menu-text h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .menu-item .menu-text p {
+            font-size: 11px;
+            color: #7a8eae;
+        }
+
+        .menu-badge {
+            background: #00aaff;
+            color: #fff;
+            font-size: 9px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, #101a2c, #0c1425);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1003;
+            border: 1px solid rgba(0, 150, 255, 0.4);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.05);
+            border-color: #00aaff;
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
+        }
+
+        .menu-toggle i {
+            font-size: 24px;
+            color: #00aaff;
+        }
+
+        /* ========= HALAMAN CUSTOMER SERVICE (POPUP) ========= */
+        .cs-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(10,15,30,0.95), rgba(5,10,20,0.98));
+            backdrop-filter: blur(15px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cs-page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cs-container {
+            width: 90%;
+            max-width: 400px;
+            background: linear-gradient(145deg, #101a2c, #0c1425);
+            border-radius: 32px;
+            padding: 30px 25px;
+            border: 1px solid rgba(0, 170, 255, 0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .cs-page.active .cs-container {
+            transform: scale(1);
+        }
+
+        .cs-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .cs-header i {
+            font-size: 50px;
+            color: #00aaff;
+            margin-bottom: 10px;
+        }
+
+        .cs-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00aaff, #4dc3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cs-header p {
+            font-size: 12px;
+            color: #7a8eae;
+            margin-top: 5px;
+        }
+
+        .cs-contact {
+            margin-bottom: 20px;
+        }
+
+        .contact-card {
+            background: rgba(0, 150, 255, 0.08);
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(0, 150, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .contact-card:hover {
+            background: rgba(0, 150, 255, 0.15);
+            border-color: #00aaff;
+            transform: translateX(5px);
+        }
+
+        .contact-card i {
+            font-size: 28px;
+            color: #00aaff;
+            width: 45px;
+            text-align: center;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 3px;
+        }
+
+        .contact-info p {
+            font-size: 13px;
+            color: #00aaff;
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .contact-info small {
+            font-size: 10px;
+            color: #7a8eae;
+        }
+
+        .cs-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .close-cs {
+            background: linear-gradient(145deg, #1a2a3a, #0f1a2c);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            padding: 12px 25px;
+            border-radius: 40px;
+            color: #00aaff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-cs:hover {
+            background: #00aaff;
+            color: #0a0c15;
+            border-color: #00aaff;
+        }
+
+        /* ========= HALAMAN STOCK (FULL PAGE 100%) ========= */
+        .stock-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0f1e, #0a1a2f);
+            z-index: 2000;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 80px 20px 30px;
+        }
+
+        .stock-page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .stock-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stock-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00aaff, #4dc3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .close-stock {
+            background: linear-gradient(145deg, #1a2a3a, #0f1a2c);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: #00aaff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .close-stock:hover {
+            background: #00aaff;
+            color: #0a0c15;
+        }
+
+        .stock-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .stock-card {
+            background: linear-gradient(135deg, rgba(16,26,44,0.95), rgba(12,20,37,0.95));
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 150, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stock-card:hover {
+            transform: translateY(-5px);
+            border-color: #00aaff;
+            box-shadow: 0 10px 25px -10px rgba(0, 170, 255, 0.3);
+        }
+
+        .stock-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(0, 150, 255, 0.2);
+        }
+
+        .stock-info {
+            padding: 15px;
+        }
+
+        .stock-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .stock-desc {
+            font-size: 12px;
+            color: #7a8eae;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .stock-price {
+            font-size: 18px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00aaff, #4dc3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .stock-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .status-available {
+            background: rgba(0, 255, 100, 0.15);
+            color: #00ff66;
+            border: 1px solid rgba(0, 255, 100, 0.3);
+        }
+
+        .status-empty {
+            background: rgba(255, 100, 100, 0.15);
+            color: #ff6666;
+            border: 1px solid rgba(255, 100, 100, 0.3);
+        }
+
+        .stock-wa-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #075e54, #128c7e);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            width: 100%;
+            text-align: center;
+        }
+
+        .stock-wa-btn:hover {
+            transform: scale(1.02);
+            opacity: 0.9;
+        }
+
+        .stock-empty-message {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 150, 255, 0.05);
+            border-radius: 24px;
+            border: 1px dashed rgba(0, 150, 255, 0.3);
+        }
+
+        .stock-empty-message i {
+            font-size: 60px;
+            color: #00aaff;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .stock-empty-message p {
+            color: #7a8eae;
+            font-size: 14px;
+        }
+
+        .stock-empty-message button {
+            margin-top: 15px;
+            background: linear-gradient(145deg, #1a2a3a, #0f1a2c);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: #00aaff;
+            cursor: pointer;
+        }
+
+        /* ========= MUSIC CONTROL BUTTON ========= */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, #101a2c, #0c1425);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            border: 1px solid rgba(0, 150, 255, 0.4);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            border-color: #00aaff;
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
+        }
+
+        .music-control i {
+            font-size: 24px;
+            color: #00aaff;
+        }
+
+        .music-control.playing i {
+            animation: spinMusic 2s linear infinite;
+        }
+
+        @keyframes spinMusic {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ========= SPLASH SCREEN ========= */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 30% 40%, #0a0f1a, #020408);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 1s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .splash-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .letter-canvas {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            perspective: 500px;
+        }
+
+        .fall-letter {
+            display: inline-block;
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(145deg, #00ccff, #3a86ff, #aaffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(0,200,255,0.6);
+            transform: translateY(-400px) rotate(-25deg);
+            opacity: 0;
+            animation: fallGlow 0.65s cubic-bezier(0.25, 1.2, 0.5, 1) forwards;
+            letter-spacing: 5px;
+        }
+
+        @keyframes fallGlow {
+            0% {
+                transform: translateY(-450px) rotate(-30deg);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .enter-hint {
+            margin-top: 45px;
+            font-size: 0.9rem;
+            color: #88ddff;
+            background: rgba(0, 150, 255, 0.12);
+            backdrop-filter: blur(10px);
+            padding: 10px 28px;
+            border-radius: 60px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            animation: softPulse 1.8s infinite;
+            border: 1px solid rgba(0,200,255,0.3);
+        }
+
+        @keyframes softPulse {
+            0%, 100% { opacity: 0.6; box-shadow: 0 0 5px rgba(0,200,255,0.2);}
+            50% { opacity: 1; box-shadow: 0 0 20px rgba(0,200,255,0.4);}
+        }
+
+        /* ========= MAIN WEBSITE ========= */
+        .main-content {
+            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(0px);
+            padding: 80px 20px 30px;
+            opacity: 0;
+            transition: opacity 1s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-visible {
+            opacity: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #00aaff;
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.4);
+            animation: glow 2.5s ease-in-out infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(0, 170, 255, 0.4); border-color: #00aaff; }
+            50% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.8); border-color: #4dc3ff; }
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00aaff, #4dc3ff, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradientMove 3s ease infinite;
+            margin-bottom: 8px;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .warning {
+            font-size: 13px;
+            color: #ffaa44;
+            background: rgba(255, 170, 68, 0.1);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin-top: 5px;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; text-shadow: 0 0 3px #ffaa44; }
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 20px 0 25px;
+        }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(145deg, #101a2c, #0c1425);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #00aaff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 150, 255, 0.3);
+            animation: iconFloat 3s ease infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .social-icon:hover {
+            transform: translateY(-8px) scale(1.1);
+            border-color: #00aaff;
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
+            color: #4dc3ff;
+        }
+
+        .link-card {
+            background: linear-gradient(135deg, rgba(16,26,44,0.9), rgba(12,20,37,0.9));
+            border-radius: 24px;
+            margin-bottom: 16px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            border: 1px solid rgba(0, 150, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            animation: fadeSlideUp 0.5s ease backwards;
+            cursor: pointer;
+        }
+
+        .link-card:hover {
+            transform: translateY(-3px) scale(1.01);
+            border-color: #00aaff;
+            box-shadow: 0 12px 25px -10px rgba(0, 170, 255, 0.3);
+            background: linear-gradient(135deg, rgba(19,30,52,0.95), rgba(14,22,40,0.95));
+        }
+
+        .link-card:nth-child(1) { animation-delay: 0.05s; }
+        .link-card:nth-child(2) { animation-delay: 0.1s; }
+        .link-card:nth-child(3) { animation-delay: 0.15s; }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .card-left img {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            object-fit: cover;
+            border: 1px solid rgba(0, 170, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .card-info h3 {
+            font-size: 14px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00aaff, #4dc3ff, #33bbff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: textWave 4s linear infinite;
+            margin-bottom: 4px;
+        }
+
+        @keyframes textWave {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .card-info p {
+            font-size: 11px;
+            color: #7a8eae;
+            font-weight: 500;
+        }
+
+        .menu-dot {
+            font-size: 22px;
+            color: #00aaff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 150, 255, 0.2);
+            font-size: 12px;
+            color: #5a6e8a;
+            font-weight: 500;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 18px 30px;
+            }
+            .card-info h3 {
+                font-size: 12px;
+            }
+            .card-left img {
+                width: 45px;
+                height: 45px;
+            }
+            .social-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
+            }
+            .fall-letter {
+                font-size: 2.5rem;
+            }
+            .music-control, .menu-toggle {
+                width: 42px;
+                height: 42px;
+            }
+            .sidebar {
+                width: 280px;
+            }
+            .stock-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <!-- BACKGROUND -->
 <div class="bg-fallback"></div>
 <div class="bg-container">
- <video autoplay muted loop playsinline class="bg-media" id="bgVideo">
- <source src="https://b.top4top.io/m_365487b6x0.mp4" type="video/mp4">
- </video>
- <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070" alt="background" class="bg-media" id="bgImage" style="display: none;">
+    <video autoplay muted loop playsinline class="bg-media" id="bgVideo">
+        <source src="https://b.top4top.io/m_365487b6x0.mp4" type="video/mp4">
+    </video>
+    <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070" alt="background" class="bg-media" id="bgImage" style="display: none;">
 </div>
 <div class="bg-overlay"></div>
 
 <!-- TOMBOL BUKA SIDEBAR (DI KANAN) -->
 <div class="menu-toggle" id="menuToggle">
- <i class="fas fa-headset"></i>
+ <i class="fas fa-bars"></i>
 </div>
 
-<!-- SIDEBAR (1 BUTTON CUSTOMER SERVICE SAJA) -->
+<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
- <div class="sidebar-header">
- <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="logo">
- <h3>Ɓls Mɓt</h3>
- <h3>Trusted & Amanah</h3>
- </div>
- 
- <div class="sidebar-menu">
- <!-- Customer Service - 1 button saja -->
- <div class="menu-item" id="openCsPageBtn">
- <i class="fas fa-headset"></i>
- <div class="menu-text">
- <h4>Customer Service</h4>
- <p>Chat & Bantuan 24/7</p>
- </div>
- <div class="menu-badge">Online</div>
- </div>
- </div>
+    <div class="sidebar-header">
+        <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="logo">
+        <h3>Ɓls Mɓt</h3>
+        <p>Trusted & Amanah</p>
+    </div>
+    
+    <div class="sidebar-menu">
+        <!-- Customer Service -->
+        <div class="menu-item" id="openCsPageBtn">
+            <i class="fas fa-headset"></i>
+            <div class="menu-text">
+                <h4>Customer Service</h4>
+                <p>Chat & Bantuan 24/7</p>
+            </div>
+            <div class="menu-badge">Online</div>
+        </div>
+
+        <!-- Lihat Stock -->
+        <div class="menu-item" id="openStockPageBtn">
+            <i class="fas fa-boxes"></i>
+            <div class="menu-text">
+                <h4>Lihat Stock</h4>
+                <p>Cek ketersediaan barang</p>
+            </div>
+            <div class="menu-badge">Update</div>
+        </div>
+    </div>
 </div>
 
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- HALAMAN CUSTOMER SERVICE (POPUP) -->
 <div class="cs-page" id="csPage">
- <div class="cs-container">
- <div class="cs-header">
- <i class="fas fa-headset"></i>
- <h2>Customer Service</h2>
- <p>Kami siap membantu Anda 24/7</p>
- </div>
- 
- <div class="cs-contact">
- <!-- WhatsApp -->
- <div class="contact-card" onclick="window.open('https://wa.me/6285693659506', '_blank')">
- <i class="fab fa-whatsapp"></i>
- <div class="contact-info">
- <h4>WhatsApp</h4>
- <p>+62 856-9365-9506</p>
- <small>Klik untuk chat langsung</small>
- </div>
- <i class="fas fa-chevron-right" style="color:#00aaff;"></i>
- </div>
- 
- <!-- Telegram -->
- <div class="contact-card" onclick="window.open('https://t.me/Akiraxxc', '_blank')">
- <i class="fab fa-telegram-plane"></i>
- <div class="contact-info">
- <h4>Telegram</h4>
- <p>@Akiraxxc</p>
- <small>Klik untuk chat</small>
- </div>
- <i class="fas fa-chevron-right" style="color:#00aaff;"></i>
- </div>
- 
- <!-- Email -->
- <div class="contact-card" onclick="window.location.href='mailto:akiraxshy@gmail.com'">
- <i class="fas fa-envelope"></i>
- <div class="contact-info">
- <h4>Email</h4>
- <p>akiraxshy@gmail.com</p>
- <small>Klik untuk kirim email</small>
- </div>
- <i class="fas fa-chevron-right" style="color:#00aaff;"></i>
- </div>
- </div>
- 
- <div class="cs-footer">
- <div class="close-cs" id="closeCsBtn">
- <i class="fas fa-times"></i> Tutup
- </div>
- </div>
- </div>
+    <div class="cs-container">
+        <div class="cs-header">
+            <i class="fas fa-headset"></i>
+            <h2>Customer Service</h2>
+            <p>Kami siap membantu Anda 24/7</p>
+        </div>
+        
+        <div class="cs-contact">
+            <div class="contact-card" onclick="window.open('https://wa.me/6285693659506', '_blank')">
+                <i class="fab fa-whatsapp"></i>
+                <div class="contact-info">
+                    <h4>WhatsApp</h4>
+                    <p>+62 856-9365-9506</p>
+                    <small>Klik untuk chat langsung</small>
+                </div>
+                <i class="fas fa-chevron-right" style="color:#00aaff;"></i>
+            </div>
+            
+            <div class="contact-card" onclick="window.open('https://t.me/Akiraxxc', '_blank')">
+                <i class="fab fa-telegram-plane"></i>
+                <div class="contact-info">
+                    <h4>Telegram</h4>
+                    <p>@Akiraxxc</p>
+                    <small>Klik untuk chat</small>
+                </div>
+                <i class="fas fa-chevron-right" style="color:#00aaff;"></i>
+            </div>
+            
+            <div class="contact-card" onclick="window.location.href='mailto:akiraxshy@gmail.com'">
+                <i class="fas fa-envelope"></i>
+                <div class="contact-info">
+                    <h4>Email</h4>
+                    <p>akiraxshy@gmail.com</p>
+                    <small>Klik untuk kirim email</small>
+                </div>
+                <i class="fas fa-chevron-right" style="color:#00aaff;"></i>
+            </div>
+        </div>
+        
+        <div class="cs-footer">
+            <div class="close-cs" id="closeCsBtn">
+                <i class="fas fa-times"></i> Tutup
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- HALAMAN STOCK (FULL PAGE 100%) -->
+<div class="stock-page" id="stockPage">
+    <div class="stock-header">
+        <h2><i class="fas fa-boxes"></i> Daftar Stock Barang</h2>
+        <div class="close-stock" id="closeStockBtn">
+            <i class="fas fa-times"></i> Tutup
+        </div>
+    </div>
+    <div id="stockListContainer" class="stock-grid">
+        <!-- Stock akan di generate oleh JavaScript -->
+    </div>
 </div>
 
 <!-- MUSIC CONTROL -->
 <div id="musicControl" class="music-control playing">
- <i class="fas fa-compact-disc"></i>
+    <i class="fas fa-compact-disc"></i>
 </div>
 
 <audio id="bgMusic" loop>
- <source src="https://a.top4top.io/m_3778lobdk0.mp4" type="audio/mpeg">
+    <source src="https://a.top4top.io/m_3778lobdk0.mp4" type="audio/mpeg">
 </audio>
 
 <!-- SPLASH SCREEN -->
 <div id="splashScreen" class="splash-screen">
- <div class="letter-canvas" id="letterCanvas"></div>
- <div class="enter-hint">✦ KETUK UNTUK MASUK ✦</div>
+    <div class="letter-canvas" id="letterCanvas"></div>
+    <div class="enter-hint">✦ KETUK UNTUK MASUK ✦</div>
 </div>
 
 <!-- MAIN WEBSITE -->
 <div id="mainContent" class="main-content">
- <div class="container">
- <div class="header">
- <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="logo" class="logo">
- <h1>ALL JB || Ɓls Mɓt</h1>
- <div class="warning">⚠️ waspada clone link palsu dll, be smart a buyer</div>
- </div>
+    <div class="container">
+        <div class="header">
+            <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="logo" class="logo">
+            <h1>ALL JB || Ɓls Mɓt</h1>
+            <div class="warning">⚠️ waspada clone link palsu dll, be smart a buyer</div>
+        </div>
 
- <div class="social-icons">
- <a href="https://www.tiktok.com/@jb.bls.mbt" target="_blank" class="social-icon">
- <i class="fab fa-tiktok"></i>
- </a>
- <a href="https://t.me/Akiraxxc" target="_blank" class="social-icon">
- <i class="fab fa-telegram-plane"></i>
- </a>
- <a href="https://wa.me/6285926912674" target="_blank" class="social-icon">
- <i class="fab fa-whatsapp"></i>
- </a>
- </div>
+        <div class="social-icons">
+            <a href="https://www.tiktok.com/@jb.bls.mbt" target="_blank" class="social-icon">
+                <i class="fab fa-tiktok"></i>
+            </a>
+            <a href="https://t.me/Akiraxxc" target="_blank" class="social-icon">
+                <i class="fab fa-telegram-plane"></i>
+            </a>
+            <a href="https://wa.me/6285926912674" target="_blank" class="social-icon">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
 
- <a href="https://whatsapp.com/channel/0029Vb7oSTn1Hsq1r0nuVj2i" target="_blank" class="link-card">
- <div class="card-left">
- <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="icon">
- <div class="card-info">
- <h3>SALURAN INFO STOCK / TESTI ƁLS MBT </h3>
- <p>Klik untuk bergabung saluran WA</p>
- </div>
- </div>
- <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'Saluran Info Stock')">⋮</div>
- </a>
+        <a href="https://whatsapp.com/channel/0029Vb7oSTn1Hsq1r0nuVj2i" target="_blank" class="link-card">
+            <div class="card-left">
+                <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="icon">
+                <div class="card-info">
+                    <h3>SALURAN INFO STOCK / TESTI ƁLS MBT</h3>
+                    <p>Klik untuk bergabung saluran WA</p>
+                </div>
+            </div>
+            <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'Saluran Info Stock')">⋮</div>
+        </a>
 
- <a href="https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW" target="_blank" class="link-card">
- <div class="card-left">
- <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="icon">
- <div class="card-info">
- <h3>JB 1 || Ɓls Mɓt</h3>
- <p>Grup Jual Beli Admin Dan Mem Asik Asik</p>
- </div>
- </div>
- <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'JB EPEP ML IQBAL')">⋮</div>
- </a>
+        <a href="https://chat.whatsapp.com/CMJSUjEWe5RIdR0H1hV2UW" target="_blank" class="link-card">
+            <div class="card-left">
+                <img src="https://raw.githubusercontent.com/IkyyEzzXD/IkyyGantengPoll/main/uploads/1778051503992_file_3195.jpg" alt="icon">
+                <div class="card-info">
+                    <h3>JB 1 || Ɓls Mɓt</h3>
+                    <p>Grup Jual Beli Admin Dan Mem Asik Asik</p>
+                </div>
+            </div>
+            <div class="menu-dot" onclick="event.stopPropagation(); showMenuOption(event, 'JB EPEP ML IQBAL')">⋮</div>
+        </a>
 
- <div class="footer">
- 🔥 Insyaallah Amanah | © BLS MBT 2026
- </div>
- </div>
+        <div class="footer">
+            🔥 Insyaallah Amanah | © BLS MBT 2026
+        </div>
+    </div>
 </div>
 
 <script>
- // ============== SIDEBAR SWIPE DARI KANAN ==============
- const sidebar = document.getElementById('sidebar');
- const overlay = document.getElementById('sidebarOverlay');
- const menuToggle = document.getElementById('menuToggle');
- const openCsPageBtn = document.getElementById('openCsPageBtn');
- const csPage = document.getElementById('csPage');
- const closeCsBtn = document.getElementById('closeCsBtn');
- 
- let touchStartX = 0;
- let touchEndX = 0;
- 
- function openSidebar() {
- sidebar.classList.add('open');
- overlay.classList.add('active');
- }
- 
- function closeSidebar() {
- sidebar.classList.remove('open');
- overlay.classList.remove('active');
- }
- 
- // Tombol headset di kanan
- if(menuToggle) {
- menuToggle.addEventListener('click', openSidebar);
- }
- 
- // Overlay klik = tutup sidebar
- if(overlay) {
- overlay.addEventListener('click', closeSidebar);
- }
- 
- // Buka halaman CS dari sidebar
- if(openCsPageBtn) {
- openCsPageBtn.addEventListener('click', () => {
- closeSidebar(); // tutup sidebar dulu
- setTimeout(() => {
- csPage.classList.add('active');
- }, 200);
- });
- }
- 
- // Tutup halaman CS
- if(closeCsBtn) {
- closeCsBtn.addEventListener('click', () => {
- csPage.classList.remove('active');
- });
- }
- 
- // Klik overlay CS (area luar) juga tutup
- if(csPage) {
- csPage.addEventListener('click', (e) => {
- if(e.target === csPage) {
- csPage.classList.remove('active');
- }
- });
- }
- 
- // Deteksi swipe dari tepi kanan (tarik layar ke kiri) = buka sidebar
- document.addEventListener('touchstart', function(e) {
- const screenWidth = window.innerWidth;
- touchStartX = e.changedTouches[0].screenX;
- // Jika mulai dari tepi kanan (dalam 40px dari kanan)
- if(touchStartX > screenWidth - 40) {
- touchStartX = 'rightEdge';
- }
- });
- 
- document.addEventListener('touchend', function(e) {
- touchEndX = e.changedTouches[0].screenX;
- // Jika swipe dari tepi kanan dan geser ke kiri > 50px
- if(touchStartX === 'rightEdge' && (touchStartX - touchEndX) > 50) {
- openSidebar();
- }
- // Jika sidebar terbuka dan swipe ke kanan dari tepi kiri, tutup
- if(sidebar.classList.contains('open') && (touchEndX - touchStartX) > 70) {
- closeSidebar();
- }
- });
- 
- // ============== MUSIC BACKGROUND ==============
- const bgMusic = document.getElementById('bgMusic');
- const musicControl = document.getElementById('musicControl');
- let isMusicPlaying = true;
- 
- function playMusic() {
- bgMusic.play().then(() => {
- isMusicPlaying = true;
- musicControl.classList.add('playing');
- }).catch(err => {
- isMusicPlaying = false;
- musicControl.classList.remove('playing');
- });
- }
- 
- function pauseMusic() {
- bgMusic.pause();
- isMusicPlaying = false;
- musicControl.classList.remove('playing');
- }
- 
- if(musicControl) {
- musicControl.addEventListener('click', (e) => {
- e.stopPropagation();
- if(isMusicPlaying) {
- pauseMusic();
- } else {
- playMusic();
- }
- });
- }
- 
- function tryAutoPlayOnInteraction() {
- if(!isMusicPlaying) {
- playMusic();
- }
- document.removeEventListener('click', tryAutoPlayOnInteraction);
- document.removeEventListener('touchstart', tryAutoPlayOnInteraction);
- }
- 
- document.addEventListener('click', tryAutoPlayOnInteraction);
- document.addEventListener('touchstart', tryAutoPlayOnInteraction);
- 
- if(bgMusic) {
- bgMusic.volume = 0.3;
- }
- 
- // ============== HANDLING BACKGROUND VIDEO ==============
- const bgVideo = document.getElementById('bgVideo');
- const bgImage = document.getElementById('bgImage');
- 
- if(bgVideo) {
- bgVideo.addEventListener('error', function() {
- bgVideo.style.display = 'none';
- if(bgImage) {
- bgImage.style.display = 'block';
- bgImage.addEventListener('error', function() {
- bgImage.style.display = 'none';
- });
- }
- });
- }
- 
- // ============== SPLASH SCREEN ANIMASI ==============
- const targetText = "BLS✦MBT";
- const lettersArray = targetText.split('');
- const container = document.getElementById('letterCanvas');
- 
- function createFallingLetters() {
- if(!container) return;
- container.innerHTML = '';
- lettersArray.forEach((char, idx) => {
- const span = document.createElement('span');
- span.className = 'fall-letter';
- if(char === ' ') {
- span.innerHTML = '&nbsp;&nbsp;&nbsp;';
- span.style.margin = '0 8px';
- span.style.background = 'none';
- span.style.textShadow = 'none';
- span.style.minWidth = '30px';
- } else {
- span.textContent = char;
- }
- const delay = idx * 0.12;
- span.style.animationDelay = `${delay}s`;
- span.style.animationDuration = '0.65s';
- container.appendChild(span);
- });
- }
- 
- createFallingLetters();
- 
- let splashScreen = document.getElementById('splashScreen');
- let mainContent = document.getElementById('mainContent');
- 
- function transitionToMain() {
- if(!splashScreen || !mainContent) return;
- splashScreen.classList.add('splash-hidden');
- mainContent.classList.add('main-visible');
- setTimeout(() => {
- splashScreen.style.display = 'none';
- }, 1200);
- }
- 
- if(splashScreen) {
- splashScreen.addEventListener('click', () => {
- if(!mainContent.classList.contains('main-visible')) {
- transitionToMain();
- }
- });
- }
- 
- setTimeout(() => {
- if(splashScreen && splashScreen.style.display !== 'none' && !mainContent.classList.contains('main-visible')) {
- transitionToMain();
- }
- }, 3300);
- 
- // ============== FUNGSI TOAST ==============
- function showMenuOption(event, name) {
- event.stopPropagation();
- const toast = document.createElement('div');
- toast.textContent = `⚡ Opsi untuk ${name} (akan segera hadir)`;
- toast.style.position = 'fixed';
- toast.style.bottom = '30px';
- toast.style.left = '50%';
- toast.style.transform = 'translateX(-50%)';
- toast.style.background = '#0f1a2e';
- toast.style.color = '#00aaff';
- toast.style.padding = '10px 20px';
- toast.style.borderRadius = '40px';
- toast.style.fontSize = '13px';
- toast.style.border = '1px solid #00aaff';
- toast.style.zIndex = '3000';
- toast.style.fontFamily = 'monospace';
- document.body.appendChild(toast);
- setTimeout(() => {
- toast.remove();
- }, 2000);
- }
- 
- window.showMenuOption = showMenuOption;
- window.closeSidebar = closeSidebar;
+    // ============== DATA STOCK (CONTOH) ==============
+    // Kamu bisa edit data di sini
+    // isStock = true -> ada stok, false -> stok kosong
+    const stockData = [
+           
+    ];
+
+    // Fungsi untuk render stock ke halaman
+    function renderStock() {
+        const container = document.getElementById('stockListContainer');
+        if (!container) return;
+
+        // Cek apakah ada stok yang tersedia (true)
+        const hasAvailableStock = stockData.some(item => item.isStock === true);
+
+        if (!hasAvailableStock) {
+            // Jika TIDAK ADA satupun stok yang tersedia
+            container.innerHTML = `
+                <div class="stock-empty-message">
+                    <i class="fas fa-box-open"></i>
+                    <p>Stok belum ditambahkan / kosong</p>
+                    <p style="font-size: 12px; margin-top: 5px;">Silakan hubungi admin melalui Customer Service</p>
+                    <button onclick="closeStockPageAndOpenCS()">
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        // Jika ada stok, tampilkan semua item
+        let stockHtml = '';
+        stockData.forEach(item => {
+            if (item.isStock) {
+                // Tampilan untuk item yang ADA stok
+                stockHtml += `
+                    <div class="stock-card">
+                        <img src="${item.image}" alt="${item.name}" class="stock-image" onerror="this.src='https://i.ibb.co.com/4T3Xx8x/default.jpg'">
+                        <div class="stock-info">
+                            <div class="stock-title">${item.name}</div>
+                            <div class="stock-desc">${item.description}</div>
+                            <div class="stock-price">${item.price}</div>
+                            <span class="stock-status status-available"><i class="fas fa-check-circle"></i> Tersedia</span>
+                            <a href="https://wa.me/${item.waNumber}?text=Halo%20Admin%2C%20saya%20ingin%20membeli%20${encodeURIComponent(item.name)}%20harga%20${encodeURIComponent(item.price)}" 
+                               target="_blank" class="stock-wa-btn">
+                                <i class="fab fa-whatsapp"></i> Klik untuk membeli
+                            </a>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Tampilan untuk item yang TIDAK ADA stok
+                stockHtml += `
+                    <div class="stock-card">
+                        <img src="${item.image}" alt="${item.name}" class="stock-image" onerror="this.src='https://i.ibb.co.com/4T3Xx8x/default.jpg'">
+                        <div class="stock-info">
+                            <div class="stock-title">${item.name}</div>
+                            <div class="stock-desc">${item.description}</div>
+                            <div class="stock-price">${item.price}</div>
+                            <span class="stock-status status-empty"><i class="fas fa-times-circle"></i> Stok Habis / Belum Ada</span>
+                            <div style="font-size: 11px; color: #7a8eae; text-align: center; padding: 10px;">
+                                ⚡ Stok belum ditambahkan, hubungi admin via Customer Service
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+        container.innerHTML = stockHtml;
+    }
+
+    // Fungsi untuk nutup stock page & buka CS
+    function closeStockPageAndOpenCS() {
+        const stockPage = document.getElementById('stockPage');
+        const csPage = document.getElementById('csPage');
+        if (stockPage) stockPage.classList.remove('active');
+        setTimeout(() => {
+            if (csPage) csPage.classList.add('active');
+        }, 200);
+    }
+
+    // ============== SIDEBAR ==============
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const menuToggle = document.getElementById('menuToggle');
+    const openCsPageBtn = document.getElementById('openCsPageBtn');
+    const csPage = document.getElementById('csPage');
+    const closeCsBtn = document.getElementById('closeCsBtn');
+    const openStockPageBtn = document.getElementById('openStockPageBtn');
+    const stockPage = document.getElementById('stockPage');
+    const closeStockBtn = document.getElementById('closeStockBtn');
+    
+    let touchStartX = 0;
+    
+    function openSidebar() {
+        sidebar.classList.add('open');
+        overlay.classList.add('active');
+    }
+    
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+    }
+    
+    if(menuToggle) menuToggle.addEventListener('click', openSidebar);
+    if(overlay) overlay.addEventListener('click', closeSidebar);
+    
+    // Buka halaman CS
+    if(openCsPageBtn) {
+        openCsPageBtn.addEventListener('click', () => {
+            closeSidebar();
+            setTimeout(() => csPage.classList.add('active'), 200);
+        });
+    }
+    
+    // Tutup CS
+    if(closeCsBtn) {
+        closeCsBtn.addEventListener('click', () => csPage.classList.remove('active'));
+    }
+    
+    // Buka halaman Stock
+    if(openStockPageBtn) {
+        openStockPageBtn.addEventListener('click', () => {
+            closeSidebar();
+            renderStock(); // Render ulang setiap buka
+            setTimeout(() => stockPage.classList.add('active'), 200);
+        });
+    }
+    
+    // Tutup Stock
+    if(closeStockBtn) {
+        closeStockBtn.addEventListener('click', () => stockPage.classList.remove('active'));
+    }
+    
+    // Klik overlay CS tutup
+    if(csPage) {
+        csPage.addEventListener('click', (e) => {
+            if(e.target === csPage) csPage.classList.remove('active');
+        });
+    }
+    
+    // Klik overlay Stock tutup
+    if(stockPage) {
+        stockPage.addEventListener('click', (e) => {
+            if(e.target === stockPage) stockPage.classList.remove('active');
+        });
+    }
+    
+    // Swipe detection
+    document.addEventListener('touchstart', function(e) {
+        const screenWidth = window.innerWidth;
+        const startX = e.changedTouches[0].screenX;
+        if(startX > screenWidth - 40) {
+            touchStartX = 'rightEdge';
+        }
+    });
+    
+    document.addEventListener('touchend', function(e) {
+        const endX = e.changedTouches[0].screenX;
+        if(touchStartX === 'rightEdge' && (touchStartX - endX) > 50) {
+            openSidebar();
+        }
+        if(sidebar.classList.contains('open') && (endX - touchStartX) > 70) {
+            closeSidebar();
+        }
+    });
+    
+    // ============== MUSIC ==============
+    const bgMusic = document.getElementById('bgMusic');
+    const musicControl = document.getElementById('musicControl');
+    let isMusicPlaying = true;
+    
+    function playMusic() {
+        bgMusic.play().then(() => {
+            isMusicPlaying = true;
+            musicControl.classList.add('playing');
+        }).catch(() => {});
+    }
+    
+    function pauseMusic() {
+        bgMusic.pause();
+        isMusicPlaying = false;
+        musicControl.classList.remove('playing');
+    }
+    
+    if(musicControl) {
+        musicControl.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if(isMusicPlaying) pauseMusic();
+            else playMusic();
+        });
+    }
+    
+    function tryAutoPlay() {
+        if(!isMusicPlaying) playMusic();
+        document.removeEventListener('click', tryAutoPlay);
+        document.removeEventListener('touchstart', tryAutoPlay);
+    }
+    
+    document.addEventListener('click', tryAutoPlay);
+    document.addEventListener('touchstart', tryAutoPlay);
+    if(bgMusic) bgMusic.volume = 0.3;
+    
+    // ============== VIDEO BACKGROUND ==============
+    const bgVideo = document.getElementById('bgVideo');
+    const bgImage = document.getElementById('bgImage');
+    
+    if(bgVideo) {
+        bgVideo.addEventListener('error', function() {
+            bgVideo.style.display = 'none';
+            if(bgImage) bgImage.style.display = 'block';
+        });
+    }
+    
+    // ============== SPLASH SCREEN ==============
+    const targetText = "BLS✦MBT";
+    const lettersArray = targetText.split('');
+    const container = document.getElementById('letterCanvas');
+    
+    function createFallingLetters() {
+        if(!container) return;
+        container.innerHTML = '';
+        lettersArray.forEach((char, idx) => {
+            const span = document.createElement('span');
+            span.className = 'fall-letter';
+            if(char === ' ') {
+                span.innerHTML = '&nbsp;&nbsp;&nbsp;';
+                span.style.margin = '0 8px';
+                span.style.minWidth = '30px';
+            } else {
+                span.textContent = char;
+            }
+            span.style.animationDelay = `${idx * 0.12}s`;
+            container.appendChild(span);
+        });
+    }
+    createFallingLetters();
+    
+    let splashScreen = document.getElementById('splashScreen');
+    let mainContent = document.getElementById('mainContent');
+    
+    function transitionToMain() {
+        if(!splashScreen || !mainContent) return;
+        splashScreen.classList.add('splash-hidden');
+        mainContent.classList.add('main-visible');
+        setTimeout(() => splashScreen.style.display = 'none', 1200);
+    }
+    
+    if(splashScreen) splashScreen.addEventListener('click', transitionToMain);
+    setTimeout(transitionToMain, 3300);
+    
+    // ============== FUNGSI TOAST ==============
+    function showMenuOption(event, name) {
+        event.stopPropagation();
+        const toast = document.createElement('div');
+        toast.textContent = `⚡ Opsi untuk ${name} (akan segera hadir)`;
+        toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#0f1a2e;color:#00aaff;padding:10px 20px;border-radius:40px;font-size:13px;border:1px solid #00aaff;z-index:5000;font-family:monospace;';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+    }
+    
+    window.showMenuOption = showMenuOption;
+    window.closeSidebar = closeSidebar;
+    window.closeStockPageAndOpenCS = closeStockPageAndOpenCS;
 </script>
 </body>
-</html>
+ </html>
