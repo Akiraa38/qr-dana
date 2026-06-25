@@ -1,39 +1,36 @@
-// GANTI PAKE DATA AKUN GITHUB LO SEBELUM DI-PUSH, BRE!
-const GITHUB_TOKEN = "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"; 
+// GANTI PAKE DATA AKUN GITHUB LO, BRE!
 const REPO_OWNER = "Akiraa38";          
-const REPO_NAME = "nikaa";              
+const REPO_NAME = "qr-dana";              
 const BRANCH = "main"; // Isikan 'main' atau 'master' sesuai setingan repo lo
 
 export default async function handler(req, res) {
-    // 1. PROSES UPLOAD FILE (POST)
-    if (req.method === 'POST') {
-        try {
-            const { image, filename } = req.body;
-            if (!image) return res.status(400).json({ error: 'Data gambar kosong!' });
+    // Pastikan ini request GET (orang mau liat gambar)
+    if (req.method !== 'GET') return res.status(405).send('Method Not Allowed');
 
-            const base64Data = image.split(',')[1]; // Potong header base64-nya
-            const ext = filename.split('.').pop();
-            
-            // Bikin nama file acak unik pake timestamp biar ga duplikat di repo
-            const uniqueName = `img_${Date.now()}.${ext}`;
+    const { file } = req.query;
+    if (!file) return res.status(404).send('Nama file foto kosong, Bre!');
 
-            // URL API GitHub untuk membuat file di dalam folder 'uploads/'
-            const githubUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/uploads/${uniqueName}`;
-            
-            const response = await fetch(githubUrl, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `token ${GITHUB_TOKEN}`,
-                    'Content-Type': 'application/json',
-                    'User-Agent': 'Vercel-GitHub-Uploader'
-                },
-                body: JSON.stringify({
-                    message: `Upload otomatis ${uniqueName} via Website`,
-                    content: base64Data,
-                    branch: BRANCH
-                })
-            });
+    try {
+        // Alamat URL mentah foto lo di folder 'image' repository GitHub
+        const rawGithubUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/image/${file}`;
+        
+        // Tarik fotonya dari GitHub
+        const imageResponse = await fetch(rawGithubUrl);
+        
+        // Kalau nama foto salah atau ga ada di folder GitHub, kasih eror 404
+        if (!imageResponse.ok) return res.status(404).send('Gambar ga ketemu di folder GitHub, Bre!');
 
+        const buffer = await imageResponse.arrayBuffer();
+        
+        // Kasih tahu browser kalau ini file gambar asli (.jpg/.png)
+        res.setHeader('Content-Type', imageResponse.headers.get('content-type'));
+        
+        // Tampilkan gambarnya murni!
+        return res.send(Buffer.from(buffer));
+    } catch (e) {
+        return res.status(500).send('Ada masalah pas nyambung ke server GitHub');
+    }
+}
             const data = await response.json();
 
             if (response.ok) {
