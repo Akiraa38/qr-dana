@@ -1,69 +1,77 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mahiru Image Host</title>
-    <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #111; color: #fff; margin: 0; }
-        .box { background: #222; padding: 30px; border-radius: 10px; text-align: center; width: 350px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        input[type="file"] { margin: 20px 0; display: block; width: 100%; }
-        button { background: #00adb5; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; }
-        .result { margin-top: 20px; display: none; background: #333; padding: 10px; border-radius: 5px; }
-        .result input { width: 90%; padding: 8px; text-align: center; background: #000; color: #00adb5; border: 1px solid #444; }
-    </style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Mahiru Image Host</title>
+ <style>
+ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #121212; color: #fff; margin: 0; }
+ .box { background: #1e1e1e; padding: 30px; border-radius: 12px; text-align: center; width: 90%; max-width: 380px; box-shadow: 0 4px 20px rgba(0,0,0,0.6); border: 1px solid #2d2d2d; }
+ h3 { margin-top: 0; color: #00adb5; font-size: 22px; }
+ p { color: #aaa; font-size: 14px; margin-bottom: 20px; }
+ input[type="file"] { margin: 20px 0; display: block; width: 100%; color: #888; }
+ button { background: #00adb5; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; font-size: 15px; transition: 0.2s; }
+ button:hover { background: #007a80; }
+ .result { margin-top: 25px; display: none; background: #2d2d2d; padding: 15px; border-radius: 6px; text-align: left; }
+ .result p { margin: 0 0 8px 0; font-weight: bold; color: #fff; font-size: 13px; }
+ .result input { width: 100%; padding: 10px; text-align: center; background: #121212; color: #00adb5; border: 1px solid #444; border-radius: 4px; box-sizing: border-box; font-weight: bold; font-size: 14px; }
+ </style>
 </head>
 <body>
 
 <div class="box">
-    <h3>Mahiru Cloud Uploader</h3>
-    <input type="file" id="fileInput" accept="image/*">
-    <button onclick="uploadKeVercel()">Generate Link .jpg</button>
+ <h3>Mahiru GitHub Host</h3>
+ <p>Upload gambar lo dan dapatkan link langsung murni .jpg/.png</p>
+ 
+ <input type="file" id="fileInput" accept="image/*">
+ <button onclick="uploadKeGitHub()">Generate Link</button>
 
-    <div class="result" id="resultBox">
-        <p>Link Gambar Lo:</p>
-        <input type="text" id="linkResult" readonly onclick="this.select()">
-    </div>
+ <div class="result" id="resultBox">
+ <p>🎉 Link Gambar Lo:</p>
+ <input type="text" id="linkResult" readonly onclick="this.select()">
+ </div>
 </div>
 
 <script>
-    async function uploadKeVercel() {
-        const fileInput = document.getElementById('fileInput');
-        const resultBox = document.getElementById('resultBox');
-        const linkResult = document.getElementById('linkResult');
+ async function uploadKeGitHub() {
+ const fileInput = document.getElementById('fileInput');
+ const resultBox = document.getElementById('resultBox');
+ const linkResult = document.getElementById('linkResult');
 
-        if (fileInput.files.length === 0) return alert('Pilih gambar dulu, Bre!');
+ if (fileInput.files.length === 0) return alert('Pilih gambar dulu, Bre!');
 
-        // Ubah gambar jadi Base64 biar bisa dikirim lewat JSON ke serverless Vercel
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        
-        linkResult.value = "Sedang memproses...";
-        resultBox.style.display = "block";
+ const file = fileInput.files[0];
+ const reader = new FileReader();
+ reader.readAsDataURL(file);
+ 
+ linkResult.value = "Lagi diproses, tunggu bentar...";
+ resultBox.style.display = "block";
 
-        reader.onload = async () => {
-            try {
-                const response = await fetch('/api/upload', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        image: reader.result,
-                        filename: file.name
-                    })
-                });
+ reader.onload = async () => {
+ try {
+ const response = await fetch('/upload', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({
+ image: reader.result,
+ filename: file.name
+ })
+ });
 
-                const data = await response.json();
-                if (data.url) {
-                    // Outputnya langsung ke domain mahiru lo dengan ext .jpg/.png
-                    linkResult.value = window.location.origin + data.url;
-                } else {
-                    alert('Gagal upload: ' + data.error);
-                }
-            } catch (err) {
-                alert('Ada error pas upload, Bre.');
-            }
-        };
-    </script>
+ const data = await response.json();
+ if (data.url) {
+ // Outputnya otomatis langsung pake domain mahiru lo + ext gambarnya
+ linkResult.value = window.location.origin + data.url;
+ } else {
+ alert('Gagal upload: ' + (data.error || 'Ada kendala server'));
+ resultBox.style.display = "none";
+ }
+ } catch (err) {
+ alert('Ada error pas koneksi ke API, Bre.');
+ resultBox.style.display = "none";
+ }
+ };
+ }
+</script>
 </body>
 </html>
