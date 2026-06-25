@@ -1,0 +1,6 @@
+{
+ "rewrites": [
+ { "source": "/api/upload", "destination": "/api/upload.js" },
+ { "source": "/:filename.(jpg|jpeg|png|gif|webp)", "destination": "/api/upload.js?file=:filename.$1" }
+ ]
+}
