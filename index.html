@@ -3,37 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mahiru Image Gallery</title>
+    <title>Mahiru Cloud - Dashboard Admin</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #121212; color: #fff; margin: 0; padding: 20px; }
-        header { text-align: center; margin-bottom: 40px; }
-        header h1 { color: #00adb5; margin-bottom: 5px; }
-        header p { color: #888; margin: 0; }
-        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .card { background: #1e1e1e; border-radius: 8px; overflow: hidden; border: 1px solid #2d2d2d; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.3s; cursor: pointer; position: relative; }
-        .card:hover { transform: translateY(-5px); border-color: #00adb5; }
-        .img-container { width: 100%; height: 200px; background: #151515; display: flex; align-items: center; justify-content: center; }
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #151d30;
+            --bg-hover: #1e2942;
+            --accent: #00adb5;
+            --text-main: #ffffff;
+            --text-muted: #64748b;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-main); color: var(--text-main); margin: 0; padding: 20px; }
+        
+        /* Dashboard Header & Stats */
+        .dashboard-container { max-width: 1200px; margin: 0 auto; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #1e294b; padding-bottom: 20px; }
+        header h1 { color: var(--accent); margin: 0; font-size: 24px; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: var(--bg-card); padding: 15px 20px; border-radius: 8px; border: 1px solid #1e294b; }
+        .stat-card p { margin: 0; color: var(--text-muted); font-size: 13px; }
+        .stat-card h3 { margin: 5px 0 0 0; font-size: 20px; color: var(--accent); }
+
+        /* Integrated Web Uploader */
+        .upload-section { background: var(--bg-card); border: 2px dashed #1e294b; border-radius: 10px; padding: 30px; text-align: center; margin-bottom: 40px; transition: 0.3s; }
+        .upload-section:hover { border-color: var(--accent); }
+        .upload-btn { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        
+        /* Gallery Grid */
+        h2 { font-size: 18px; margin-bottom: 15px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        
+        /* Image Card Components */
+        .card { background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid #1e294b; position: relative; display: flex; flex-direction: column; transition: 0.3s; }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); border-color: #334155; }
+        .img-container { width: 100%; height: 160px; background: #0f172a; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .card img { width: 100%; height: 100%; object-fit: cover; }
-        .info { padding: 10px; font-size: 12px; color: #aaa; text-align: center; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
-        #loading { text-align: center; color: #00adb5; font-weight: bold; margin-top: 5px; }
+        
+        /* Card Info & Kebab Menu (Titik 3) */
+        .card-footer { padding: 12px; display: flex; justify-content: space-between; align-items: center; background: #111827; }
+        .info-text { font-size: 12px; color: #94a3b8; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; max-width: 140px; }
+        
+        .menu-container { position: relative; }
+        .three-dots { background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; padding: 0 5px; border-radius: 4px; }
+        .three-dots:hover { color: var(--text-main); background: var(--bg-hover); }
+        
+        /* Action Dropdown Menu */
+        .dropdown { display: none; position: absolute; right: 0; bottom: 30px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 10; min-width: 130px; overflow: hidden; }
+        .dropdown button { background: none; border: none; color: #e2e8f0; width: 100%; text-align: left; padding: 10px 15px; font-size: 13px; cursor: pointer; transition: 0.2s; }
+        .dropdown button:hover { background: var(--accent); color: white; }
+        
+        #loading { text-align: center; color: var(--accent); font-weight: bold; padding: 40px; width: 100%; grid-column: 1/-1; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Mahiru Cloud Storage</h1>
-    <p>Daftar gambar yang tersimpan di dalam repository GitHub</p>
-    <div id="loading">Memuat galeri...</div>
-</header>
+<div class="dashboard-container">
+    <header>
+        <div>
+            <h1>Mahiru Admin Dashboard</h1>
+            <span style="color: var(--text-muted); font-size: 13px;">Manage your cloud images securely</span>
+        </div>
+    </header>
 
-<div class="gallery" id="galleryContainer"></div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <p>Server Status</p>
+            <h3>● Active (Vercel)</h3>
+        </div>
+        <div class="stat-card">
+            <p>Database Source</p>
+            <h3>GitHub API</h3>
+        </div>
+        <div class="stat-card">
+            <p>Total Files Loaded</p>
+            <h3 id="totalFiles">0 Files</h3>
+        </div>
+    </div>
+
+    <h2>Quick Upload</h2>
+    <div class="upload-section">
+        <p style="margin: 0 0 10px 0; color: var(--text-muted);">Ingin upload dari web? Seret file ke sini atau klik tombol di bawah</p>
+        <input type="file" id="webFileInput" accept="image/*" style="display: none;" onchange="handleWebUpload()">
+        <button class="upload-btn" onclick="document.getElementById('webFileInput').click()">Pilih Gambar</button>
+    </div>
+
+    <h2>Stored Images Folder</h2>
+    <div class="gallery" id="galleryContainer">
+        <div id="loading">Memuat file dari repository...</div>
+    </div>
+</div>
 
 <script>
+    // 1. Ambil list gambar dari GitHub lewat API Vercel
     async function loadGallery() {
         try {
-            // Ambil list file lewat API rahasia kita
             const response = await fetch('/api/list');
             const files = await response.json();
+            const container = document.getElementById('galleryContainer');
+            const totalText = document.getElementById('totalFiles');
+            container.innerHTML = '';
+
+            if (!Array.isArray(files) || files.length === 0) {
+                container.innerHTML = '<div id="loading" style="color:#555">Belum ada gambar di folder image, Bre.</div>';
+                totalText.innerText = "0 Files";
+                return;
+            }
+
+            // Filter hanya file bertipe gambar
+            const imageFiles = files.filter(file => file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i));
+            totalText.innerText = `${imageFiles.length} Files`;
+
+            imageFiles.forEach(file => {
+                const imageUrl = `/image/${file.name}`;
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                card.innerHTML = `
+                    <div class="img-container">
+                        <img src="${imageUrl}" loading="lazy">
+                    </div>
+                    <div class="card-footer">
+                        <div class="info-text" title="${file.name}">${file.name}</div>
+                        <div class="menu-container">
+                            <button class="three-dots" onclick="toggleDropdown(event, this)">⋮</button>
+                            <div class="dropdown">
+                                <button onclick="copyLink('${imageUrl}')">📋 Copy Link</button>
+                                <button onclick="window.open('${imageUrl}', '_blank')">🖼️ Open Link</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // Tutup dropdown otomatis jika klik di luar area menu
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.dropdown').forEach(d => d.style.display = 'none');
+            });
+
+        } catch (err) {
+            document.getElementById('galleryContainer').innerHTML = '<div id="loading">Gagal memuat galeri, Bre.</div>';
+        }
+    }
+
+    // 2. Fungsi untuk memunculkan menu titik 3 (Dropdown)
+    function toggleDropdown(event, button) {
+        event.stopPropagation();
+        // Tutup semua dropdown lain dulu
+        document.querySelectorAll('.dropdown').forEach(d => d.style.display = 'none');
+        // Buka dropdown yang diklik
+        const dropdown = button.nextElementSibling;
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // 3. Fungsi Copy Link instan
+    function copyLink(path) {
+        const fullUrl = window.location.origin + path;
+        navigator.clipboard.writeText(fullUrl);
+        alert('📋 Link berhasil disalin:\n' + fullUrl);
+    }
+
+    // 4. Fitur Bonus: Upload langsung dari Dashboard Web (Opsional)
+    // Fitur ini butuh endpoint api/upload.js lo yang dulu aktif jika ingin difungsikan penuh
+    async function handleWebUpload() {
+        alert('Fitur upload langsung via Dashboard web memerlukan API token terpasang. Direkomendasikan tetap upload via bot WA biar rapi, Bre!');
+    }
+
+    loadGallery();
+</script>
+</body>
+</html>
             const container = document.getElementById('galleryContainer');
             document.getElementById('loading').style.display = 'none';
 
