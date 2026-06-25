@@ -1,5 +1,7 @@
 {
   "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/api/list", "destination": "/api/list.js" },
     { "source": "/image/:filename.(jpg|jpeg|png|gif|webp)", "destination": "/api/view.js?file=:filename.$1" }
   ]
 }
