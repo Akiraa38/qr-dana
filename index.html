@@ -3,18 +3,17 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>AngelShare - Mahiru Lobby</title>
+ <title>Mahiru Cloud - Uploader</title>
  <style>
  * {
  box-sizing: border-box;
  margin: 0;
  padding: 0;
- font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
- -webkit-tap-highlight-color: transparent;
+ font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
  }
 
  body {
- background-color: #1a1613;
+ background-color: #f4eae1;
  color: #5a4e45;
  display: flex;
  justify-content: center;
@@ -23,272 +22,273 @@
  padding: 10px;
  }
 
- /* CONTAINER UTAMA: Latar belakang full blur lembut */
+ /* CONTAINER UTAMA: Gambar latar belakang disesuaikan penuh */
  .mobile-container {
  width: 100%;
  max-width: 412px;
  background: #ffffff url('https://mahiru.web.id/image/file_1782447434194.jpg') no-repeat center center;
  background-size: cover;
- border-radius: 32px;
- box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+ border-radius: 30px;
+ box-shadow: 0 12px 35px rgba(90, 78, 69, 0.15);
  overflow: hidden;
+ display: block;
  position: relative;
  min-height: 840px;
- border: 4px solid rgba(255, 255, 255, 0.1);
+ border: 4px solid #ebdccb;
  }
 
+ /* OVERLAY: Agar tulisan di atas background tetap kontras dan terbaca */
  .background-overlay {
  position: absolute;
- top: 0; left: 0; right: 0; bottom: 0;
- background: linear-gradient(180deg, rgba(26, 22, 19, 0.2) 0%, rgba(26, 22, 19, 0.6) 100%);
+ top: 0;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ background: rgba(255, 255, 255, 0.65);
  z-index: 1;
  pointer-events: none;
  }
 
  header {
- background: rgba(255, 255, 255, 0.1);
- backdrop-filter: blur(10px);
- -webkit-backdrop-filter: blur(10px);
+ background: rgba(251, 247, 240, 0.9);
+ backdrop-filter: blur(5px);
  padding: 16px;
- border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+ border-bottom: 1px solid rgba(235, 220, 203, 0.7);
+ display: block;
  position: relative;
  z-index: 10;
  }
 
  .header-content {
- display: flex;
- justify-content: space-between;
- align-items: center;
+ display: table;
+ width: 100%;
+ }
+
+ .logo-section {
+ display: table-cell;
+ vertical-align: middle;
  }
 
  .logo-text {
- font-size: 20px;
- font-weight: 800;
- color: #ffffff;
- text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+ font-size: 22px;
+ font-weight: 700;
+ color: #8c7662;
+ letter-spacing: -0.5px;
  }
 
- .logo-text span { color: #d4af37; font-weight: 300; }
+ .logo-text span {
+ color: #d4af37;
+ font-weight: 300;
+ }
 
  .profile-section {
- display: flex;
- align-items: center;
- gap: 8px;
- }
-
- .user-name {
- font-size: 12px;
- font-weight: 700;
- color: #ffffff;
+ display: table-cell;
+ vertical-align: middle;
+ text-align: right;
  }
 
  .avatar-container {
- width: 34px;
- height: 34px;
+ width: 42px;
+ height: 42px;
  border-radius: 50%;
  border: 2px solid #d4af37;
+ display: inline-block;
+ vertical-align: middle;
  overflow: hidden;
+ background: #ebdccb;
+ box-shadow: 0 2px 5px rgba(0,0,0,0.1);
  }
 
- .avatar-img { width: 100%; height: 100%; object-fit: cover; }
+ .avatar-img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ object-position: center;
+ }
+
+ .user-name {
+ font-size: 13px;
+ font-weight: 600;
+ color: #7a695a;
+ margin-right: 8px;
+ display: inline-block;
+ vertical-align: middle;
+ }
 
  .content-area {
  position: relative;
  z-index: 5;
- padding: 20px 16px;
+ padding: 24px 16px;
  }
 
- /* CARD UPLOADER MENGAMBANG (Gaya Menu Game Lobi) */
+ .section-title {
+ font-size: 16px;
+ font-weight: 600;
+ color: #6e5d4f;
+ margin-bottom: 12px;
+ padding-left: 6px;
+ border-left: 3px solid #d4af37;
+ line-height: 1;
+ }
+
+ /* AREA STRUKTUR UPLOAD CARD */
  .upload-card {
- background: rgba(26, 22, 19, 0.45);
- backdrop-filter: blur(20px);
- -webkit-backdrop-filter: blur(20px);
- border: 1.5px dashed rgba(212, 175, 55, 0.5);
+ background: rgba(255, 255, 255, 0.65);
+ backdrop-filter: blur(4px);
+ -webkit-backdrop-filter: blur(4px);
+ border: 2px dashed rgba(212, 175, 55, 0.6);
  border-radius: 24px;
- padding: 30px 16px;
+ padding: 35px 20px;
  text-align: center;
- margin-bottom: 16px;
- cursor: pointer;
- box-shadow: 0 8px 32px rgba(0,0,0,0.2);
- transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
- }
-
- .upload-card:hover {
- border-color: #d4af37;
- background: rgba(26, 22, 19, 0.6);
+ margin-bottom: 20px;
+ position: relative;
+ box-shadow: 0 8px 20px rgba(140, 118, 98, 0.05);
+ transition: all 0.3s ease;
  }
 
  .cloud-icon {
- width: 48px;
- height: 48px;
- margin-bottom: 12px;
+ width: 56px;
+ height: 56px;
+ margin: 0 auto 12px;
+ opacity: 0.9;
+ display: block;
  }
 
  .upload-hint {
- font-size: 13px;
+ font-size: 14px;
  font-weight: 700;
- color: #ffffff;
- margin-bottom: 14px;
- letter-spacing: 0.5px;
+ color: #8c7662;
+ letter-spacing: 1px;
+ margin-bottom: 16px;
+ text-transform: uppercase;
  }
 
  .btn-choose {
- background: linear-gradient(135deg, #d4af37 0%, #aa841c 100%);
- color: #1a1613;
+ background: linear-gradient(135deg, #7da0ca 0%, #6488b3 100%);
+ color: white;
  border: none;
- padding: 10px 24px;
+ padding: 11px 28px;
  border-radius: 20px;
- font-size: 12px;
- font-weight: 700;
- box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+ font-size: 13px;
+ font-weight: 600;
+ box-shadow: 0 4px 12px rgba(100, 136, 179, 0.35);
  display: inline-block;
+ cursor: pointer;
+ text-decoration: none;
  }
 
  .upload-limit {
- font-size: 10px;
- color: #ccc0b5;
- margin-top: 12px;
- font-weight: 500;
+ font-size: 11px;
+ color: #8c7662;
+ margin-top: 14px;
+ font-weight: 600;
  }
 
- /* HASIL GENERATE TAUTAN */
+ /* KOTAK HASIL GENERATE TAUTAN (ResultBox Asli) */
  .result-card {
- background: rgba(255, 255, 255, 0.9);
- border-radius: 18px;
- padding: 14px;
- margin-bottom: 16px;
- display: none;
- box-shadow: 0 10px 25px rgba(0,0,0,0.2);
- animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
- }
-
- @keyframes popUp {
- from { transform: scale(0.9); opacity: 0; }
- to { transform: scale(1); opacity: 1; }
+ background: rgba(255, 255, 255, 0.85);
+ border: 1px solid #ebdccb;
+ border-radius: 20px;
+ padding: 16px;
+ margin-bottom: 24px;
+ display: none; /* Dikontrol via JavaScript */
+ box-shadow: 0 6px 15px rgba(0,0,0,0.05);
  }
 
  .result-label {
- font-size: 11px;
- font-weight: 800;
- color: #aa841c;
- margin-bottom: 6px;
+ font-size: 12px;
+ font-weight: 700;
+ color: #8c7662;
+ margin-bottom: 8px;
  display: block;
  }
 
  .input-group {
  display: flex;
- background: #ffffff;
- border: 1px solid #ebdccb;
- border-radius: 12px;
- padding: 3px;
- align-items: center;
+ gap: 8px;
  }
 
  .link-input {
- flex: 1; border: none; background: transparent;
- padding: 8px 10px; font-size: 12px;
- color: #1a1613; font-weight: 600; outline: none; min-width: 0;
+ flex: 1;
+ background: #fcf9f5;
+ border: 1px solid #ebdccb;
+ padding: 10px 14px;
+ border-radius: 12px;
+ font-size: 13px;
+ color: #5a4e45;
+ outline: none;
  }
 
  .btn-copy {
- background: #1a1613; color: white; border: none;
- padding: 8px 16px; border-radius: 10px;
- font-size: 11px; font-weight: 700; cursor: pointer;
+ background: #7da0ca;
+ color: white;
+ border: none;
+ padding: 0 16px;
+ border-radius: 12px;
+ font-size: 12px;
+ font-weight: 600;
+ cursor: pointer;
  }
 
- /* TOMBOL MENU GALERI BAWAH */
+ .btn-copy:active {
+ background: #6488b3;
+ }
+
+ /* TOMBOL NAVIGASI UTAMA KE HALAMAN LIST.HTML */
  .btn-navigation {
- width: 65%;
- background: rgba(26, 22, 19, 0.6);
- backdrop-filter: blur(10px);
- -webkit-backdrop-filter: blur(10px);
- border: 1px solid rgba(255, 255, 255, 0.1);
- color: #ffffff;
+ width: 100%;
+ background: rgba(251, 247, 240, 0.9);
+ border: 1px solid #ebdccb;
+ color: #8c7662;
  padding: 14px;
- border-radius: 20px;
- font-size: 12px;
+ border-radius: 18px;
+ font-size: 13px;
  font-weight: 700;
  display: flex;
  align-items: center;
  justify-content: center;
- gap: 8px;
+ gap: 10px;
+ cursor: pointer;
+ box-shadow: 0 4px 12px rgba(90, 78, 69, 0.08);
  text-decoration: none;
- box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+ transition: all 0.2s;
  margin-top: 10px;
  }
 
- /* ================= KONTEN INTERAKTIF LOBI GAME ================= */
- .lobby-character-container {
- position: absolute;
- right: -10px;
- bottom: 40px;
- width: 220px;
- z-index: 4;
- display: flex;
- flex-direction: column;
- align-items: center;
- pointer-events: none; /* Menghindari area transparan menghalangi klik bawah */
+ .btn-navigation:hover {
+ background: #ebdccb;
+ color: #5a4e45;
  }
 
- /* Chat Bubble Mahiru */
- .chat-bubble {
- background: rgba(255, 255, 255, 0.95);
- color: #3a2e2b;
- padding: 10px 14px;
- border-radius: 16px;
- border-bottom-right-radius: 2px;
- font-size: 12px;
- font-weight: 600;
- line-height: 1.4;
- max-width: 170px;
- margin-bottom: 10px;
- box-shadow: 0 6px 20px rgba(0,0,0,0.15);
- position: relative;
- animation: floatAnim 3s ease-in-out infinite;
- opacity: 1;
- transition: opacity 0.2s ease;
+ .feather-left {
+ position: absolute;
+ left: 15px;
+ top: 50%;
+ transform: translateY(-50%) rotate(-15deg);
+ width: 24px;
+ opacity: 0.25;
  }
 
- .chat-bubble::after {
- content: '';
+ .feather-right {
  position: absolute;
- bottom: -6px;
  right: 15px;
- border-width: 6px 6px 0;
- border-style: solid;
- border-color: rgba(255, 255, 255, 0.95) transparent;
- display: block;
- width: 0;
- }
-
- /* Sprite Karakter Mahiru */
- .character-sprite {
- width: 100%;
- height: auto;
- cursor: pointer;
- pointer-events: auto; /* Izinkan klik khusus pada gambar karakter */
- transform-origin: bottom center;
- transition: transform 0.1s ease;
- filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
- }
-
- .character-sprite:active {
- transform: scale(0.96);
- }
-
- @keyframes floatAnim {
- 0%, 100% { transform: translateY(0); }
- 50% { transform: translateY(-4px); }
+ top: 42%;
+ transform: translateY(-50%) rotate(35deg);
+ width: 24px;
+ opacity: 0.25;
  }
 
  footer {
- position: absolute;
- bottom: 15px;
- left: 20px;
- font-size: 10px;
- color: rgba(255, 255, 255, 0.4);
+ text-align: center;
+ font-size: 11px;
+ color: #8c7662;
  font-weight: 500;
- z-index: 10;
+ padding: 24px 10px 10px;
+ margin-top: 15px;
+ }
+
+ #file-input {
+ display: none;
  }
  </style>
 </head>
@@ -303,98 +303,77 @@
  <div class="logo-text">Angel<span>Share</span></div>
  </div>
  <div class="profile-section">
- <span class="user-name">Mahiru Shiina</span>
+ <span class="user-name">Mahiru Shina</span>
  <div class="avatar-container">
- <img class="avatar-img" src="https://mahiru.web.id/image/file_1782447445629.jpg" alt="Mahiru">
+ <img class="avatar-img" src="https://mahiru.web.id/image/file_1782447445629.jpg" alt="Mahiru Shiina">
  </div>
  </div>
  </div>
  </header>
 
  <div class="content-area">
- <!-- CARD UPLOADER -->
+ <div class="section-title">Unggah File Baru</div>
+ 
  <div class="upload-card" id="drop-zone" onclick="document.getElementById('file-input').click()">
- <svg class="cloud-icon" viewBox="0 0 64 64" fill="none" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+ <svg class="feather-left" viewBox="0 0 24 24" fill="#d4af37"><path d="M2,21A19.94,19.94,0,0,0,18,13a11.45,11.45,0,0,1-6-2A17.1,17.1,0,0,0,2,21Z"/></svg>
+ <svg class="feather-right" viewBox="0 0 24 24" fill="#d4af37"><path d="M22,21A19.94,19.94,0,0,1,6,13a11.45,11.45,0,0,0,6-2A17.1,17.1,0,0,1,22,21Z"/></svg>
+
+ <svg class="cloud-icon" viewBox="0 0 64 64" fill="none" stroke="#7da0ca" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
  <path d="M18 40a12 12 0 1 1 11.6-16A16 16 0 1 1 52 32c0 4.4-3.6 8-8 8H18z"/>
  </svg>
- <div class="upload-hint" id="upload-status-text">KETUK / SERET BERKAS SINI</div>
- <span class="btn-choose">PILIH BERKAS</span>
+ 
+ <div class="upload-hint" id="upload-status-text">Ketuk atau Seret File Ke Sini</div>
+ 
+ <label type="button" class="btn-choose">PILIH BERKAS</label>
  <input type="file" id="file-input" onchange="fileSelected(this)">
- <div class="upload-limit">MAKSIMAL UKURAN FILE 50MB</div>
+ 
+ <div class="upload-limit">UKURAN MAKSIMAL 50MB</div>
  </div>
 
- <!-- BOX COPIER LINK -->
  <div class="result-card" id="resultBox">
- <span class="result-label">TAUTAN BERHASIL DISIAPKAN:</span>
+ <span class="result-card-label" id="statusLabel" style="font-size: 12px; font-weight:700; margin-bottom:6px; display:block;">Tautan Berhasil Dibuat:</span>
  <div class="input-group">
  <input type="text" class="link-input" id="linkResult" readonly value="">
  <button class="btn-copy" onclick="copyGeneratedLink()">SALIN</button>
  </div>
  </div>
 
- <!-- NAVIGASI GALERI BAR -->
+ <div class="section-title">Navigasi Galeri</div>
+ 
  <a href="/list" class="btn-navigation">
- <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
- <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 012.008 1.24l.885 1.77a2.25 2.25 0 002.007 1.24h1.98a2.25 2.25 0 002.007-1.24l.885-1.77a2.25 2.25 0 012.007-1.24h3.86m-18 1.5V7.5A2.25 2.25 0 015.25 5.25h13.5A2.25 2.25 0 0121 7.5v7.5m-18 0A2.25 2.25 0 005.25 18h13.5A2.25 2.25 0 0021 15.75V7.5" />
- </svg>
- BUKA GALERI IMAGES
+ <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4.5 2A2.5 2.5 0 0 0 2 4.5v7A2.5 2.5 0 0 0 4.5 14h7a2.5 2.5 0 0 0 2.5-2.5v-7A2.5 2.5 0 0 0 11.5 2h-7zM3 4.5A1.5 1.5 0 0 1 4.5 3h7A1.5 1.5 0 0 1 13 4.5v7a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 3 12.5v-7zM10.5 5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zM4 11l2.5-3.25L8 9.5l3-4L12 11H4z"/></svg>
+ LIHAT SEMUA GAMBAR (./image/)
  </a>
- </div>
-
- <!-- ELEMENT UTAMA: INTERAKTIF LOBI MAHIRU SHIINA -->
- <div class="lobby-character-container">
- <div class="chat-bubble" id="mahiruBubble">Halo bre! Ada gambar baru yang mau kamu simpan hari ini?</div>
- <img class="character-sprite" id="mahiruChar" src="https://mahiru.web.id/image/file_1782447445629.jpg" alt="Mahiru Character" onclick="triggerMahiruTalk()">
- </div>
 
  <footer>
- &copy; 2026 AngelShare Lobby Base.
+ Ditenagai oleh Vercel Serverless & GitHub API<br>&copy; 2026 AngelShare Inc.
  </footer>
+ </div>
 </div>
 
 <script>
  let base64File = null;
  let selectedFileName = "";
 
- // Kumpulan teks acak pas Mahiru diketuk (Bisa lo tambah sesuka hati, bre!)
- const mahiruQuotes = [
- "Geli tau... jangan dipencet-pencet terus ih! 😣",
- "K-kamu sengaja ya nyentuh aku terus? Dasar... 😳",
- "Tugas kamu hari ini udah selesai belum, Bre?",
- "Huft.. kalau bosan mending upload gambar gih sana.",
- "Aku di sini nemenin kamu kok, tenang aja.. 🤍",
- "Ih! Kasar banget ngetuknya, pelan-pelan dong!"
- ];
-
- function triggerMahiruTalk(customText = null) {
- const bubble = document.getElementById('mahiruBubble');
- bubble.style.opacity = 0;
- 
- setTimeout(() => {
- if (customText) {
- bubble.innerText = customText;
- } else {
- const randomQuote = mahiruQuotes[Math.floor(Math.random() * mahiruQuotes.length)];
- bubble.innerText = randomQuote;
- }
- bubble.style.opacity = 1;
- }, 150);
- }
-
- // Drag and Drop Interaksi Responsif ke Dialog Mahiru
+ // Fungsi Drop Zone Drag & Drop Handler Asli Proyek Lo
  const dropZone = document.getElementById('drop-zone');
  
  dropZone.addEventListener('dragover', (e) => { 
- e.preventDefault(); e.stopPropagation();
- triggerMahiruTalk("Eh? File apa itu? Sini lepasin di kotak biar aku simpan! ✨");
+ e.preventDefault(); 
+ e.stopPropagation();
+ dropZone.style.borderColor = '#d4af37'; 
  });
  
  dropZone.addEventListener('dragleave', (e) => { 
- e.preventDefault(); e.stopPropagation();
+ e.preventDefault();
+ e.stopPropagation();
+ dropZone.style.borderColor = 'rgba(212, 175, 55, 0.6)'; 
  });
  
  dropZone.addEventListener('drop', (e) => {
- e.preventDefault(); e.stopPropagation();
+ e.preventDefault();
+ e.stopPropagation();
+ dropZone.style.borderColor = 'rgba(212, 175, 55, 0.6)';
  const files = e.dataTransfer.files;
  if(files.length > 0) {
  document.getElementById('file-input').files = files;
@@ -402,6 +381,7 @@
  }
  });
 
+ // Menangani pembacaan file lokal (FileReader)
  function fileSelected(input) {
  if(input.files.length === 0) return;
  const file = input.files[0];
@@ -412,19 +392,22 @@
  reader.onload = () => {
  base64File = reader.result;
  const statusText = document.getElementById('upload-status-text');
- statusText.innerText = file.name.length > 20 ? file.name.substring(0, 17) + "..." : file.name;
+ statusText.innerText = file.name.length > 25 ? file.name.substring(0, 22) + "..." : file.name;
+ statusText.style.color = '#6488b3';
  
- triggerMahiruTalk("Bentar ya bre, filenya lagi aku proses dulu... ⏳");
+ // Otomatis trigger proses unggah ketika file selesai dipilih
  prosesUpload();
  };
  }
 
+ // Mengirim file ke backend endpoint /api/upload lo untuk di simpan ke folder ./image/
  async function prosesUpload() {
- if (!base64File) return;
+ if (!base64File) return alert('Pilih filenya dulu, Bre!');
+ 
  const resBox = document.getElementById('resultBox');
  const linkRes = document.getElementById('linkResult');
  
- linkRes.value = "Mengirim data ke Vercel...";
+ linkRes.value = "Menghubungkan ke Mahiru Cloud...";
  resBox.style.display = "block";
 
  try {
@@ -435,27 +418,28 @@
  });
  const data = await response.json();
  if (data.url) {
+ // Menampilkan link download/view penuh yang digenerate oleh serverless lo
  linkRes.value = window.location.origin + data.url;
- triggerMahiruTalk("Selesai, Bre! Tautannya udah jadi, buruan salin gih! 📋✨");
  } else {
- triggerMahiruTalk("Yahh eror... Katanya: " + data.error);
+ alert('Gagal mengunggah berkas: ' + data.error);
  resBox.style.display = "none";
  }
  } catch (err) {
- triggerMahiruTalk("Aduh, gagal hubungin API Serverless-nya nih. 😢");
+ alert('Eror koneksi server API.');
  resBox.style.display = "none";
  }
  }
 
+ // Menyalin isi linkResult langsung ke clipboard internal HP/Browser
  function copyGeneratedLink() {
  const linkRes = document.getElementById('linkResult');
- if(!linkRes.value || linkRes.value.startsWith("Mengirim")) return;
+ if(!linkRes.value || linkRes.value.startsWith("Menghubungkan")) return;
  
  linkRes.select();
- linkRes.setSelectionRange(0, 99999);
+ linkRes.setSelectionRange(0, 99999); // Untuk perangkat mobile
  
  navigator.clipboard.writeText(linkRes.value).then(() => {
- triggerMahiruTalk("Tautan sukses disalin! Jangan lupa share ya! 😉");
+ alert('📋 Tautan sukses disalin ke clipboard!');
  }).catch(() => {
  alert('Gagal menyalin otomatis.');
  });
