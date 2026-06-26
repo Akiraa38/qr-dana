@@ -4,7 +4,7 @@
     { "source": "/list", "destination": "/list.html" },
     { "source": "/api/list", "destination": "/api/list.js" },
     { "source": "/api/upload", "destination": "/api/upload.js" },
-    { "source": "/image/:filename.(jpg|jpeg|png|gif|webp)", "destination": "/api/view.js?file=:filename.$1" },
-    { "source": "/image/:folder/:filename.(jpg|jpeg|png|gif|webp)", "destination": "/api/view.js?file=:folder/:filename.$1" }
+    { "source": "/image/:folder/:filename", "destination": "/api/view.js?file=:folder/:filename" },
+    { "source": "/image/:filename", "destination": "/api/view.js?file=:filename" }
   ]
 }
