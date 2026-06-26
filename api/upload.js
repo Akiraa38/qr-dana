@@ -1,4 +1,4 @@
-const GITHUB_TOKEN = "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"; 
+const GITHUB_TOKEN = process.env.GH_TOKEN; 
 const REPO_OWNER = "Akiraa38";          
 const REPO_NAME = "qr-dana";              
 
