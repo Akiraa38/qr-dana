@@ -3,352 +3,419 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Mahiru Cloud - Uploader</title>
+ <title>AngelShare - Mahiru Edition</title>
  <style>
- :root {
- --bg-main: #080b11;
- --bg-card: rgba(21, 29, 48, 0.65);
- --accent-cyan: #00f2fe;
- --accent-blue: #4facfe;
- --accent-gold: #ffb347;
- --text-main: #f1f5f9;
- --text-muted: #94a3b8;
- --glow: rgba(0, 242, 254, 0.4);
- }
- 
- body { 
- font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif; 
- background: radial-gradient(circle at 50% 0%, #1e294b 0%, #080b11 70%);
- color: var(--text-main); 
- margin: 0; 
- padding: 20px; 
- display: flex; 
- justify-content: center; 
- align-items: center; 
- min-height: 100vh; 
- box-sizing: border-box; 
+ * {
+ box-sizing: border-box;
+ margin: 0;
+ padding: 0;
+ font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
  }
 
- .container { 
- width: 100%; 
- max-width: 460px; 
- background: var(--bg-card); 
- backdrop-filter: blur(16px);
- -webkit-backdrop-filter: blur(16px);
- border-radius: 24px; 
- overflow: hidden; 
- border: 1px solid rgba(255, 255, 255, 0.08); 
- box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1); 
- text-align: center; 
- transition: transform 0.3s ease;
+ body {
+ background-color: #f4eae1;
+ color: #5a4e45;
+ display: flex;
+ justify-content: center;
+ align-items: flex-start;
+ min-height: 100vh;
+ padding: 10px;
  }
- 
- .container:hover {
- transform: translateY(-2px);
- }
- 
- /* Premium Banner Overlay */
- .banner-wrapper {
- position: relative;
+
+ /* CONTAINER UTAMA: Memaksa background foto Mahiru terpusat penuh */
+ .mobile-container {
  width: 100%;
- aspect-ratio: 16 / 5;
+ max-width: 412px;
+ background: #ffffff url('https://mahiru.web.id/image/file_1782436464953.jpg') no-repeat center center;
+ background-size: cover;
+ border-radius: 30px;
+ box-shadow: 0 12px 35px rgba(90, 78, 69, 0.15);
  overflow: hidden;
- border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+ display: block;
+ position: relative;
+ min-height: 840px;
+ border: 4px solid #ebdccb;
  }
 
- .banner { 
- width: 100%; 
- height: 100%;
- object-fit: cover; 
- object-position: center; 
- transition: transform 0.5s ease;
- }
-
- .banner-wrapper:hover .banner {
- transform: scale(1.05);
- }
-
- .banner-overlay {
+ /* OVERLAY: Lapisan putih semitransparan agar teks di depan tetap kontras & terbaca */
+ .background-overlay {
  position: absolute;
- bottom: 0;
+ top: 0;
  left: 0;
+ right: 0;
+ bottom: 0;
+ background: rgba(255, 255, 255, 0.65);
+ z-index: 1;
+ pointer-events: none;
+ }
+
+ header {
+ background: rgba(251, 247, 240, 0.9);
+ backdrop-filter: blur(5px);
+ padding: 16px;
+ border-bottom: 1px solid rgba(235, 220, 203, 0.7);
+ display: block;
+ position: relative;
+ z-index: 10;
+ }
+
+ .header-content {
+ display: table;
  width: 100%;
- height: 50%;
- background: gradient(linear, to top, var(--bg-main), transparent);
- background: linear-gradient(to top, rgba(8, 11, 17, 0.9), transparent);
  }
- 
- .content { padding: 35px 25px 25px 25px; }
- 
- h3 { 
- margin: 0 0 6px 0; 
- font-size: 26px; 
- font-weight: 800;
+
+ .logo-section {
+ display: table-cell;
+ vertical-align: middle;
+ }
+
+ .logo-text {
+ font-size: 22px;
+ font-weight: 700;
+ color: #8c7662;
  letter-spacing: -0.5px;
- background: linear-gradient(135deg, #fff 30%, var(--accent-cyan) 100%);
- -webkit-background-clip: text;
- -webkit-text-fill-color: transparent;
  }
- 
- p { 
- margin: 0 0 30px 0; 
- font-size: 14px; 
- font-weight: 500;
- color: var(--text-muted); 
- letter-spacing: 0.5px;
+
+ .logo-text span {
+ color: #d4af37;
+ font-weight: 300;
  }
- 
- /* Modern Drag & Drop Zone */
- .upload-area { 
- border: 2px dashed rgba(0, 242, 254, 0.25); 
- border-radius: 16px; 
- padding: 35px 20px; 
- cursor: pointer; 
- transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
- margin-bottom: 24px; 
- background: rgba(8, 11, 17, 0.4); 
- position: relative;
+
+ .profile-section {
+ display: table-cell;
+ vertical-align: middle;
+ text-align: right;
+ }
+
+ /* FOTO PROFIL: Diperbaiki biar bulat sempurna dan gak gepeng */
+ .avatar-container {
+ width: 42px;
+ height: 42px;
+ border-radius: 50%;
+ border: 2px solid #d4af37;
+ display: inline-block;
+ vertical-align: middle;
  overflow: hidden;
- }
- 
- .upload-area:hover { 
- border-color: var(--accent-cyan); 
- background: rgba(0, 242, 254, 0.03);
- box-shadow: 0 0 20px rgba(0, 242, 254, 0.1);
- }
- 
- .upload-area svg { 
- width: 48px; 
- height: 48px; 
- fill: url(#cyan-gradient);
- margin-bottom: 12px; 
- transition: transform 0.3s ease;
+ background: #ebdccb;
+ box-shadow: 0 2px 5px rgba(0,0,0,0.1);
  }
 
- .upload-area:hover svg {
- transform: translateY(-4px);
- }
- 
- /* Futuristic Gradient Button */
- .btn { 
- background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%); 
- color: #04060a; 
- border: none; 
- width: 100%; 
- padding: 14px; 
- border-radius: 12px; 
- font-weight: 700; 
- font-size: 15px; 
- letter-spacing: 0.5px;
- cursor: pointer; 
- transition: all 0.3s ease; 
- box-shadow: 0 4px 15px var(--glow);
- }
- 
- .btn:hover { 
- transform: translateY(-1px);
- box-shadow: 0 6px 20px rgba(0, 242, 254, 0.6);
- opacity: 0.95;
+ .avatar-img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ object-position: center;
  }
 
- .btn:active {
- transform: translateY(1px);
- }
- 
- /* Glassmorphism Result Box */
- .result-box { 
- margin-top: 24px; 
- display: none; 
- background: rgba(8, 11, 17, 0.6); 
- padding: 16px; 
- border-radius: 14px; 
- border: 1px solid rgba(0, 242, 254, 0.2); 
- animation: fadeIn 0.4s ease;
- }
-
- @keyframes fadeIn {
- from { opacity: 0; transform: translateY(10px); }
- to { opacity: 1; transform: translateY(0); }
- }
-
- .result-box span { 
- display: flex;
- align-items: center;
- gap: 6px;
- font-size: 13px; 
- color: var(--accent-gold); 
- font-weight: 700; 
- margin-bottom: 8px; 
- text-align: left; 
- }
- 
- .result-input-wrapper {
- position: relative;
- display: flex;
- align-items: center;
- }
-
- .result-box input { 
- width: 100%; 
- padding: 12px 40px 12px 14px; 
- background: #080b11; 
- border: 1px solid rgba(255, 255, 255, 0.1); 
- color: #fff; 
- border-radius: 8px; 
- box-sizing: border-box; 
- font-size: 14px; 
- font-family: monospace;
- transition: border-color 0.3s;
- }
-
- .result-box input:focus {
- outline: none;
- border-color: var(--accent-cyan);
- }
-
- .copy-icon {
- position: absolute;
- right: 12px;
- cursor: pointer;
- fill: var(--text-muted);
- width: 18px;
- height: 18px;
- transition: fill 0.2s;
- }
-
- .copy-icon:hover {
- fill: var(--accent-cyan);
- }
- 
- .nav-link { 
- display: inline-flex; 
- align-items: center;
- gap: 4px;
- margin-top: 25px; 
- color: var(--text-muted); 
- font-size: 13px; 
+ .user-name {
+ font-size: 13px;
  font-weight: 600;
- text-decoration: none; 
- transition: color 0.2s; 
+ color: #7a695a;
+ margin-right: 8px;
+ display: inline-block;
+ vertical-align: middle;
  }
- 
- .nav-link:hover { 
- color: var(--accent-cyan); 
+
+ .content-area {
+ position: relative;
+ z-index: 5;
+ padding: 24px 16px;
+ }
+
+ .section-title {
+ font-size: 16px;
+ font-weight: 600;
+ color: #6e5d4f;
+ margin-bottom: 12px;
+ padding-left: 6px;
+ border-left: 3px solid #d4af37;
+ line-height: 1;
+ }
+
+ /* KOTAK UPLOAD: Efek kaca transparan tembus pandang ke background */
+ .upload-card {
+ background: rgba(255, 255, 255, 0.65);
+ backdrop-filter: blur(4px);
+ -webkit-backdrop-filter: blur(4px);
+ border: 2px dashed rgba(212, 175, 55, 0.6);
+ border-radius: 24px;
+ padding: 35px 20px;
+ text-align: center;
+ margin-bottom: 24px;
+ position: relative;
+ box-shadow: 0 8px 20px rgba(140, 118, 98, 0.05);
+ transition: all 0.3s ease;
+ }
+
+ .upload-card:active {
+ border-color: #d4af37;
+ background: rgba(255, 255, 255, 0.85);
+ }
+
+ .cloud-icon {
+ width: 56px;
+ height: 56px;
+ margin: 0 auto 12px;
+ opacity: 0.9;
+ display: block;
+ }
+
+ .upload-hint {
+ font-size: 14px;
+ font-weight: 700;
+ color: #8c7662;
+ letter-spacing: 1px;
+ margin-bottom: 16px;
+ text-transform: uppercase;
+ }
+
+ .btn-choose {
+ background: linear-gradient(135deg, #7da0ca 0%, #6488b3 100%);
+ color: white;
+ border: none;
+ padding: 11px 28px;
+ border-radius: 20px;
+ font-size: 13px;
+ font-weight: 600;
+ box-shadow: 0 4px 12px rgba(100, 136, 179, 0.35);
+ display: inline-block;
+ cursor: pointer;
+ text-decoration: none;
+ }
+
+ .upload-limit {
+ font-size: 11px;
+ color: #8c7662;
+ margin-top: 14px;
+ font-weight: 600;
+ }
+
+ .feather-left {
+ position: absolute;
+ left: 15px;
+ top: 50%;
+ transform: translateY(-50%) rotate(-15deg);
+ width: 24px;
+ opacity: 0.25;
+ }
+
+ .feather-right {
+ position: absolute;
+ right: 15px;
+ top: 42%;
+ transform: translateY(-50%) rotate(35deg);
+ width: 24px;
+ opacity: 0.25;
+ }
+
+ /* LIST FILE KACA */
+ .recent-card {
+ background: rgba(255, 255, 255, 0.75);
+ backdrop-filter: blur(4px);
+ border-radius: 24px;
+ padding: 16px;
+ box-shadow: 0 6px 20px rgba(90, 78, 69, 0.05);
+ border: 1px solid rgba(240, 230, 219, 0.8);
+ }
+
+ .file-list {
+ list-style: none;
+ }
+
+ .file-item {
+ display: table;
+ width: 100%;
+ padding: 12px 8px;
+ border-bottom: 1px solid rgba(240, 230, 219, 0.4);
+ transition: background 0.2s;
+ border-radius: 10px;
+ }
+
+ .file-item:last-child {
+ border-bottom: none;
+ }
+
+ .file-item:active {
+ background-color: rgba(250, 246, 240, 0.8);
+ }
+
+ .file-icon-cell {
+ display: table-cell;
+ width: 40px;
+ vertical-align: middle;
+ }
+
+ .file-icon-bg {
+ width: 34px;
+ height: 34px;
+ border-radius: 10px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ text-align: center;
+ }
+
+ .bg-image { background-color: #e3f2fd; color: #1e88e5; }
+ .bg-pdf { background-color: #ffebee; color: #e53935; }
+
+ .file-info-cell {
+ display: table-cell;
+ vertical-align: middle;
+ padding-left: 10px;
+ }
+
+ .file-name {
+ font-size: 13px;
+ font-weight: 600;
+ color: #4a3e35;
+ display: block;
+ margin-bottom: 2px;
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ max-width: 210px;
+ }
+
+ .file-meta {
+ font-size: 11px;
+ color: #938275;
+ display: block;
+ }
+
+ footer {
+ text-align: center;
+ font-size: 11px;
+ color: #8c7662;
+ font-weight: 500;
+ padding: 24px 10px 10px;
+ margin-top: 15px;
+ border-top: 1px dashed rgba(212, 175, 55, 0.3);
+ }
+
+ .notification-bell {
+ position: absolute;
+ bottom: 20px;
+ right: 20px;
+ width: 46px;
+ height: 46px;
+ background-color: rgba(246, 235, 217, 0.9);
+ backdrop-filter: blur(2px);
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+ border: 1px solid #ebdccb;
+ z-index: 15;
+ }
+
+ #file-input {
+ display: none;
  }
  </style>
- <!-- Link Font Kece -->
- <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="container">
- <div class="banner-wrapper">
- <img src="https://mahiru.web.id/image/file_1782436464953.jpg" alt="Mahiru Banner" class="banner">
- <div class="banner-overlay"></div>
+<div class="mobile-container">
+ <!-- Overlay Transparansi Gambar -->
+ <div class="background-overlay"></div>
+
+ <header>
+ <div class="header-content">
+ <div class="logo-section">
+ <div class="logo-text">Angel<span>Share</span></div>
  </div>
+ <div class="profile-section">
+ <span class="user-name">Unggahan Bre</span>
+ <div class="avatar-container">
+ <!-- Foto Profil Menggunakan Link dari Lu -->
+ <img class="avatar-img" src="https://mahiru.web.id/image/file_1782436464953.jpg" alt="Mahiru Shiina">
+ </div>
+ </div>
+ </div>
+ </header>
+
+ <div class="content-area">
+ <div class="section-title">Unggah File</div>
  
- <div class="content">
- <h3>Mahiru Cloud</h3>
- <p>Generate to Link</p>
- 
- <div class="upload-area" id="dropZone" onclick="document.getElementById('fileInput').click()">
- <!-- SVG Gradient Definition -->
- <svg viewBox="0 0 24 24">
- <defs>
- <linearGradient id="cyan-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
- <stop offset="0%" stop-color="#4facfe" />
- <stop offset="100%" stop-color="#00f2fe" />
- </linearGradient>
- </defs>
- <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+ <div class="upload-card" id="drop-zone">
+ <svg class="feather-left" viewBox="0 0 24 24" fill="#d4af37"><path d="M2,21A19.94,19.94,0,0,0,18,13a11.45,11.45,0,0,1-6-2A17.1,17.1,0,0,0,2,21Z"/></svg>
+ <svg class="feather-right" viewBox="0 0 24 24" fill="#d4af37"><path d="M22,21A19.94,19.94,0,0,1,6,13a11.45,11.45,0,0,0,6-2A17.1,17.1,0,0,1,22,21Z"/></svg>
+
+ <svg class="cloud-icon" viewBox="0 0 64 64" fill="none" stroke="#7da0ca" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M18 40a12 12 0 1 1 11.6-16A16 16 0 1 1 52 32c0 4.4-3.6 8-8 8H18z"/>
  </svg>
- <div style="font-size: 14px; font-weight: 600; color: var(--text-muted);">Pilih atau Drop File ke Sini</div>
- <input type="file" id="fileInput" style="display: none;" onchange="fileSelected(this)">
- </div>
  
- <button class="btn" onclick="prosesUpload()">Generate Link</button>
+ <div class="upload-hint">Seret & Lepas File Atau</div>
  
- <div class="result-box" id="resultBox">
- <span>Link Berhasil Di Upload:</span>
- <div class="result-input-wrapper">
- <input type="text" id="linkResult" readonly onclick="this.select()">
- <svg class="copy-icon" viewBox="0 0 24 24" onclick="copyLink()"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+ <label for="file-input" class="btn-choose">PILIH BERKAS</label>
+ <input type="file" id="file-input" multiple>
+ 
+ <div class="upload-limit">MAKS 50MB, FORMAT YANG DISETUJUI MAHIRU</div>
+ </div>
+
+ <div class="section-title">Unggahan Terbaru</div>
+
+ <div class="recent-card">
+ <ul class="file-list">
+ <li class="file-item">
+ <div class="file-icon-cell">
+ <div class="file-icon-bg bg-image">
+ <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9 2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094L15 10.667V3a1 1 0 0 0-1-1h-12a1 1 0 0 0-1 1v9z"/></svg>
  </div>
  </div>
- 
- <a href="/list" class="nav-link">Lihat Dashboard List File ➔</a>
+ <div class="file-info-cell">
+ <span class="file-name">mahiru_art.png</span>
+ <span class="file-meta">13,7 MB • 13 Juni 2026</span>
+ </div>
+ </li>
+ <li class="file-item">
+ <div class="file-icon-cell">
+ <div class="file-icon-bg bg-pdf">
+ <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/></svg>
+ </div>
+ </div>
+ <div class="file-info-cell">
+ <span class="file-name">catatan.pdf</span>
+ <span class="file-meta">28,3 KB • 12 Juni 2026</span>
+ </div>
+ </li>
+ </ul>
+ </div>
+
+ <footer>
+ Didukung oleh Vercel | Tema terinspirasi oleh Mahiru Shiina<br>&copy; 2026 AngelShare Inc.
+ </footer>
+ </div>
+
+ <div class="notification-bell">
+ <svg width="20" height="20" fill="#8c7662" viewBox="0 0 16 16">
+ <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+ </svg>
  </div>
 </div>
 
 <script>
- let base64File = "";
- let selectedFileName = "";
+ const fileInput = document.getElementById('file-input');
+ const dropZone = document.getElementById('drop-zone');
 
- // Tambah fitur Drag and Drop Visual
- const dropZone = document.getElementById('dropZone');
- ['dragenter', 'dragover'].forEach(eventName => {
- dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent-cyan)'; }, false);
- });
- ['dragleave', 'drop'].forEach(eventName => {
- dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.style.borderColor = 'rgba(0, 242, 254, 0.25)'; }, false);
- });
- dropZone.addEventListener('drop', (e) => {
- const dt = e.dataTransfer;
- const files = dt.files;
+ fileInput.addEventListener('change', (e) => {
+ const files = e.target.files;
  if(files.length > 0) {
- document.getElementById('fileInput').files = files;
- fileSelected(document.getElementById('fileInput'));
+ alert(`Siap di-upload, bre! Ada ${files.length} file.`);
  }
  });
 
- function fileSelected(input) {
- if(input.files.length === 0) return;
- const file = input.files[0];
- selectedFileName = file.name;
- const reader = new FileReader();
- reader.readAsDataURL(file);
- reader.onload = () => {
- base64File = reader.result;
- const textEl = document.querySelector('.upload-area div');
- textEl.innerText = file.name.length > 30 ? file.name.substring(0, 27) + "..." : file.name;
- textEl.style.color = 'var(--accent-cyan)';
- };
+ dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = '#d4af37'; });
+ dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = 'rgba(212, 175, 55, 0.5)'; });
+ dropZone.addEventListener('drop', (e) => {
+ e.preventDefault();
+ dropZone.style.borderColor = 'rgba(212, 175, 55, 0.5)';
+ const files = e.dataTransfer.files;
+ if(files.length > 0) {
+ alert(`File "${files[0].name}" berhasil di-drop!`);
  }
-
- async function prosesUpload() {
- if (!base64File) return alert('Pilih filenya dulu, Bre!');
- const resBox = document.getElementById('resultBox');
- const linkRes = document.getElementById('linkResult');
- 
- linkRes.value = "Menghubungkan ke Mahiru Cloud...";
- resBox.style.display = "block";
-
- try {
- const response = await fetch('/api/upload', {
- method: 'POST',
- headers: { 'Content-Type': 'application/json' },
- body: JSON.stringify({ image: base64File, filename: selectedFileName })
  });
- const data = await response.json();
- if (data.url) {
- linkRes.value = window.location.origin + data.url;
- } else {
- alert('Gagal: ' + data.error);
- resBox.style.display = "none";
- }
- } catch (err) {
- alert('Eror koneksi server.');
- resBox.style.display = "none";
- }
- }
-
- function copyLink() {
- const copyText = document.getElementById("linkResult");
- copyText.select();
- copyText.setSelectionRange(0, 99999);
- navigator.clipboard.writeText(copyText.value);
- alert("Link berhasil disalin ke clipboard, Bre!");
- }
 </script>
 </body>
 </html>
