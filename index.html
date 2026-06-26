@@ -3,69 +3,303 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Mahiru Cloud - Upload</title>
+ <title>Mahiru Cloud - Ultimate Uploader</title>
  <style>
  :root {
- --bg-main: #0b0f19;
- --bg-card: #151d30;
- --accent: #00adb5;
- --text-main: #ffffff;
- --text-muted: #64748b;
+ --bg-main: #080b11;
+ --bg-card: rgba(21, 29, 48, 0.65);
+ --accent-cyan: #00f2fe;
+ --accent-blue: #4facfe;
+ --accent-gold: #ffb347;
+ --text-main: #f1f5f9;
+ --text-muted: #94a3b8;
+ --glow: rgba(0, 242, 254, 0.4);
  }
- body { font-family: 'Segoe UI', sans-serif; background: var(--bg-main); color: var(--text-main); margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
- .container { width: 100%; max-width: 450px; background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid #1e294b; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; }
  
- /* Gambar Banner Rasio 16:4 Otomatis */
- .banner { width: 100%; aspect-ratio: 16 / 4; display: block; object-fit: cover; object-position: center; border-bottom: 1px solid #1e294b; }
+ body { 
+ font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif; 
+ background: radial-gradient(circle at 50% 0%, #1e294b 0%, #080b11 70%);
+ color: var(--text-main); 
+ margin: 0; 
+ padding: 20px; 
+ display: flex; 
+ justify-content: center; 
+ align-items: center; 
+ min-height: 100vh; 
+ box-sizing: border-box; 
+ }
+
+ .container { 
+ width: 100%; 
+ max-width: 460px; 
+ background: var(--bg-card); 
+ backdrop-filter: blur(16px);
+ -webkit-backdrop-filter: blur(16px);
+ border-radius: 24px; 
+ overflow: hidden; 
+ border: 1px solid rgba(255, 255, 255, 0.08); 
+ box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1); 
+ text-align: center; 
+ transition: transform 0.3s ease;
+ }
  
- .content { padding: 30px 20px; }
- h3 { margin: 0 0 5px 0; font-size: 22px; color: var(--text-main); }
- p { margin: 0 0 25px 0; font-size: 14px; color: var(--text-muted); }
+ .container:hover {
+ transform: translateY(-2px);
+ }
  
- .upload-area { border: 2px dashed #1e294b; border-radius: 8px; padding: 30px 20px; cursor: pointer; transition: 0.3s; margin-bottom: 20px; background: #0f172a; }
- .upload-area:hover { border-color: var(--accent); }
- .upload-area svg { width: 40px; height: 40px; fill: var(--text-muted); margin-bottom: 10px; }
+ /* Premium Banner Overlay */
+ .banner-wrapper {
+ position: relative;
+ width: 100%;
+ aspect-ratio: 16 / 5;
+ overflow: hidden;
+ border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+ }
+
+ .banner { 
+ width: 100%; 
+ height: 100%;
+ object-fit: cover; 
+ object-position: center; 
+ transition: transform 0.5s ease;
+ }
+
+ .banner-wrapper:hover .banner {
+ transform: scale(1.05);
+ }
+
+ .banner-overlay {
+ position: absolute;
+ bottom: 0;
+ left: 0;
+ width: 100%;
+ height: 50%;
+ background: gradient(linear, to top, var(--bg-main), transparent);
+ background: linear-gradient(to top, rgba(8, 11, 17, 0.9), transparent);
+ }
  
- .btn { background: var(--accent); color: white; border: none; width: 100%; padding: 12px; border-radius: 6px; font-weight: bold; font-size: 15px; cursor: pointer; transition: 0.2s; }
- .btn:hover { background: #008c92; }
+ .content { padding: 35px 25px 25px 25px; }
  
- .result-box { margin-top: 20px; display: none; background: #0f172a; padding: 15px; border-radius: 6px; border: 1px solid #1e294b; }
- .result-box span { display: block; font-size: 12px; color: var(--accent); font-weight: bold; margin-bottom: 5px; text-align: left; }
- .result-box input { width: 100%; padding: 10px; background: var(--bg-main); border: 1px solid #1e294b; color: #fff; border-radius: 4px; text-align: center; box-sizing: border-box; font-size: 14px; }
+ h3 { 
+ margin: 0 0 6px 0; 
+ font-size: 26px; 
+ font-weight: 800;
+ letter-spacing: -0.5px;
+ background: linear-gradient(135deg, #fff 30%, var(--accent-cyan) 100%);
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ }
  
- .nav-link { display: inline-block; margin-top: 20px; color: var(--text-muted); font-size: 13px; text-decoration: none; transition: 0.2s; }
- .nav-link:hover { color: var(--accent); }
+ p { 
+ margin: 0 0 30px 0; 
+ font-size: 14px; 
+ font-weight: 500;
+ color: var(--text-muted); 
+ letter-spacing: 0.5px;
+ }
+ 
+ /* Modern Drag & Drop Zone */
+ .upload-area { 
+ border: 2px dashed rgba(0, 242, 254, 0.25); 
+ border-radius: 16px; 
+ padding: 35px 20px; 
+ cursor: pointer; 
+ transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+ margin-bottom: 24px; 
+ background: rgba(8, 11, 17, 0.4); 
+ position: relative;
+ overflow: hidden;
+ }
+ 
+ .upload-area:hover { 
+ border-color: var(--accent-cyan); 
+ background: rgba(0, 242, 254, 0.03);
+ box-shadow: 0 0 20px rgba(0, 242, 254, 0.1);
+ }
+ 
+ .upload-area svg { 
+ width: 48px; 
+ height: 48px; 
+ fill: url(#cyan-gradient);
+ margin-bottom: 12px; 
+ transition: transform 0.3s ease;
+ }
+
+ .upload-area:hover svg {
+ transform: translateY(-4px);
+ }
+ 
+ /* Futuristic Gradient Button */
+ .btn { 
+ background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%); 
+ color: #04060a; 
+ border: none; 
+ width: 100%; 
+ padding: 14px; 
+ border-radius: 12px; 
+ font-weight: 700; 
+ font-size: 15px; 
+ letter-spacing: 0.5px;
+ cursor: pointer; 
+ transition: all 0.3s ease; 
+ box-shadow: 0 4px 15px var(--glow);
+ }
+ 
+ .btn:hover { 
+ transform: translateY(-1px);
+ box-shadow: 0 6px 20px rgba(0, 242, 254, 0.6);
+ opacity: 0.95;
+ }
+
+ .btn:active {
+ transform: translateY(1px);
+ }
+ 
+ /* Glassmorphism Result Box */
+ .result-box { 
+ margin-top: 24px; 
+ display: none; 
+ background: rgba(8, 11, 17, 0.6); 
+ padding: 16px; 
+ border-radius: 14px; 
+ border: 1px solid rgba(0, 242, 254, 0.2); 
+ animation: fadeIn 0.4s ease;
+ }
+
+ @keyframes fadeIn {
+ from { opacity: 0; transform: translateY(10px); }
+ to { opacity: 1; transform: translateY(0); }
+ }
+
+ .result-box span { 
+ display: flex;
+ align-items: center;
+ gap: 6px;
+ font-size: 13px; 
+ color: var(--accent-gold); 
+ font-weight: 700; 
+ margin-bottom: 8px; 
+ text-align: left; 
+ }
+ 
+ .result-input-wrapper {
+ position: relative;
+ display: flex;
+ align-items: center;
+ }
+
+ .result-box input { 
+ width: 100%; 
+ padding: 12px 40px 12px 14px; 
+ background: #080b11; 
+ border: 1px solid rgba(255, 255, 255, 0.1); 
+ color: #fff; 
+ border-radius: 8px; 
+ box-sizing: border-box; 
+ font-size: 14px; 
+ font-family: monospace;
+ transition: border-color 0.3s;
+ }
+
+ .result-box input:focus {
+ outline: none;
+ border-color: var(--accent-cyan);
+ }
+
+ .copy-icon {
+ position: absolute;
+ right: 12px;
+ cursor: pointer;
+ fill: var(--text-muted);
+ width: 18px;
+ height: 18px;
+ transition: fill 0.2s;
+ }
+
+ .copy-icon:hover {
+ fill: var(--accent-cyan);
+ }
+ 
+ .nav-link { 
+ display: inline-flex; 
+ align-items: center;
+ gap: 4px;
+ margin-top: 25px; 
+ color: var(--text-muted); 
+ font-size: 13px; 
+ font-weight: 600;
+ text-decoration: none; 
+ transition: color 0.2s; 
+ }
+ 
+ .nav-link:hover { 
+ color: var(--accent-cyan); 
+ }
  </style>
+ <!-- Link Font Kece -->
+ <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="container">
- <img src="https://mahiru.web.id/image/file_1782436464953.jpg" alt="Banner" class="banner">
+ <div class="banner-wrapper">
+ <img src="https://mahiru.web.id/image/file_1782436464953.jpg" alt="Mahiru Banner" class="banner">
+ <div class="banner-overlay"></div>
+ </div>
  
  <div class="content">
- <h3>Upload Image</h3>
- <p>Generate to Link</p>
+ <h3>Mahiru Cloud</h3>
+ <p>⚡ Fast & Secure File Multi-Uploader</p>
  
- <div class="upload-area" onclick="document.getElementById('fileInput').click()">
- <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
- <div style="font-size: 14px; color: var(--text-muted);">Pilih atau seret gambar ke sini</div>
- <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="fileSelected(this)">
+ <div class="upload-area" id="dropZone" onclick="document.getElementById('fileInput').click()">
+ <!-- SVG Gradient Definition -->
+ <svg viewBox="0 0 24 24">
+ <defs>
+ <linearGradient id="cyan-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+ <stop offset="0%" stop-color="#4facfe" />
+ <stop offset="100%" stop-color="#00f2fe" />
+ </linearGradient>
+ </defs>
+ <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+ </svg>
+ <div style="font-size: 14px; font-weight: 600; color: var(--text-muted);">Pilih atau Drop File ke Sini</div>
+ <input type="file" id="fileInput" style="display: none;" onchange="fileSelected(this)">
  </div>
  
  <button class="btn" onclick="prosesUpload()">Generate Link</button>
  
  <div class="result-box" id="resultBox">
- <span>🎉 Link Gambar Lo:</span>
+ <span>✨ Link Berhasil Di-generate:</span>
+ <div class="result-input-wrapper">
  <input type="text" id="linkResult" readonly onclick="this.select()">
+ <svg class="copy-icon" viewBox="0 0 24 24" onclick="copyLink()"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+ </div>
  </div>
  
- <a href="/list" class="nav-link">Lihat List Image →</a>
+ <a href="/list" class="nav-link">Lihat Dashboard List File ➔</a>
  </div>
 </div>
 
 <script>
  let base64File = "";
  let selectedFileName = "";
+
+ // Tambah fitur Drag and Drop Visual
+ const dropZone = document.getElementById('dropZone');
+ ['dragenter', 'dragover'].forEach(eventName => {
+ dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent-cyan)'; }, false);
+ });
+ ['dragleave', 'drop'].forEach(eventName => {
+ dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.style.borderColor = 'rgba(0, 242, 254, 0.25)'; }, false);
+ });
+ dropZone.addEventListener('drop', (e) => {
+ const dt = e.dataTransfer;
+ const files = dt.files;
+ if(files.length > 0) {
+ document.getElementById('fileInput').files = files;
+ fileSelected(document.getElementById('fileInput'));
+ }
+ });
 
  function fileSelected(input) {
  if(input.files.length === 0) return;
@@ -75,17 +309,18 @@
  reader.readAsDataURL(file);
  reader.onload = () => {
  base64File = reader.result;
- document.querySelector('.upload-area div').innerText = file.name;
- document.querySelector('.upload-area div').style.color = '#00adb5';
+ const textEl = document.querySelector('.upload-area div');
+ textEl.innerText = file.name.length > 30 ? file.name.substring(0, 27) + "..." : file.name;
+ textEl.style.color = 'var(--accent-cyan)';
  };
  }
 
  async function prosesUpload() {
- if (!base64File) return alert('Pilih gambarnya dulu, Bre!');
+ if (!base64File) return alert('Pilih filenya dulu, Bre!');
  const resBox = document.getElementById('resultBox');
  const linkRes = document.getElementById('linkResult');
  
- linkRes.value = "Lagi diproses...";
+ linkRes.value = "⚡ Menghubungkan ke Mahiru Cloud...";
  resBox.style.display = "block";
 
  try {
@@ -105,6 +340,14 @@
  alert('Eror koneksi server.');
  resBox.style.display = "none";
  }
+ }
+
+ function copyLink() {
+ const copyText = document.getElementById("linkResult");
+ copyText.select();
+ copyText.setSelectionRange(0, 99999);
+ navigator.clipboard.writeText(copyText.value);
+ alert("Link berhasil disalin ke clipboard, Bre!");
  }
 </script>
 </body>
