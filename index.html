@@ -22,7 +22,6 @@
  padding: 10px;
  }
 
- /* CONTAINER UTAMA: Memaksa background foto Mahiru terpusat penuh */
  .mobile-container {
  width: 100%;
  max-width: 412px;
@@ -37,7 +36,6 @@
  border: 4px solid #ebdccb;
  }
 
- /* OVERLAY: Lapisan putih semitransparan agar teks di depan tetap kontras & terbaca */
  .background-overlay {
  position: absolute;
  top: 0;
@@ -87,7 +85,6 @@
  text-align: right;
  }
 
- /* FOTO PROFIL: Diperbaiki biar bulat sempurna dan gak gepeng */
  .avatar-container {
  width: 42px;
  height: 42px;
@@ -132,7 +129,6 @@
  line-height: 1;
  }
 
- /* KOTAK UPLOAD: Efek kaca transparan tembus pandang ke background */
  .upload-card {
  background: rgba(255, 255, 255, 0.65);
  backdrop-filter: blur(4px);
@@ -208,7 +204,6 @@
  opacity: 0.25;
  }
 
- /* LIST FILE KACA */
  .recent-card {
  background: rgba(255, 255, 255, 0.75);
  backdrop-filter: blur(4px);
@@ -216,33 +211,31 @@
  padding: 16px;
  box-shadow: 0 6px 20px rgba(90, 78, 69, 0.05);
  border: 1px solid rgba(240, 230, 219, 0.8);
+ margin-bottom: 15px;
  }
 
  .file-list {
  list-style: none;
  }
 
+ /* PERBAIKAN: Mengubah struktur baris file agar muat tombol aksi */
  .file-item {
- display: table;
- width: 100%;
- padding: 12px 8px;
- border-bottom: 1px solid rgba(240, 230, 219, 0.4);
- transition: background 0.2s;
- border-radius: 10px;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ padding: 12px 4px;
+ border-bottom: 1px solid rgba(240, 230, 219, 0.5);
  }
 
  .file-item:last-child {
  border-bottom: none;
  }
 
- .file-item:active {
- background-color: rgba(250, 246, 240, 0.8);
- }
-
- .file-icon-cell {
- display: table-cell;
- width: 40px;
- vertical-align: middle;
+ .file-details {
+ display: flex;
+ align-items: center;
+ flex: 1;
+ min-width: 0;
  }
 
  .file-icon-bg {
@@ -252,16 +245,16 @@
  display: flex;
  align-items: center;
  justify-content: center;
- text-align: center;
+ flex-shrink: 0;
  }
 
  .bg-image { background-color: #e3f2fd; color: #1e88e5; }
  .bg-pdf { background-color: #ffebee; color: #e53935; }
 
- .file-info-cell {
- display: table-cell;
- vertical-align: middle;
+ .file-text {
  padding-left: 10px;
+ min-width: 0;
+ flex: 1;
  }
 
  .file-name {
@@ -273,7 +266,6 @@
  white-space: nowrap;
  overflow: hidden;
  text-overflow: ellipsis;
- max-width: 210px;
  }
 
  .file-meta {
@@ -282,14 +274,65 @@
  display: block;
  }
 
+ /* FITUR BARU: Wrapper Tombol Aksi di samping kanan nama file */
+ .file-actions {
+ display: flex;
+ gap: 6px;
+ margin-left: 8px;
+ }
+
+ .action-btn {
+ background: #ffffff;
+ border: 1px solid #ebdccb;
+ width: 30px;
+ height: 30px;
+ border-radius: 8px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ cursor: pointer;
+ color: #8c7662;
+ box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+ transition: all 0.2s;
+ }
+
+ .action-btn:active {
+ background-color: #fcf9f5;
+ transform: scale(0.95);
+ }
+
+ /* FITUR BARU: Button List Image Utama */
+ .btn-list-image {
+ width: 100%;
+ background: rgba(251, 247, 240, 0.85);
+ border: 1px solid #ebdccb;
+ color: #8c7662;
+ padding: 12px;
+ border-radius: 16px;
+ font-size: 13px;
+ font-weight: 700;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 8px;
+ cursor: pointer;
+ box-shadow: 0 4px 10px rgba(90, 78, 69, 0.05);
+ text-decoration: none;
+ transition: all 0.2s;
+ }
+
+ .btn-list-image:active {
+ background: #ebdccb;
+ color: #5a4e45;
+ }
+
  footer {
  text-align: center;
  font-size: 11px;
  color: #8c7662;
  font-weight: 500;
  padding: 24px 10px 10px;
- margin-top: 15px;
- border-top: 1px dashed rgba(212, 175, 55, 0.3);
+ margin-top: 5px;
  }
 
  .notification-bell {
@@ -317,7 +360,6 @@
 <body>
 
 <div class="mobile-container">
- <!-- Overlay Transparansi Gambar -->
  <div class="background-overlay"></div>
 
  <header>
@@ -328,7 +370,6 @@
  <div class="profile-section">
  <span class="user-name">Unggahan Bre</span>
  <div class="avatar-container">
- <!-- Foto Profil Menggunakan Link dari Lu -->
  <img class="avatar-img" src="https://mahiru.web.id/image/file_1782436464953.jpg" alt="Mahiru Shiina">
  </div>
  </div>
@@ -358,30 +399,49 @@
 
  <div class="recent-card">
  <ul class="file-list">
+ <!-- File 1 (Gambar) -->
  <li class="file-item">
- <div class="file-icon-cell">
+ <div class="file-details">
  <div class="file-icon-bg bg-image">
  <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9 2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094L15 10.667V3a1 1 0 0 0-1-1h-12a1 1 0 0 0-1 1v9z"/></svg>
  </div>
- </div>
- <div class="file-info-cell">
+ <div class="file-text">
  <span class="file-name">mahiru_art.png</span>
  <span class="file-meta">13,7 MB • 13 Juni 2026</span>
  </div>
+ </div>
+ <!-- Aksi Baru: Generate Link & Lihat -->
+ <div class="file-actions">
+ <button class="action-btn" title="Generate Link" onclick="generateLink('https://mahiru.web.id/image/file_1782436464953.jpg')">
+ <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+ </button>
+ </div>
  </li>
+ <!-- File 2 (Dokumen) -->
  <li class="file-item">
- <div class="file-icon-cell">
+ <div class="file-details">
  <div class="file-icon-bg bg-pdf">
  <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/></svg>
  </div>
- </div>
- <div class="file-info-cell">
+ <div class="file-text">
  <span class="file-name">catatan.pdf</span>
  <span class="file-meta">28,3 KB • 12 Juni 2026</span>
+ </div>
+ </div>
+ <div class="file-actions">
+ <button class="action-btn" title="Generate Link" onclick="generateLink('https://mahiru.web.id/docs/catatan.pdf')">
+ <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+ </button>
  </div>
  </li>
  </ul>
  </div>
+
+ <!-- BUTTON BARU: Navigasi List Image Utama -->
+ <button class="btn-list-image" onclick="viewImageList()">
+ <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4.5 2A2.5 2.5 0 0 0 2 4.5v7A2.5 2.5 0 0 0 4.5 14h7a2.5 2.5 0 0 0 2.5-2.5v-7A2.5 2.5 0 0 0 11.5 2h-7zM3 4.5A1.5 1.5 0 0 1 4.5 3h7A1.5 1.5 0 0 1 13 4.5v7a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 3 12.5v-7zM10.5 5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zM4 11l2.5-3.25L8 9.5l3-4L12 11H4z"/></svg>
+ LIHAT SEMUA GAMBAR
+ </button>
 
  <footer>
  Didukung oleh Vercel | Tema terinspirasi oleh Mahiru Shiina<br>&copy; 2026 AngelShare Inc.
@@ -396,14 +456,13 @@
 </div>
 
 <script>
+ // Fungsi interaksi klik & Drag Drop
  const fileInput = document.getElementById('file-input');
  const dropZone = document.getElementById('drop-zone');
 
  fileInput.addEventListener('change', (e) => {
  const files = e.target.files;
- if(files.length > 0) {
- alert(`Siap di-upload, bre! Ada ${files.length} file.`);
- }
+ if(files.length > 0) { alert(`Siap di-upload, bre! Ada ${files.length} file.`); }
  });
 
  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = '#d4af37'; });
@@ -412,10 +471,22 @@
  e.preventDefault();
  dropZone.style.borderColor = 'rgba(212, 175, 55, 0.5)';
  const files = e.dataTransfer.files;
- if(files.length > 0) {
- alert(`File "${files[0].name}" berhasil di-drop!`);
- }
+ if(files.length > 0) { alert(`File "${files[0].name}" berhasil di-drop!`); }
  });
+
+ // JAVASCRIPT FITUR BARU: Copy / Generate tautan otomatis
+ function generateLink(url) {
+ navigator.clipboard.writeText(url).then(() => {
+ alert('Tautan berkas berhasil di-generate dan disalin ke Clipboard!');
+ }).catch(err => {
+ alert('Gagal menyalin link: ', err);
+ });
+ }
+
+ // JAVASCRIPT FITUR BARU: Navigasi ke Daftar Gambar keseluruhan
+ function viewImageList() {
+ alert('Membuka halaman galeri list image... (Arahkan fungsi ini ke database/route gambar lu, bre!)');
+ }
 </script>
 </body>
 </html>
