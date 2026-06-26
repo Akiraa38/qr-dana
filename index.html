@@ -3,7 +3,7 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Mahiru Cloud - Ultimate Uploader</title>
+ <title>Mahiru Cloud - Uploader</title>
  <style>
  :root {
  --bg-main: #080b11;
@@ -249,7 +249,7 @@
  
  <div class="content">
  <h3>Mahiru Cloud</h3>
- <p>⚡ Fast & Secure File Multi-Uploader</p>
+ <p>Generate to Link</p>
  
  <div class="upload-area" id="dropZone" onclick="document.getElementById('fileInput').click()">
  <!-- SVG Gradient Definition -->
@@ -269,7 +269,7 @@
  <button class="btn" onclick="prosesUpload()">Generate Link</button>
  
  <div class="result-box" id="resultBox">
- <span>✨ Link Berhasil Di-generate:</span>
+ <span>Link Berhasil Di Upload:</span>
  <div class="result-input-wrapper">
  <input type="text" id="linkResult" readonly onclick="this.select()">
  <svg class="copy-icon" viewBox="0 0 24 24" onclick="copyLink()"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
@@ -320,7 +320,7 @@
  const resBox = document.getElementById('resultBox');
  const linkRes = document.getElementById('linkResult');
  
- linkRes.value = "⚡ Menghubungkan ke Mahiru Cloud...";
+ linkRes.value = "Menghubungkan ke Mahiru Cloud...";
  resBox.style.display = "block";
 
  try {
