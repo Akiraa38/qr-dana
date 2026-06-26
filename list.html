@@ -26,7 +26,7 @@
  .mobile-container {
  width: 100%;
  max-width: 412px;
- background: #ffffff url('https://mahiru.web.id/image/file_1782436464953.jpg') no-repeat center center;
+ background: #ffffff url('https://mahiru.web.id/image/file1782436464953.jpg') no-repeat center center;
  background-size: cover;
  border-radius: 30px;
  box-shadow: 0 12px 35px rgba(90, 78, 69, 0.15);
@@ -261,23 +261,23 @@
 
  <header>
  <div class="header-content">
- <div class="logo-text">Angel<span>List</span></div>
+ <div class="logo-text">Mahiru<span>List</span></div>
  <a href="/" class="back-btn">← KEMBALI</a>
  </div>
  </header>
 
  <div class="content-area">
  <div class="section-header">
- <div class="section-title">Isi Folder (./image/)</div>
+ <div class="section-title">Isi Folder (./image)</div>
  <span id="fileCount">0 File</span>
  </div>
 
  <div class="gallery-grid" id="galleryContainer">
- <div id="loading">Sedang memuat berkas dari GitHub...</div>
+ <div id="loading">Sedang memuat berkas...</div>
  </div>
 
  <footer>
- Ditenagai oleh Vercel Serverless & GitHub API<br>&copy; 2026 AngelShare Inc.
+ 
  </footer>
  </div>
 </div>
@@ -319,8 +319,8 @@
  <div class="menu-container">
  <button class="three-dots" onclick="toggleDropdown(event, this)">⋮</button>
  <div class="dropdown">
- <button onclick="copyLink('${imageUrl}')">📋 Copy Link</button>
- <button onclick="window.open('${imageUrl}', '_blank')">🖼️ Open</button>
+ <button onclick="copyLink('${imageUrl}')"> Copy Link</button>
+ <button onclick="window.open('${imageUrl}', '_blank')"> Open</button>
  </div>
  </div>
  </div>
@@ -347,7 +347,7 @@
  function copyLink(path) {
  const fullUrl = window.location.origin + path;
  navigator.clipboard.writeText(fullUrl).then(() => {
- alert('📋 Tautan gambar berhasil disalin:\n' + fullUrl);
+ alert(' Tautan gambar berhasil disalin:\n' + fullUrl);
  }).catch(() => {
  alert('Gagal menyalin link.');
  });
